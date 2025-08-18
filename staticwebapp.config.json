@@ -30,5 +30,11 @@
       "rewrite": "/index.html",
       "statusCode": 200
     }
+  },
+  "networking": {
+    "allowedIpRanges": []
+  },
+  "forwardingGateway": {
+    "allowedForwardedHosts": ["vizionscop3.com", "www.vizionscop3.com", "happy-flower-01a5d2404.1.azurestaticapps.net"]
   }
 }
