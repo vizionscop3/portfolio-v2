@@ -1,4 +1,12 @@
+/// <reference types="vitest/globals" />
+import '@testing-library/jest-dom';
 import { vi } from 'vitest';
+
+// Ensure global is defined for Node.js environment
+if (typeof global === 'undefined') {
+  // eslint-disable-next-line no-var
+  var global = globalThis;
+}
 
 // Setup global test environment
 Object.defineProperty(window, 'matchMedia', {
@@ -16,7 +24,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation((callback) => ({
+global.IntersectionObserver = vi.fn().mockImplementation(_callback => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
