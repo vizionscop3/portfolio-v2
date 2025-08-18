@@ -1,0 +1,183 @@
+name: Cross-Platform Compatibility
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Test on multiple operating systems
+  cross-platform-test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['18', '20']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type checking
+        run: npm run type-check
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build application
+        run: npm run build
+
+  # Windows PowerShell specific tests
+  windows-powershell:
+    name: Windows PowerShell Tests
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Test PowerShell commands
+        shell: powershell
+        run: |
+          Write-Host "Testing PowerShell compatibility..."
+
+          # Test directory navigation
+          cd "${{ github.workspace }}"
+          Write-Host "Current directory: $(Get-Location)"
+
+          # Test npm install
+          npm --version
+          Write-Host "npm version check successful"
+
+          # Test git commands
+          git --version
+          Write-Host "git version check successful"
+
+          Write-Host "PowerShell compatibility tests completed successfully!"
+
+      - name: Install dependencies (PowerShell)
+        shell: powershell
+        run: |
+          npm ci
+          Write-Host "Dependencies installed successfully in PowerShell"
+
+      - name: Run build (PowerShell)
+        shell: powershell
+        run: |
+          npm run build
+          Write-Host "Build completed successfully in PowerShell"
+
+  # Security audit with enhanced handling
+  enhanced-security-audit:
+    name: Enhanced Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit (non-blocking)
+        run: |
+          echo "Running npm audit..."
+          npm audit --audit-level=high || echo "High severity vulnerabilities found, but continuing..."
+          npm audit --audit-level=moderate --json > audit-results.json || echo "Audit completed with findings"
+
+      - name: Check for critical vulnerabilities
+        run: |
+          if [ -f audit-results.json ]; then
+            CRITICAL_COUNT=$(cat audit-results.json | jq '.metadata.vulnerabilities.critical // 0')
+            HIGH_COUNT=$(cat audit-results.json | jq '.metadata.vulnerabilities.high // 0')
+            
+            echo "Critical vulnerabilities: $CRITICAL_COUNT"
+            echo "High vulnerabilities: $HIGH_COUNT"
+            
+            if [ "$CRITICAL_COUNT" -gt 0 ]; then
+              echo "❌ Critical vulnerabilities found! Please address immediately."
+              exit 1
+            elif [ "$HIGH_COUNT" -gt 5 ]; then
+              echo "⚠️ High number of high-severity vulnerabilities found. Consider addressing."
+            else
+              echo "✅ Acceptable vulnerability level"
+            fi
+          fi
+
+      - name: Upload audit results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-audit-${{ github.sha }}
+          path: audit-results.json
+
+  # Dependency update check
+  dependency-check:
+    name: Dependency Update Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check for outdated packages
+        run: |
+          echo "Checking for outdated packages..."
+          npm outdated || echo "Some packages are outdated"
+
+          echo "Checking for deprecated packages..."
+          npx check-updates --format group || echo "Update check completed"
+
+      - name: Generate dependency report
+        run: |
+          echo "# Dependency Report" > dependency-report.md
+          echo "Generated on: $(date)" >> dependency-report.md
+          echo "" >> dependency-report.md
+          echo "## Outdated Packages" >> dependency-report.md
+          npm outdated --json > outdated.json || echo "{}" > outdated.json
+          echo "\`\`\`json" >> dependency-report.md
+          cat outdated.json >> dependency-report.md
+          echo "\`\`\`" >> dependency-report.md
+
+      - name: Upload dependency report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-report-${{ github.sha }}
+          path: |
+            dependency-report.md
+            outdated.json

@@ -1,0 +1,294 @@
+name: Dependency Management
+
+on:
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch: # Allow manual trigger
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Check for deprecated packages
+  deprecated-packages:
+    name: Check Deprecated Packages
+    runs-on: ubuntu-latest
+    outputs:
+      deprecated-found: ${{ steps.check-deprecated.outputs.deprecated-found }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install npm-check-updates
+        run: npm install -g npm-check-updates
+
+      - name: Check for deprecated packages
+        id: check-deprecated
+        run: |
+          echo "Checking for deprecated packages..."
+          npm install --dry-run 2>&1 | grep -i "deprecated" > deprecated-packages.txt || echo "No deprecated packages found"
+
+          if [ -s deprecated-packages.txt ]; then
+            echo "⚠️ Deprecated packages found:"
+            cat deprecated-packages.txt
+            echo "deprecated-found=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No deprecated packages found"
+            echo "deprecated-found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate replacement suggestions
+        if: steps.check-deprecated.outputs.deprecated-found == 'true'
+        run: |
+          echo "# Deprecated Package Report" > deprecated-report.md
+          echo "Generated on: $(date)" >> deprecated-report.md
+          echo "" >> deprecated-report.md
+          echo "## Deprecated Packages Found" >> deprecated-report.md
+          echo "" >> deprecated-report.md
+
+          # Known replacements for common deprecated packages
+          echo "### Recommended Replacements:" >> deprecated-report.md
+          echo "" >> deprecated-report.md
+          echo "- **@humanwhocodes/config-array** → **@eslint/config-array**" >> deprecated-report.md
+          echo "- **@humanwhocodes/object-schema** → **@eslint/object-schema**" >> deprecated-report.md
+          echo "- **eslint@8.x** → **eslint@9.x** (latest)" >> deprecated-report.md
+          echo "- **rimraf@3.x** → **rimraf@5.x** (latest)" >> deprecated-report.md
+          echo "- **glob@7.x** → **glob@10.x** (latest)" >> deprecated-report.md
+          echo "- **inflight** → **Use modern alternatives or remove if possible**" >> deprecated-report.md
+          echo "" >> deprecated-report.md
+          echo "### Full Deprecated Package List:" >> deprecated-report.md
+          echo "\`\`\`" >> deprecated-report.md
+          cat deprecated-packages.txt >> deprecated-report.md
+          echo "\`\`\`" >> deprecated-report.md
+
+      - name: Upload deprecated packages report
+        if: steps.check-deprecated.outputs.deprecated-found == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: deprecated-packages-${{ github.sha }}
+          path: |
+            deprecated-packages.txt
+            deprecated-report.md
+
+      - name: Create issue for deprecated packages
+        if: steps.check-deprecated.outputs.deprecated-found == 'true' && github.event_name == 'schedule'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            let body = '# 🚨 Deprecated Packages Detected\n\n';
+            body += 'Our automated dependency check has found deprecated packages in the project.\n\n';
+
+            if (fs.existsSync('deprecated-report.md')) {
+              const report = fs.readFileSync('deprecated-report.md', 'utf8');
+              body += report;
+            }
+
+            body += '\n\n## Action Required\n';
+            body += '- [ ] Review deprecated packages\n';
+            body += '- [ ] Update to recommended replacements\n';
+            body += '- [ ] Test updated dependencies\n';
+            body += '- [ ] Update documentation if needed\n';
+
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Deprecated packages need attention',
+              body: body,
+              labels: ['dependencies', 'maintenance', 'priority-medium']
+            });
+
+  # Automated dependency updates
+  dependency-updates:
+    name: Check Dependency Updates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install npm-check-updates
+        run: npm install -g npm-check-updates
+
+      - name: Check for updates
+        run: |
+          echo "Checking for available updates..."
+          ncu --format group > update-report.txt
+          ncu --jsonUpgraded > updates.json || echo "{}" > updates.json
+
+      - name: Check update safety
+        run: |
+          # Check if there are any major version updates
+          MAJOR_UPDATES=$(cat updates.json | jq '. | to_entries | map(select(.value | contains("^") | not)) | length')
+          echo "Major version updates: $MAJOR_UPDATES"
+
+          if [ "$MAJOR_UPDATES" -gt 0 ]; then
+            echo "MAJOR_UPDATES_FOUND=true" >> $GITHUB_ENV
+            echo "⚠️ Major version updates require manual review"
+          else
+            echo "MAJOR_UPDATES_FOUND=false" >> $GITHUB_ENV
+            echo "✅ Only minor/patch updates available"
+          fi
+
+      - name: Create update report
+        run: |
+          echo "# Dependency Update Report" > dependency-update-report.md
+          echo "Generated on: $(date)" >> dependency-update-report.md
+          echo "" >> dependency-update-report.md
+          echo "## Available Updates" >> dependency-update-report.md
+          echo "" >> dependency-update-report.md
+          echo "\`\`\`" >> dependency-update-report.md
+          cat update-report.txt >> dependency-update-report.md
+          echo "\`\`\`" >> dependency-update-report.md
+          echo "" >> dependency-update-report.md
+          echo "## JSON Details" >> dependency-update-report.md
+          echo "\`\`\`json" >> dependency-update-report.md
+          cat updates.json >> dependency-update-report.md
+          echo "\`\`\`" >> dependency-update-report.md
+
+      - name: Upload update report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-updates-${{ github.sha }}
+          path: |
+            dependency-update-report.md
+            update-report.txt
+            updates.json
+
+  # Security vulnerability fixes
+  security-fixes:
+    name: Security Vulnerability Fixes
+    runs-on: ubuntu-latest
+    outputs:
+      auto-fix-needed: ${{ steps.check-vulnerabilities.outputs.auto-fix-needed }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run security audit
+        run: |
+          npm audit --audit-level=moderate --json > security-audit.json || echo "Audit completed"
+
+      - name: Check vulnerability count
+        id: check-vulnerabilities
+        run: |
+          if [ -f security-audit.json ]; then
+            MODERATE_COUNT=$(cat security-audit.json | jq '.metadata.vulnerabilities.moderate // 0')
+            HIGH_COUNT=$(cat security-audit.json | jq '.metadata.vulnerabilities.high // 0')
+            CRITICAL_COUNT=$(cat security-audit.json | jq '.metadata.vulnerabilities.critical // 0')
+            
+            echo "Vulnerability counts:"
+            echo "- Moderate: $MODERATE_COUNT"
+            echo "- High: $HIGH_COUNT" 
+            echo "- Critical: $CRITICAL_COUNT"
+            
+            TOTAL_SIGNIFICANT=$((HIGH_COUNT + CRITICAL_COUNT))
+            
+            if [ "$TOTAL_SIGNIFICANT" -gt 0 ]; then
+              echo "auto-fix-needed=true" >> $GITHUB_OUTPUT
+            else
+              echo "auto-fix-needed=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Attempt automatic fixes
+        if: steps.check-vulnerabilities.outputs.auto-fix-needed == 'true'
+        run: |
+          echo "Attempting to automatically fix vulnerabilities..."
+          npm audit fix --force || echo "Some fixes may require manual intervention"
+
+      - name: Test after fixes
+        if: steps.check-vulnerabilities.outputs.auto-fix-needed == 'true'
+        run: |
+          echo "Running tests after security fixes..."
+          npm run test || echo "Tests failed, manual review needed"
+          npm run build || echo "Build failed, manual review needed"
+
+      - name: Create security fix PR
+        if: steps.check-vulnerabilities.outputs.auto-fix-needed == 'true' && github.event_name == 'schedule'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { execSync } = require('child_process');
+
+            // Check if there are changes
+            try {
+              execSync('git diff --exit-code', { stdio: 'pipe' });
+              console.log('No changes made by security fixes');
+              return;
+            } catch (error) {
+              console.log('Changes detected, creating PR...');
+            }
+
+            // Create branch and commit changes
+            const branchName = `security/auto-fix-${Date.now()}`;
+            execSync(`git checkout -b ${branchName}`);
+            execSync('git config user.name "GitHub Actions"');
+            execSync('git config user.email "actions@github.com"');
+            execSync('git add .');
+            execSync('git commit -m "fix: automatic security vulnerability fixes"');
+            execSync(`git push origin ${branchName}`);
+
+            // Create PR
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔒 Automatic security vulnerability fixes',
+              head: branchName,
+              base: 'develop',
+              body: `# 🔒 Automatic Security Fixes
+              
+              This PR contains automatic fixes for security vulnerabilities detected by npm audit.
+              
+              ## Changes Made
+              - Applied \`npm audit fix --force\`
+              - Updated vulnerable dependencies
+              
+              ## Review Required
+              - [ ] Verify all tests pass
+              - [ ] Check that application builds successfully
+              - [ ] Review dependency changes for breaking changes
+              - [ ] Test critical application functionality
+              
+              **Note:** This PR was automatically generated. Please review carefully before merging.`
+            });
+
+            console.log(`Created PR #${pr.number}`);
+
+      - name: Upload security audit results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-audit-${{ github.sha }}
+          path: security-audit.json
