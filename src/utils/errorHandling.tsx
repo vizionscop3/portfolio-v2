@@ -1,7 +1,7 @@
 // Error boundary and error handling utilities
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { logger } from '@/utils/logger';
 import { ErrorInfo as ErrorInfoType } from '@/types';
+import { logger } from '@/utils/logger';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -15,7 +15,10 @@ interface ErrorBoundaryProps {
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -53,7 +56,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.reportError(error, errorInfo);
   }
 
-  private reportError(error: Error, errorInfo: ErrorInfo) {
+  private reportError(error: Error, _errorInfo: ErrorInfo) {
     const errorReport: ErrorInfoType = {
       message: error.message,
       stack: error.stack,
@@ -66,6 +69,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (!import.meta.env.DEV) {
       // Example: Sentry, Bugsnag, etc.
       // Sentry.captureException(error, { extra: errorInfo });
+      // eslint-disable-next-line no-console
+      console.error('Error Report:', errorReport);
     }
   }
 
@@ -98,7 +103,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 Something went wrong
               </h3>
               <p className="text-sm text-gray-500 mb-4">
-                We're sorry, but something unexpected happened. Please try refreshing the page.
+                We're sorry, but something unexpected happened. Please try
+                refreshing the page.
               </p>
               <button
                 onClick={() => window.location.reload()}
@@ -130,7 +136,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 export const useErrorHandler = () => {
   const handleError = (error: Error, context?: string) => {
     logger.error(`Async error${context ? ` in ${context}` : ''}`, error);
-    
+
     // You can add custom error handling logic here
     // For example, show toast notifications, redirect, etc.
   };
@@ -154,15 +160,15 @@ export const withErrorHandling = <T extends (...args: any[]) => Promise<any>>(
 // Global error handler for unhandled promises and errors
 export const setupGlobalErrorHandlers = () => {
   // Handle unhandled promise rejections
-  window.addEventListener('unhandledrejection', (event) => {
+  window.addEventListener('unhandledrejection', event => {
     logger.error('Unhandled promise rejection', event.reason);
-    
+
     // Prevent the default console error
     event.preventDefault();
   });
 
   // Handle uncaught errors
-  window.addEventListener('error', (event) => {
+  window.addEventListener('error', event => {
     logger.error('Uncaught error', new Error(event.message), {
       filename: event.filename,
       lineno: event.lineno,

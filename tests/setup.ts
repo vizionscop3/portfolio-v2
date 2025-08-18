@@ -3,6 +3,11 @@ import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
 // Ensure global is defined for Node.js environment
+declare global {
+  // eslint-disable-next-line no-var
+  var global: typeof globalThis;
+}
+
 if (typeof global === 'undefined') {
   // eslint-disable-next-line no-var
   var global = globalThis;

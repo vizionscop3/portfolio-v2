@@ -16,8 +16,12 @@ class CacheManager {
   private defaultTTL = 5 * 60 * 1000; // 5 minutes
 
   set<T>(key: string, data: T, options: CacheOptions = {}): void {
-    const { ttl = this.defaultTTL, storage = 'memory', serialize = true } = options;
-    
+    const {
+      ttl = this.defaultTTL,
+      storage = 'memory',
+      serialize = true,
+    } = options;
+
     const entry: CacheEntry<T> = {
       data,
       timestamp: Date.now(),
@@ -31,21 +35,31 @@ class CacheManager {
           break;
         case 'session':
           if (typeof window !== 'undefined' && window.sessionStorage) {
-            sessionStorage.setItem(key, serialize ? JSON.stringify(entry) : String(entry.data));
+            sessionStorage.setItem(
+              key,
+              serialize ? JSON.stringify(entry) : String(entry.data)
+            );
           }
           break;
         case 'local':
           if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem(key, serialize ? JSON.stringify(entry) : String(entry.data));
+            localStorage.setItem(
+              key,
+              serialize ? JSON.stringify(entry) : String(entry.data)
+            );
           }
           break;
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`Failed to cache data for key: ${key}`, error);
     }
   }
 
-  get<T>(key: string, options: Pick<CacheOptions, 'storage' | 'serialize'> = {}): T | null {
+  get<T>(
+    key: string,
+    options: Pick<CacheOptions, 'storage' | 'serialize'> = {}
+  ): T | null {
     const { storage = 'memory', serialize = true } = options;
 
     try {
@@ -58,13 +72,21 @@ class CacheManager {
         case 'session':
           if (typeof window !== 'undefined' && window.sessionStorage) {
             const item = sessionStorage.getItem(key);
-            entry = item ? (serialize ? JSON.parse(item) : { data: item, timestamp: Date.now(), ttl: this.defaultTTL }) : null;
+            entry = item
+              ? serialize
+                ? JSON.parse(item)
+                : { data: item, timestamp: Date.now(), ttl: this.defaultTTL }
+              : null;
           }
           break;
         case 'local':
           if (typeof window !== 'undefined' && window.localStorage) {
             const item = localStorage.getItem(key);
-            entry = item ? (serialize ? JSON.parse(item) : { data: item, timestamp: Date.now(), ttl: this.defaultTTL }) : null;
+            entry = item
+              ? serialize
+                ? JSON.parse(item)
+                : { data: item, timestamp: Date.now(), ttl: this.defaultTTL }
+              : null;
           }
           break;
       }
@@ -79,6 +101,7 @@ class CacheManager {
 
       return entry.data;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`Failed to retrieve cached data for key: ${key}`, error);
       return null;
     }
@@ -104,6 +127,7 @@ class CacheManager {
           break;
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`Failed to delete cached data for key: ${key}`, error);
     }
   }
@@ -126,6 +150,7 @@ class CacheManager {
           break;
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`Failed to clear ${storage} cache`, error);
     }
   }
@@ -144,8 +169,14 @@ class CacheManager {
   getStats() {
     return {
       memoryEntries: this.memoryCache.size,
-      sessionEntries: typeof window !== 'undefined' && window.sessionStorage ? sessionStorage.length : 0,
-      localEntries: typeof window !== 'undefined' && window.localStorage ? localStorage.length : 0,
+      sessionEntries:
+        typeof window !== 'undefined' && window.sessionStorage
+          ? sessionStorage.length
+          : 0,
+      localEntries:
+        typeof window !== 'undefined' && window.localStorage
+          ? localStorage.length
+          : 0,
     };
   }
 }
@@ -154,9 +185,12 @@ export const cache = new CacheManager();
 
 // Auto cleanup every 5 minutes
 if (typeof window !== 'undefined') {
-  setInterval(() => {
-    cache.cleanup();
-  }, 5 * 60 * 1000);
+  setInterval(
+    () => {
+      cache.cleanup();
+    },
+    5 * 60 * 1000
+  );
 }
 
 // Utility functions for common caching patterns
@@ -166,17 +200,17 @@ export const memoize = <T extends (...args: any[]) => any>(
   options?: CacheOptions
 ) => {
   const generateKey = keyGenerator || ((...args) => JSON.stringify(args));
-  
+
   return ((...args: Parameters<T>): ReturnType<T> => {
     const key = `memoize_${fn.name}_${generateKey(...args)}`;
-    
+
     let result = cache.get<ReturnType<T>>(key, options);
     if (result === null) {
       result = fn(...args);
       cache.set(key, result, options);
     }
-    
-    return result;
+
+    return result as ReturnType<T>;
   }) as T;
 };
 
@@ -187,12 +221,12 @@ export const cacheAsync = async <T>(
 ): Promise<T> => {
   // Try to get from cache first
   let result = cache.get<T>(key, options);
-  
+
   if (result === null) {
     // Not in cache, execute the async function
     result = await asyncFn();
     cache.set(key, result, options);
   }
-  
+
   return result;
 };

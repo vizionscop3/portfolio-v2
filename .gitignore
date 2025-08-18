@@ -49,6 +49,57 @@ coverage/
 *.lcov
 .nyc_output
 
+# Credentials and sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.csr
+*.keystore
+.azure/
+.aws/
+azure-credentials.json
+credentials.json
+service-account.json
+firebase-adminsdk*.json
+config/credentials.yml
+config/master.key
+config/database.yml
+.env.*.local
+secrets.json
+appsettings.Production.json
+appsettings.Staging.json
+.secrets
+*.secret
+
+# API Keys and tokens
+.api-keys
+api-keys.json
+tokens.json
+.token
+access_token
+refresh_token
+client_secret.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+*.temp
+
+# Local configuration overrides
+local.settings.json
+.local/
+config.local.json
+
 # node-waf configuration
 .lock-wscript
 
