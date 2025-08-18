@@ -35,6 +35,27 @@
     "allowedIpRanges": []
   },
   "forwardingGateway": {
-    "allowedForwardedHosts": ["vizionscop3.com", "www.vizionscop3.com", "happy-flower-01a5d2404.1.azurestaticapps.net"]
+    "allowedForwardedHosts": [
+      "lifeofvizion.com",
+      "www.lifeofvizion.com",
+      "portfolio.lifeofvizion.com",
+      "projects.lifeofvizion.com",
+      "blog.lifeofvizion.com",
+      "contact.lifeofvizion.com",
+      "resume.lifeofvizion.com",
+      "style.lifeofvizion.com",
+      "docs.lifeofvizion.com",
+      "media.lifeofvizion.com",
+      "about.lifeofvizion.com",
+      "services.lifeofvizion.com",
+      "dev.lifeofvizion.com",
+      "staging.lifeofvizion.com",
+      "community.lifeofvizion.com",
+      "newsletter.lifeofvizion.com",
+      "lifestyle.lifeofvizion.com",
+      "merch.lifeofvizion.com",
+      "gallery.lifeofvizion.com",
+      "happy-flower-01a5d2404.1.azurestaticapps.net"
+    ]
   }
 }
