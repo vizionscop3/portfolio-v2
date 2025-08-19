@@ -1,18 +1,26 @@
 {
   "routes": [
     {
+      "route": "/assets/*",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
       "route": "/*",
       "rewrite": "/index.html"
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/assets/*"]
+    "exclude": ["/assets/*", "/images/*", "/*.{png,jpg,gif,ico,svg,css,js,json}"]
   },
   "mimeTypes": {
     ".json": "application/json"
   },
   "globalHeaders": {
-    "Cache-Control": "no-cache"
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block"
   }
 }
