@@ -51,7 +51,6 @@ class CacheManager {
           break;
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.warn(`Failed to cache data for key: ${key}`, error);
     }
   }
@@ -101,7 +100,6 @@ class CacheManager {
 
       return entry.data;
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.warn(`Failed to retrieve cached data for key: ${key}`, error);
       return null;
     }
@@ -127,7 +125,6 @@ class CacheManager {
           break;
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.warn(`Failed to delete cached data for key: ${key}`, error);
     }
   }
@@ -150,7 +147,6 @@ class CacheManager {
           break;
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.warn(`Failed to clear ${storage} cache`, error);
     }
   }

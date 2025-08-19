@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload deprecated packages report
         if: steps.check-deprecated.outputs.deprecated-found == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: deprecated-packages-${{ github.sha }}
           path: |
@@ -166,7 +166,7 @@ jobs:
           echo "\`\`\`" >> dependency-update-report.md
 
       - name: Upload update report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: dependency-updates-${{ github.sha }}
           path: |
@@ -287,7 +287,7 @@ jobs:
             console.log(`Created PR #${pr.number}`);
 
       - name: Upload security audit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: security-audit-${{ github.sha }}

@@ -1,17 +1,4 @@
-/// <reference types="vitest/globals" />
-import '@testing-library/jest-dom';
 import { vi } from 'vitest';
-
-// Ensure global is defined for Node.js environment
-declare global {
-  // eslint-disable-next-line no-var
-  var global: typeof globalThis;
-}
-
-if (typeof global === 'undefined') {
-  // eslint-disable-next-line no-var
-  var global = globalThis;
-}
 
 // Setup global test environment
 Object.defineProperty(window, 'matchMedia', {
@@ -29,24 +16,26 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(_callback => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-  root: null,
-  rootMargin: '',
-  thresholds: [],
-}));
+(globalThis as any).IntersectionObserver = vi
+  .fn()
+  .mockImplementation(_callback => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+    root: null,
+    rootMargin: '',
+    thresholds: [],
+  }));
 
 // Mock ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
+(globalThis as any).ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
 
 // Mock fetch
-global.fetch = vi.fn();
+(globalThis as any).fetch = vi.fn();
 
 // Mock localStorage
 const localStorageMock = {
@@ -71,8 +60,8 @@ const sessionStorageMock = {
 Object.defineProperty(window, 'sessionStorage', { value: sessionStorageMock });
 
 // Mock performance API
-global.performance = {
-  ...global.performance,
+(globalThis as any).performance = {
+  ...(globalThis as any).performance,
   mark: vi.fn(),
   measure: vi.fn(),
   getEntriesByType: vi.fn(() => []),

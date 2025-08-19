@@ -69,8 +69,7 @@ export class ErrorBoundary extends Component<
     if (!import.meta.env.DEV) {
       // Example: Sentry, Bugsnag, etc.
       // Sentry.captureException(error, { extra: errorInfo });
-      // eslint-disable-next-line no-console
-      console.error('Error Report:', errorReport);
+      console.error('Production Error Report:', errorReport);
     }
   }
 
