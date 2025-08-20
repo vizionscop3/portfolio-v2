@@ -1,6 +1,6 @@
-import react from '@vitejs/plugin-react'
-import path from 'path'
-import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +14,8 @@ export default defineConfig({
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/types': path.resolve(__dirname, './src/types'),
       '@/styles': path.resolve(__dirname, './src/styles'),
+      '@/3d': path.resolve(__dirname, './src/3d'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
     },
   },
   server: {
@@ -30,6 +32,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           icons: ['lucide-react'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
         },
       },
     },
@@ -44,4 +47,17 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     css: true,
   },
-})
+  // 3D Asset optimization
+  assetsInclude: [
+    '**/*.gltf',
+    '**/*.glb',
+    '**/*.fbx',
+    '**/*.obj',
+    '**/*.hdr',
+    '**/*.exr',
+  ],
+  optimizeDeps: {
+    include: ['three', '@react-three/fiber', '@react-three/drei'],
+    exclude: ['@react-three/offscreen'],
+  },
+});

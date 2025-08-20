@@ -49,3 +49,8 @@ export interface ErrorInfo {
   userAgent: string;
   url: string;
 }
+
+// Re-export 3D scene types
+export * from './interactive';
+export * from './performance';
+export * from './scene';
