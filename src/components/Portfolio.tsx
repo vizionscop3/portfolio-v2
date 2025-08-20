@@ -1,4 +1,5 @@
 import {
+  Box,
   Code,
   ExternalLink,
   FileText,
@@ -6,6 +7,7 @@ import {
   Linkedin,
   Mail,
   Menu,
+  Monitor,
   Music,
   Palette,
   ShoppingBag,
@@ -13,20 +15,50 @@ import {
   User,
   X,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Project, SectionId } from '../types';
 import { cache } from '../utils/cache';
 import { useErrorHandler } from '../utils/errorHandling';
 import {
-  logger,
   PerformanceMonitor,
+  logger,
   trackUserInteraction,
 } from '../utils/logger';
+import { WebGLDetector } from '../utils/webgl-detection';
+import Portfolio3D from './Portfolio3D';
 
 const Portfolio: React.FC = () => {
   const [activeSection, setActiveSection] = useState<SectionId>('about');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [is3DMode, setIs3DMode] = useState(false);
+  const [webGLSupported, setWebGLSupported] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const handleError = useErrorHandler();
+
+  // Check WebGL support on component mount
+  useEffect(() => {
+    const checkWebGL = async () => {
+      try {
+        const webglDetector = WebGLDetector.getInstance();
+        const supported = webglDetector.isWebGLSupported();
+        setWebGLSupported(supported);
+
+        // Auto-enable 3D mode if WebGL is supported and user hasn't explicitly chosen 2D
+        if (supported && !localStorage.getItem('portfolio_mode_preference')) {
+          setIs3DMode(true);
+        }
+
+        setIsLoading(false);
+        logger.info(`WebGL support: ${supported}`);
+      } catch (error) {
+        handleError(error as Error, 'WebGL detection');
+        setWebGLSupported(false);
+        setIsLoading(false);
+      }
+    };
+
+    checkWebGL();
+  }, [handleError]);
 
   // Navigation items with icons
   const navigation = [
@@ -84,6 +116,7 @@ const Portfolio: React.FC = () => {
       trackUserInteraction('section_change', {
         from: activeSection,
         to: sectionId,
+        mode: is3DMode ? '3D' : '2D',
       });
 
       setActiveSection(sectionId);
@@ -100,6 +133,19 @@ const Portfolio: React.FC = () => {
     } catch (error) {
       handleError(error as Error, 'handleSectionChange');
     }
+  };
+
+  const toggleMode = () => {
+    const newMode = !is3DMode;
+    setIs3DMode(newMode);
+    localStorage.setItem('portfolio_mode_preference', newMode ? '3D' : '2D');
+
+    trackUserInteraction('mode_toggle', {
+      from: is3DMode ? '3D' : '2D',
+      to: newMode ? '3D' : '2D',
+    });
+
+    logger.info(`Mode changed to: ${newMode ? '3D' : '2D'}`);
   };
 
   const renderSection = () => {
@@ -389,6 +435,18 @@ const Portfolio: React.FC = () => {
     }
   };
 
+  // Show loading state while checking WebGL support
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Initializing Portfolio...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
@@ -398,7 +456,7 @@ const Portfolio: React.FC = () => {
             <div className="font-bold text-xl text-gray-900">Portfolio</div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex items-center space-x-8">
               {navigation.map(item => {
                 const Icon = item.icon;
                 return (
@@ -416,6 +474,18 @@ const Portfolio: React.FC = () => {
                   </button>
                 );
               })}
+
+              {/* 3D/2D Mode Toggle */}
+              {webGLSupported && (
+                <button
+                  onClick={toggleMode}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
+                  title={`Switch to ${is3DMode ? '2D' : '3D'} mode`}
+                >
+                  {is3DMode ? <Monitor size={18} /> : <Box size={18} />}
+                  {is3DMode ? '2D' : '3D'}
+                </button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -455,7 +525,28 @@ const Portfolio: React.FC = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">{renderSection()}</main>
+      {is3DMode && webGLSupported ? (
+        <main className="h-screen">
+          <Portfolio3D
+            onSectionChange={handleSectionChange}
+            activeSection={activeSection}
+          />
+        </main>
+      ) : (
+        <main className="max-w-6xl mx-auto px-4 py-8">
+          {!webGLSupported && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center gap-2">
+                <Monitor size={20} className="text-yellow-600" />
+                <p className="text-yellow-800">
+                  WebGL is not supported on your device. Showing 2D version.
+                </p>
+              </div>
+            </div>
+          )}
+          {renderSection()}
+        </main>
+      )}
 
       {/* Footer */}
       <footer className="bg-white border-t mt-16">
