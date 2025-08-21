@@ -25,7 +25,7 @@ export const VisualFeedback: React.FC<VisualFeedbackProps> = ({
   particleCount = 50,
   radius = 2,
 }) => {
-  const pointsRef = useRef<ThreePoints>(null);
+  const pointsRef = useRef<any>(null);
   const groupRef = useRef<Group>(null);
 
   // Create particle geometry
@@ -143,7 +143,7 @@ export const RippleEffect: React.FC<RippleEffectProps> = ({
     // Fade opacity based on scale
     const opacity = 1 - scale / maxRadius;
     if (ringRef.current.children[0]) {
-      const material = (ringRef.current.children[0] as unknown).material;
+      const material = (ringRef.current.children[0] as unknown)?.material;
       if (material) {
         material.opacity = opacity * intensity;
       }

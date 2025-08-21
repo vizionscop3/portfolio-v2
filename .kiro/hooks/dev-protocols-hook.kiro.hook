@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "name": "Development Protocols Monitor",
+  "description": "Monitors changes to core development configuration files and ensures professional protocols are maintained including linting, formatting, testing, git hooks, and build configurations",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "package.json",
+      ".eslintrc.cjs",
+      ".eslintrc-new.cjs",
+      ".prettierrc",
+      ".prettierignore",
+      "tsconfig.json",
+      "tsconfig.node.json",
+      "vite.config.ts",
+      ".husky/pre-commit",
+      ".gitignore",
+      "CONTRIBUTING.md",
+      "README.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A core development configuration file has been modified. Please review the changes and ensure they maintain professional development protocols including: 1) Proper linting and formatting rules are in place, 2) TypeScript configuration is strict and comprehensive, 3) Git hooks for pre-commit checks are functioning, 4) Build configuration is optimized, 5) Documentation is up to date, 6) Testing setup is maintained. Verify the changes align with the established tech stack (React 18, TypeScript, Vite, Tailwind CSS, ESLint, Prettier, Husky) and suggest any improvements to maintain code quality standards."
+  }
+}

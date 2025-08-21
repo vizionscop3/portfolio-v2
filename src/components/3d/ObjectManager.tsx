@@ -7,7 +7,7 @@ import {
   DigitalCodex,
   HolographicComputer,
   NeonWardrobePod,
-} from './cyberpunk';
+} from './cyberpunk/index';
 import { ObjectDefinition, useInteractiveStore } from './store';
 
 interface ObjectManagerProps {
