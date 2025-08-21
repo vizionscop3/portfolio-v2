@@ -1,123 +1,166 @@
-import React from 'react';
+import { FashionCollection, FashionItem } from '@/types';
+import React, { useCallback, useState } from 'react';
+import { FashionGallery } from './FashionGallery';
 
 export const FashionSection: React.FC = () => {
-  const collections = [
+  const [selectedCollection, setSelectedCollection] = useState<string>('all');
+
+  // Sample fashion data - in a real app, this would come from an API or CMS
+  const collections: FashionCollection[] = [
     {
+      id: 'cyberpunk',
       title: 'Cyberpunk Essentials',
       description: 'Futuristic streetwear meets functional design',
-      items: 8,
       featured: true,
+      items: [
+        {
+          id: 'holo-jacket',
+          name: 'Holographic Jacket',
+          description:
+            'Iridescent material that shifts colors in different lighting conditions. Features integrated LED strips and responsive fabric technology.',
+          category: 'Outerwear',
+          imageUrl:
+            'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop',
+          tags: ['holographic', 'LED', 'futuristic'],
+          year: '2024',
+          featured: true,
+        },
+        {
+          id: 'led-hoodie',
+          name: 'LED Strip Hoodie',
+          description:
+            'Programmable LED strips integrated seamlessly into the fabric. Customizable patterns and colors via mobile app.',
+          category: 'Streetwear',
+          imageUrl:
+            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&h=600&fit=crop',
+          tags: ['LED', 'programmable', 'streetwear'],
+          year: '2024',
+          featured: true,
+        },
+        {
+          id: 'cyber-goggles',
+          name: 'Cyber Goggles',
+          description:
+            'Augmented reality ready eyewear with built-in displays and gesture controls. Perfect for the digital nomad.',
+          category: 'Accessories',
+          imageUrl:
+            'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&h=600&fit=crop',
+          tags: ['AR', 'wearable tech', 'accessories'],
+          year: '2024',
+          featured: false,
+        },
+      ],
     },
     {
+      id: 'neon-nights',
       title: 'Neon Nights',
       description: 'Glow-in-the-dark accessories and statement pieces',
-      items: 12,
       featured: false,
+      items: [
+        {
+          id: 'glow-sneakers',
+          name: 'Reactive Glow Sneakers',
+          description:
+            'Motion-activated glow technology that responds to your movement. Perfect for night events and festivals.',
+          category: 'Footwear',
+          imageUrl:
+            'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&h=600&fit=crop',
+          tags: ['glow', 'reactive', 'footwear'],
+          year: '2023',
+          featured: true,
+        },
+        {
+          id: 'neon-backpack',
+          name: 'Electro Backpack',
+          description:
+            'Solar-powered LED backpack with customizable display panel. Charge your devices while making a statement.',
+          category: 'Accessories',
+          imageUrl:
+            'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&h=600&fit=crop',
+          tags: ['solar', 'LED', 'functional'],
+          year: '2023',
+          featured: false,
+        },
+      ],
     },
     {
+      id: 'tech-wear',
       title: 'Tech Wear',
       description: 'Functional fashion for the digital age',
-      items: 6,
       featured: false,
+      items: [
+        {
+          id: 'smart-fabric-tee',
+          name: 'Smart Fabric Tee',
+          description:
+            'Temperature-regulating fabric with moisture-wicking properties. Embedded sensors monitor health metrics.',
+          category: 'Basics',
+          imageUrl:
+            'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=600&fit=crop',
+          tags: ['smart fabric', 'health tech', 'basics'],
+          year: '2024',
+          featured: false,
+        },
+      ],
     },
   ];
 
-  const featuredItems = [
-    {
-      name: 'Holographic Jacket',
-      price: '$299',
-      description:
-        'Iridescent material that shifts colors in different lighting',
-    },
-    {
-      name: 'LED Strip Hoodie',
-      price: '$199',
-      description: 'Programmable LED strips integrated into the design',
-    },
-    {
-      name: 'Cyber Goggles',
-      price: '$149',
-      description: 'Augmented reality ready with built-in displays',
-    },
-  ];
+  // Flatten all items for filtering
+  const allItems = collections.flatMap(collection => collection.items);
+
+  const filteredItems =
+    selectedCollection === 'all'
+      ? allItems
+      : collections.find(c => c.id === selectedCollection)?.items || [];
+
+  const handleItemSelect = useCallback((item: FashionItem) => {
+    // Optional: Add analytics or other side effects when an item is selected
+    console.log('Fashion item selected:', item.name);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black text-white p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-mono text-cyan-400 mb-8">
-          Fashion Forward
-        </h1>
+      <div className="max-w-7xl mx-auto">
+        <div className="animate-fade-in">
+          <h1 className="text-4xl font-mono text-cyan-400 mb-8">
+            Fashion Forward
+          </h1>
 
-        <p className="text-lg text-cyan-300 mb-12">
-          Where technology meets style. Curated collections that blur the line
-          between fashion and function.
-        </p>
+          <p className="text-lg text-cyan-300 mb-12">
+            Where technology meets style. Curated collections that blur the line
+            between fashion and function.
+          </p>
+        </div>
 
-        {/* Collections Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-          {collections.map((collection, index) => (
-            <div
-              key={index}
-              className={`border p-6 bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-300 cursor-pointer ${
-                collection.featured ? 'border-cyan-400' : 'border-magenta-500'
+        {/* Collection Filter */}
+        <div className="flex flex-wrap gap-4 mb-8 animate-fade-in">
+          <button
+            onClick={() => setSelectedCollection('all')}
+            className={`px-4 py-2 font-mono text-sm border transition-all duration-300 ${
+              selectedCollection === 'all'
+                ? 'border-cyan-400 bg-cyan-400 text-black'
+                : 'border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black'
+            }`}
+          >
+            ALL COLLECTIONS
+          </button>
+          {collections.map(collection => (
+            <button
+              key={collection.id}
+              onClick={() => setSelectedCollection(collection.id)}
+              className={`px-4 py-2 font-mono text-sm border transition-all duration-300 ${
+                selectedCollection === collection.id
+                  ? 'border-magenta-400 bg-magenta-400 text-black'
+                  : 'border-magenta-400 text-magenta-400 hover:bg-magenta-400 hover:text-black'
               }`}
             >
-              {collection.featured && (
-                <div className="text-xs font-mono text-cyan-400 mb-2">
-                  FEATURED
-                </div>
-              )}
-              <h2 className="text-xl font-mono text-cyan-300 mb-2">
-                {collection.title}
-              </h2>
-              <p className="text-gray-300 mb-4">{collection.description}</p>
-              <div className="text-sm text-magenta-400">
-                {collection.items} items
-              </div>
-            </div>
+              {collection.title.toUpperCase()}
+            </button>
           ))}
         </div>
 
-        {/* Featured Items */}
-        <h2 className="text-3xl font-mono text-cyan-400 mb-6">
-          Featured Items
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {featuredItems.map((item, index) => (
-            <div
-              key={index}
-              className="border border-magenta-500 bg-black bg-opacity-30 overflow-hidden hover:bg-opacity-50 transition-all duration-300"
-            >
-              {/* Placeholder for item image */}
-              <div className="h-64 bg-gradient-to-br from-cyan-900 to-magenta-900 flex items-center justify-center">
-                <div className="text-cyan-400 font-mono text-sm">
-                  IMAGE PLACEHOLDER
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-lg font-mono text-cyan-300">
-                    {item.name}
-                  </h3>
-                  <span className="text-magenta-400 font-mono">
-                    {item.price}
-                  </span>
-                </div>
-                <p className="text-gray-300 text-sm mb-4">{item.description}</p>
-                <button className="w-full border border-cyan-400 text-cyan-400 font-mono py-2 hover:bg-cyan-400 hover:text-black transition-all duration-300">
-                  VIEW DETAILS
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <button className="border border-cyan-400 text-cyan-400 font-mono px-8 py-3 hover:bg-cyan-400 hover:text-black transition-all duration-300">
-            EXPLORE ALL COLLECTIONS
-          </button>
-        </div>
+        {/* Fashion Gallery with Enhanced Features */}
+        <FashionGallery items={filteredItems} onItemSelect={handleItemSelect} />
       </div>
     </div>
   );
