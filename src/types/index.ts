@@ -62,6 +62,75 @@ export interface PortfolioData {
 
 export type SectionId = 'about' | 'tech' | 'blog' | 'fashion' | 'merch';
 
+export interface FashionItem {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  imageUrl: string;
+  tags: string[];
+  year: string;
+  featured: boolean;
+}
+
+export interface FashionCollection {
+  id: string;
+  title: string;
+  description: string;
+  items: FashionItem[];
+  featured: boolean;
+}
+
+export interface MerchProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  category: string;
+  imageUrl: string;
+  images: string[];
+  tags: string[];
+  inStock: boolean;
+  stock?: number;
+  sizes?: string[];
+  colors?: string[];
+  featured: boolean;
+  specifications?: Record<string, string>;
+  slug: string;
+}
+
+export interface CartItem {
+  product: MerchProduct;
+  quantity: number;
+  selectedSize?: string;
+  selectedColor?: string;
+}
+
+export interface ShippingAddress {
+  fullName: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
+export interface Order {
+  id: string;
+  items: CartItem[];
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  currency: string;
+  shippingAddress: ShippingAddress;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  orderDate: string;
+  trackingNumber?: string;
+}
+
 export interface ErrorInfo {
   message: string;
   stack?: string;
