@@ -1,5 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { NavigationOverlay, PortfolioRouter } from './components/routing';
+import { PerformanceMonitor } from './components/performance';
 import './styles/index.css';
 import { ErrorBoundary, setupGlobalErrorHandlers } from './utils/errorHandling';
 
@@ -13,6 +14,7 @@ function App() {
         <div className="relative">
           <PortfolioRouter />
           <NavigationOverlay />
+          <PerformanceMonitor position="top-right" showRecommendations={true} />
         </div>
       </BrowserRouter>
     </ErrorBoundary>

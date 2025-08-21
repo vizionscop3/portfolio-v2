@@ -28,7 +28,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     );
 
     // Code blocks
-    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (_match, lang, code) => {
       const language = lang || 'text';
       return `<div class="bg-gray-900 rounded-lg p-4 my-6 overflow-x-auto">
         <div class="text-gray-400 text-sm mb-2">${language}</div>

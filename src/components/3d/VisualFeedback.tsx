@@ -143,8 +143,8 @@ export const RippleEffect: React.FC<RippleEffectProps> = ({
     // Fade opacity based on scale
     const opacity = 1 - scale / maxRadius;
     if (ringRef.current.children[0]) {
-      const material = (ringRef.current.children[0] as unknown)?.material;
-      if (material) {
+      const material = (ringRef.current.children[0] as any)?.material;
+      if (material && 'opacity' in material) {
         material.opacity = opacity * intensity;
       }
     }

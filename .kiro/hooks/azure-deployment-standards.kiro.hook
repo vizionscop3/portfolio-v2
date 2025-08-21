@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Azure Deployment Standards",
+  "description": "Monitors deployment-related files and ensures professional standard deployment protocols are followed for Azure subscription c6065296-91e7-45f3-a774-908e2225b4d0",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "azure-deploy.ps1",
+      "AZURE_DEPLOYMENT.md",
+      "staticwebapp.config.json",
+      "package.json",
+      "vite.config.ts",
+      ".env.example"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the deployment configuration changes and ensure they follow professional standards for Azure deployment to subscription c6065296-91e7-45f3-a774-908e2225b4d0. Check for: 1) Proper environment variable handling, 2) Security best practices, 3) Build optimization settings, 4) Static web app configuration compliance, 5) Deployment script safety and error handling. Provide specific recommendations for any issues found."
+  }
+}
