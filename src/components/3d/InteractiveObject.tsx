@@ -4,6 +4,7 @@ import { Group, Vector3 } from 'three';
 import { HoverEffects, PulseEffect, RippleEffect, VisualFeedback } from '.';
 import { useInteractiveStore } from './store';
 import { InteractiveObjectProps, ObjectState } from './types';
+import { useKeyboardAccessibility } from '../accessibility/KeyboardAccessibilityProvider';
 
 export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   id,
@@ -27,6 +28,49 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   });
 
   const { setHoveredObject, setTooltip } = useInteractiveStore();
+  const { registerObject, unregisterObject, updateObject, currentFocus } =
+    useKeyboardAccessibility();
+
+  // Check if this object is currently focused via keyboard
+  const isKeyboardFocused = currentFocus === id;
+
+  // Register object with keyboard navigation system
+  useEffect(() => {
+    registerObject({
+      id,
+      position: { x: position.x, y: position.y, z: position.z },
+      section: _section,
+      tooltip,
+      priority: 1,
+      isVisible: true,
+      isInteractable: true,
+      ariaLabel: tooltip,
+      ariaDescription: `Navigate to ${_section} section. ${tooltip}`,
+    });
+
+    return () => {
+      unregisterObject(id);
+    };
+  }, [
+    id,
+    position.x,
+    position.y,
+    position.z,
+    _section,
+    tooltip,
+    registerObject,
+    unregisterObject,
+  ]);
+
+  // Update object properties when they change
+  useEffect(() => {
+    updateObject(id, {
+      position: { x: position.x, y: position.y, z: position.z },
+      tooltip,
+      isVisible: true,
+      isInteractable: true,
+    });
+  }, [id, position.x, position.y, position.z, tooltip, updateObject]);
 
   // Pass ref to parent for LOD system registration
   useEffect(() => {
@@ -113,8 +157,11 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   useFrame((_state, delta) => {
     if (!groupRef.current) return;
 
+    // Check if object should show as active (hovered or keyboard focused)
+    const isActive = objectState.isHovered || isKeyboardFocused;
+
     // Animate glow intensity
-    const targetGlow = objectState.isHovered ? 1 : 0;
+    const targetGlow = isActive ? 1 : 0;
     setObjectState(prev => ({
       ...prev,
       glowIntensity:
@@ -122,11 +169,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
     }));
 
     // Animate scale for hover effect
-    const targetScale = objectState.isHovered
-      ? 1.05
-      : objectState.isClicked
-        ? 0.95
-        : 1;
+    const targetScale = isActive ? 1.05 : objectState.isClicked ? 0.95 : 1;
     setObjectState(prev => ({
       ...prev,
       scale: prev.scale + (targetScale - prev.scale) * delta * 10,
@@ -147,36 +190,36 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
       onClick={handleClick}
     >
       <HoverEffects
-        isHovered={objectState.isHovered}
+        isHovered={objectState.isHovered || isKeyboardFocused}
         glowIntensity={objectState.glowIntensity}
         scaleMultiplier={1.05}
         rotationSpeed={0.3}
-        glowColor="#00FFFF"
+        glowColor={isKeyboardFocused ? '#FF00FF' : '#00FFFF'} // Magenta for keyboard focus
       >
         {children}
       </HoverEffects>
 
       {/* Advanced visual feedback effects */}
       <VisualFeedback
-        isActive={objectState.isHovered}
+        isActive={objectState.isHovered || isKeyboardFocused}
         intensity={objectState.glowIntensity}
-        color="#00FFFF"
-        particleCount={30}
+        color={isKeyboardFocused ? '#FF00FF' : '#00FFFF'} // Different color for keyboard focus
+        particleCount={isKeyboardFocused ? 50 : 30} // More particles for keyboard focus
         radius={1.5}
       />
 
       <RippleEffect
         isActive={objectState.isClicked}
         intensity={1}
-        color="#00FFFF"
+        color={isKeyboardFocused ? '#FF00FF' : '#00FFFF'}
         maxRadius={2}
       />
 
       <PulseEffect
-        isActive={objectState.isHovered}
+        isActive={objectState.isHovered || isKeyboardFocused}
         intensity={objectState.glowIntensity}
-        color="#00FFFF"
-        pulseSpeed={2}
+        color={isKeyboardFocused ? '#FF00FF' : '#00FFFF'}
+        pulseSpeed={isKeyboardFocused ? 3 : 2} // Faster pulse for keyboard focus
       />
     </group>
   );

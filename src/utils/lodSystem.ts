@@ -120,9 +120,8 @@ export class LODSystem {
     this.updateFrustum();
 
     // Update each registered object's LOD
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const [_, config] of this.configurations) {
-      this.updateObjectLOD(_, config);
+    for (const [objectId, config] of this.configurations) {
+      this.updateObjectLOD(objectId, config);
     }
 
     // Update performance-based optimizations
