@@ -20,6 +20,26 @@ export interface BlogCategory {
   description: string;
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  publishedAt: string;
+  readingTime: number;
+  category: string;
+  tags: string[];
+  featured: boolean;
+  slug: string;
+}
+
+export interface BlogFilters {
+  category?: string;
+  tag?: string;
+  search?: string;
+}
+
 export interface SocialLink {
   name: string;
   url: string;

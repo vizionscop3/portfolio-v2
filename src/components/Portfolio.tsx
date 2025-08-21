@@ -6,7 +6,6 @@ import {
   Linkedin,
   Mail,
   Menu,
-  Music,
   Palette,
   ShoppingBag,
   Twitter,
@@ -18,10 +17,11 @@ import { Project, SectionId } from '../types';
 import { cache } from '../utils/cache';
 import { useErrorHandler } from '../utils/errorHandling';
 import {
-  logger,
   PerformanceMonitor,
+  logger,
   trackUserInteraction,
 } from '../utils/logger';
+import { BlogSection } from './sections';
 
 const Portfolio: React.FC = () => {
   const [activeSection, setActiveSection] = useState<SectionId>('about');
@@ -74,8 +74,6 @@ const Portfolio: React.FC = () => {
 
     return projects;
   };
-
-  const blogCategories = ['Poetry', 'Music', 'Art'];
 
   const handleSectionChange = (sectionId: SectionId) => {
     try {
@@ -259,56 +257,7 @@ const Portfolio: React.FC = () => {
           );
 
         case 'blog':
-          return (
-            <div className="space-y-8">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Creative Blog
-                </h2>
-                <p className="text-gray-600 mb-8">
-                  Exploring the intersection of technology and creativity
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                {blogCategories.map(category => (
-                  <div
-                    key={category}
-                    className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow cursor-pointer"
-                  >
-                    <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                      {category === 'Poetry' && (
-                        <FileText className="text-white" size={24} />
-                      )}
-                      {category === 'Music' && (
-                        <Music className="text-white" size={24} />
-                      )}
-                      {category === 'Art' && (
-                        <Palette className="text-white" size={24} />
-                      )}
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">{category}</h3>
-                    <p className="text-gray-600">Coming Soon</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-center bg-gray-50 rounded-lg p-8">
-                <h3 className="text-xl font-semibold mb-4">Blog Coming Soon</h3>
-                <p className="text-gray-600">
-                  I'm currently working on creating meaningful content across
-                  poetry, music, and art. Subscribe to be notified when new
-                  posts are available!
-                </p>
-                <button
-                  className="mt-4 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-                  onClick={() => trackUserInteraction('blog_subscribe_click')}
-                >
-                  Subscribe for Updates
-                </button>
-              </div>
-            </div>
-          );
+          return <BlogSection />;
 
         case 'fashion':
           return (
@@ -404,6 +353,7 @@ const Portfolio: React.FC = () => {
                 return (
                   <button
                     key={item.id}
+                    data-testid={`nav-${item.id}-button`}
                     onClick={() => handleSectionChange(item.id)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
                       activeSection === item.id
