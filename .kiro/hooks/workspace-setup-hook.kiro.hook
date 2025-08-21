@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "Professional Workspace Setup",
+  "description": "Automatically configures a professional development environment with proper tooling, linting, formatting, testing setup, and project structure when new projects are initialized",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "package.json",
+      ".gitignore",
+      "README.md",
+      "tsconfig.json",
+      "vite.config.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A new project has been detected. Please set up a professional workspace environment by:\n\n1. Verify and configure essential development tools (ESLint, Prettier, TypeScript, testing framework)\n2. Set up proper project structure with organized directories (src/, tests/, public/, etc.)\n3. Configure build tools and development scripts for optimal workflow\n4. Ensure proper Git hooks and pre-commit checks are in place\n5. Set up environment configuration files (.env.example, etc.)\n6. Configure path aliases and import organization\n7. Add comprehensive README with setup instructions\n8. Verify all dependencies are properly installed and configured\n\nFocus on creating a maintainable, scalable, and professional development environment that follows industry best practices."
+  }
+}

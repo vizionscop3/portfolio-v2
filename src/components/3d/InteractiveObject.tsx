@@ -1,5 +1,5 @@
 import { useFrame, useThree } from '@react-three/fiber';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Group, Vector3 } from 'three';
 import { HoverEffects, PulseEffect, RippleEffect, VisualFeedback } from '.';
 import { useInteractiveStore } from './store';
@@ -15,6 +15,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   children,
   onClick,
   onHover,
+  onRef,
 }) => {
   const groupRef = useRef<Group>(null);
   const { camera, gl } = useThree();
@@ -26,6 +27,18 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   });
 
   const { setHoveredObject, setTooltip } = useInteractiveStore();
+
+  // Pass ref to parent for LOD system registration
+  useEffect(() => {
+    if (onRef && groupRef.current) {
+      onRef(groupRef.current);
+    }
+    return () => {
+      if (onRef) {
+        onRef(null);
+      }
+    };
+  }, [onRef]);
 
   // Convert screen coordinates to world coordinates for tooltip positioning
   const getScreenPosition = useCallback(

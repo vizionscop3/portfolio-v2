@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { Euler, Vector3 } from 'three';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { Euler, Vector3, Object3D } from 'three';
 import { InteractiveObject } from './InteractiveObject';
 import { PlacementConstraints, PositioningUtils } from './PositioningUtils';
 import {
@@ -9,6 +9,12 @@ import {
   NeonWardrobePod,
 } from './cyberpunk/index';
 import { ObjectDefinition, useInteractiveStore } from './store';
+import { useLODSystem } from '../../hooks/useLODSystem';
+import {
+  createAllLODConfigurations,
+  adjustLODForPerformance
+} from '../../utils/lodConfigurations';
+import { usePerformanceMonitor } from '../../hooks/usePerformanceMonitor';
 
 interface ObjectManagerProps {
   children?: React.ReactNode;
@@ -21,6 +27,11 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
 }) => {
   const { objects, objectStates, placements, addObject, getVisibleObjects } =
     useInteractiveStore();
+  
+  // LOD System integration
+  const { registerObject } = useLODSystem();
+  const { mode: currentPerformanceMode } = usePerformanceMonitor();
+  const objectRefsMap = useRef<Map<string, Object3D>>(new Map());
 
   const initializeDefaultObjects = useCallback(() => {
     const defaultObjects: ObjectDefinition[] = [
@@ -121,6 +132,41 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
     initializeDefaultObjects();
   }, [initializeDefaultObjects]);
 
+  // Register objects with LOD system when refs are available
+  useEffect(() => {
+    if (objectRefsMap.current.size === 0) return;
+
+    const models = {
+      holographicComputer: objectRefsMap.current.get('desk-computer'),
+      digitalCodex: objectRefsMap.current.get('bed-book'),
+      neonWardrobePod: objectRefsMap.current.get('closet-main'),
+      holographicMerchDisplay: objectRefsMap.current.get('shelf-merch'),
+      audioEngineeringStation: objectRefsMap.current.get('desk-headphones')
+    };
+
+    // Create and register LOD configurations
+    const lodConfigurations = createAllLODConfigurations(models);
+    
+    lodConfigurations.forEach(config => {
+      try {
+        // Adjust configuration based on current performance
+        const adjustedConfig = adjustLODForPerformance(config, currentPerformanceMode);
+        registerObject(adjustedConfig);
+      } catch (error) {
+        console.warn(`Failed to register LOD for ${config.objectId}:`, error);
+      }
+    });
+  }, [registerObject, currentPerformanceMode]);
+
+  // Callback to register object refs for LOD system
+  const handleObjectRef = useCallback((objectId: string, ref: Object3D | null) => {
+    if (ref) {
+      objectRefsMap.current.set(objectId, ref);
+    } else {
+      objectRefsMap.current.delete(objectId);
+    }
+  }, []);
+
   const getSurfacesForObjectType = (
     type: ObjectDefinition['type']
   ): string[] => {
@@ -180,6 +226,7 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
             section={object.section}
             onClick={() => handleObjectClick(object.id)}
             onHover={hovered => handleObjectHover(object.id, hovered)}
+            onRef={ref => handleObjectRef(object.id, ref)}
           >
             {/* Render cyberpunk objects based on type */}
             {object.type === 'computer' ? (

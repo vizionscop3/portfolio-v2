@@ -3,7 +3,7 @@ import { NavigationOverlay, PortfolioRouter } from './components/routing';
 import { PerformanceMonitor } from './components/performance';
 import { AssetPreloader } from './components/loading';
 import './styles/index.css';
-import { ErrorBoundary, setupGlobalErrorHandlers } from './utils/errorHandling';
+import { ErrorBoundary, setupGlobalErrorHandlers } from './utils/errorHandling.tsx';
 // Portfolio assets are automatically initialized in assetRegistry
 
 // Set up global error handlers on app initialization

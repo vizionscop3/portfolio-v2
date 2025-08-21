@@ -1,4 +1,4 @@
-import { Euler, Vector3 } from 'three';
+import { Euler, Vector3, Object3D } from 'three';
 
 export interface InteractiveObjectProps {
   id: string;
@@ -10,6 +10,7 @@ export interface InteractiveObjectProps {
   children: React.ReactNode;
   onClick?: () => void;
   onHover?: (hovered: boolean) => void;
+  onRef?: (ref: Object3D | null) => void;
 }
 
 export interface ObjectState {

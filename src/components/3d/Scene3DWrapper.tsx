@@ -46,7 +46,17 @@ export const Scene3DWrapper: React.FC<Scene3DWrapperProps> = ({
     [startTransition, navigate, location.pathname]
   );
 
-  return <Scene3D className={className} onObjectClick={handleObjectClick} />;
+  // Enable LOD debugging in development mode
+  const enableLODDebug = process.env.NODE_ENV === 'development';
+
+  return (
+    <Scene3D
+      className={className}
+      onObjectClick={handleObjectClick}
+      enableLODDebug={enableLODDebug}
+      performanceThreshold={45}
+    />
+  );
 };
 
 export default Scene3DWrapper;

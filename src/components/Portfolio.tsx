@@ -15,7 +15,7 @@ import {
 import React, { useState } from 'react';
 import { Project, SectionId } from '../types';
 import { cache } from '../utils/cache';
-import { useErrorHandler } from '../utils/errorHandling';
+import { useErrorHandler } from '../utils/errorHandling.tsx';
 import {
   PerformanceMonitor,
   logger,
