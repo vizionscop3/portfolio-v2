@@ -97,7 +97,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   }, [onClick]);
 
   // Animation frame for smooth hover effects
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (!groupRef.current) return;
 
     // Animate glow intensity
@@ -138,7 +138,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
         glowIntensity={objectState.glowIntensity}
         scaleMultiplier={1.05}
         rotationSpeed={0.3}
-        glowColor="#4ade80"
+        glowColor="#00FFFF"
       >
         {children}
       </HoverEffects>
@@ -147,7 +147,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
       <VisualFeedback
         isActive={objectState.isHovered}
         intensity={objectState.glowIntensity}
-        color="#4ade80"
+        color="#00FFFF"
         particleCount={30}
         radius={1.5}
       />
@@ -155,14 +155,14 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
       <RippleEffect
         isActive={objectState.isClicked}
         intensity={1}
-        color="#4ade80"
+        color="#00FFFF"
         maxRadius={2}
       />
 
       <PulseEffect
         isActive={objectState.isHovered}
         intensity={objectState.glowIntensity}
-        color="#4ade80"
+        color="#00FFFF"
         pulseSpeed={2}
       />
     </group>

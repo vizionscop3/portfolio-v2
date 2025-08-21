@@ -1,7 +1,14 @@
 import { Points } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import React, { useMemo, useRef } from 'react';
-import { BufferAttribute, BufferGeometry, Color, Group } from 'three';
+import {
+  BufferAttribute,
+  BufferGeometry,
+  Color,
+  Group,
+  Mesh,
+  MeshBasicMaterial,
+} from 'three';
 
 interface VisualFeedbackProps {
   isActive: boolean;
@@ -18,7 +25,7 @@ export const VisualFeedback: React.FC<VisualFeedbackProps> = ({
   particleCount = 50,
   radius = 2,
 }) => {
-  const pointsRef = useRef<Points>(null);
+  const pointsRef = useRef<ThreePoints>(null);
   const groupRef = useRef<Group>(null);
 
   // Create particle geometry
@@ -87,12 +94,14 @@ export const VisualFeedback: React.FC<VisualFeedbackProps> = ({
             count={particleCount}
             array={positions}
             itemSize={3}
+            args={[positions, 3]}
           />
           <bufferAttribute
             attach="attributes-color"
             count={particleCount}
             array={colors}
             itemSize={3}
+            args={[colors, 3]}
           />
         </bufferGeometry>
         <pointsMaterial
@@ -134,9 +143,7 @@ export const RippleEffect: React.FC<RippleEffectProps> = ({
     // Fade opacity based on scale
     const opacity = 1 - scale / maxRadius;
     if (ringRef.current.children[0]) {
-      const material = (
-        ringRef.current.children[0] as { material: { opacity: number } }
-      ).material;
+      const material = (ringRef.current.children[0] as unknown).material;
       if (material) {
         material.opacity = opacity * intensity;
       }
@@ -186,9 +193,8 @@ export const PulseEffect: React.FC<PulseEffectProps> = ({
 
     // Update material opacity
     if (sphereRef.current.children[0]) {
-      const material = (
-        sphereRef.current.children[0] as { material: { opacity: number } }
-      ).material;
+      const mesh = sphereRef.current.children[0] as Mesh;
+      const material = mesh.material as MeshBasicMaterial;
       if (material) {
         material.opacity = pulse * intensity * 0.5;
       }

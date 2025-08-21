@@ -1,5 +1,4 @@
 import { useFrame } from '@react-three/fiber';
-import { motion } from 'framer-motion-3d';
 import React, { useMemo, useRef } from 'react';
 import { Color, Group } from 'three';
 
@@ -26,10 +25,19 @@ export const HoverEffects: React.FC<HoverEffectsProps> = ({
   // Create glow color
   const color = useMemo(() => new Color(glowColor), [glowColor]);
 
-  // Animate rotation on hover
+  // Animate rotation and scale on hover
   useFrame((state, delta) => {
-    if (groupRef.current && isHovered && rotationSpeed > 0) {
-      groupRef.current.rotation.y += delta * rotationSpeed;
+    if (groupRef.current) {
+      // Rotation animation
+      if (isHovered && rotationSpeed > 0) {
+        groupRef.current.rotation.y += delta * rotationSpeed;
+      }
+
+      // Scale animation
+      const targetScale = isHovered ? scaleMultiplier : 1;
+      const currentScale = groupRef.current.scale.x;
+      const newScale = currentScale + (targetScale - currentScale) * delta * 8;
+      groupRef.current.scale.setScalar(newScale);
     }
 
     // Animate glow pulsing
@@ -40,17 +48,7 @@ export const HoverEffects: React.FC<HoverEffectsProps> = ({
   });
 
   return (
-    <motion.group
-      ref={groupRef}
-      animate={{
-        scale: isHovered ? scaleMultiplier : 1,
-      }}
-      transition={{
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
-      }}
-    >
+    <group ref={groupRef}>
       {children}
 
       {/* Glow effect */}
@@ -67,6 +65,6 @@ export const HoverEffects: React.FC<HoverEffectsProps> = ({
           </mesh>
         </group>
       )}
-    </motion.group>
+    </group>
   );
 };

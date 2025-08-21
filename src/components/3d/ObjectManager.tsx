@@ -2,20 +2,25 @@ import React, { useCallback, useEffect } from 'react';
 import { Euler, Vector3 } from 'three';
 import { InteractiveObject } from './InteractiveObject';
 import { PlacementConstraints, PositioningUtils } from './PositioningUtils';
+import {
+  AudioEngineeringStation,
+  DigitalCodex,
+  HolographicComputer,
+  NeonWardrobePod,
+} from './cyberpunk';
 import { ObjectDefinition, useInteractiveStore } from './store';
 
 interface ObjectManagerProps {
   children?: React.ReactNode;
+  onObjectClick?: (section: string) => void;
 }
 
-export const ObjectManager: React.FC<ObjectManagerProps> = ({ children }) => {
+export const ObjectManager: React.FC<ObjectManagerProps> = ({
+  children,
+  onObjectClick,
+}) => {
   const { objects, objectStates, placements, addObject, getVisibleObjects } =
     useInteractiveStore();
-
-  // Initialize default objects for the portfolio
-  useEffect(() => {
-    initializeDefaultObjects();
-  }, [initializeDefaultObjects]);
 
   const initializeDefaultObjects = useCallback(() => {
     const defaultObjects: ObjectDefinition[] = [
@@ -111,6 +116,11 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({ children }) => {
     });
   }, [addObject, objects]);
 
+  // Initialize default objects for the portfolio
+  useEffect(() => {
+    initializeDefaultObjects();
+  }, [initializeDefaultObjects]);
+
   const getSurfacesForObjectType = (
     type: ObjectDefinition['type']
   ): string[] => {
@@ -133,13 +143,11 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({ children }) => {
   const handleObjectClick = useCallback(
     (objectId: string) => {
       const object = objects.get(objectId);
-      if (object) {
-        // Navigate to the section
-        // TODO: Implement actual navigation logic
-        // console.log(`Navigating to ${object.section} section`);
+      if (object && onObjectClick) {
+        onObjectClick(object.section);
       }
     },
-    [objects]
+    [objects, onObjectClick]
   );
 
   const handleObjectHover = useCallback(
@@ -173,15 +181,42 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({ children }) => {
             onClick={() => handleObjectClick(object.id)}
             onHover={hovered => handleObjectHover(object.id, hovered)}
           >
-            {/* Render placeholder geometry - will be replaced with actual 3D models */}
-            <mesh>
-              <boxGeometry args={[1, 1, 1]} />
-              <meshStandardMaterial
-                color={getColorForObjectType(object.type)}
-                transparent
-                opacity={0.8}
+            {/* Render cyberpunk objects based on type */}
+            {object.type === 'computer' ? (
+              <HolographicComputer
+                position={[0, 0, 0]}
+                scale={1}
+                isActive={state?.isHovered || false}
               />
-            </mesh>
+            ) : object.type === 'book' ? (
+              <DigitalCodex
+                position={[0, 0, 0]}
+                scale={1}
+                isActive={state?.isHovered || false}
+              />
+            ) : object.type === 'closet' ? (
+              <NeonWardrobePod
+                position={[0, 0, 0]}
+                scale={1}
+                isActive={state?.isHovered || false}
+              />
+            ) : object.type === 'personal' ? (
+              <AudioEngineeringStation
+                position={[0, 0, 0]}
+                scale={1}
+                isActive={state?.isHovered || false}
+              />
+            ) : (
+              /* Placeholder geometry for merchandise and other object types */
+              <mesh>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial
+                  color={getColorForObjectType(object.type)}
+                  transparent
+                  opacity={0.8}
+                />
+              </mesh>
+            )}
           </InteractiveObject>
         );
       })}

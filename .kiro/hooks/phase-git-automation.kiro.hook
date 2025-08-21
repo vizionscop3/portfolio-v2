@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Phase Git Automation",
+  "description": "create Github workflow to do a code review of the completed Phases in \"task.md.\". Once completed branch, commit and push files when a development phase is completely implemented and review approved.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.tsx",
+      "src/**/*.ts",
+      "tests/**/*.tsx",
+      "tests/**/*.ts",
+      "package.json",
+      "README.md",
+      "*.md",
+      "task.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A development phase appears to be complete based on the file changes. Please review the current state of the implementation and if approved, create a new branch for this phase, commit all the changes with a descriptive commit message, and push the branch to the remote repository. Include details about what was implemented in this phase."
+  }
+}

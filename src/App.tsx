@@ -1,4 +1,5 @@
-import Portfolio from './components/Portfolio';
+import { BrowserRouter } from 'react-router-dom';
+import { NavigationOverlay, PortfolioRouter } from './components/routing';
 import './styles/index.css';
 import { ErrorBoundary, setupGlobalErrorHandlers } from './utils/errorHandling';
 
@@ -8,7 +9,12 @@ setupGlobalErrorHandlers();
 function App() {
   return (
     <ErrorBoundary>
-      <Portfolio />
+      <BrowserRouter>
+        <div className="relative">
+          <PortfolioRouter />
+          <NavigationOverlay />
+        </div>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }
