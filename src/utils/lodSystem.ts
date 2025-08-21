@@ -1,6 +1,6 @@
 /**
  * Level of Detail (LOD) System for 3D Portfolio
- * 
+ *
  * This system automatically adjusts model detail based on:
  * - Camera distance from objects
  * - Current performance metrics
@@ -49,7 +49,7 @@ export class LODSystem {
   private frustum: THREE.Frustum = new THREE.Frustum();
   private cameraMatrix: THREE.Matrix4 = new THREE.Matrix4();
   private tempVector: THREE.Vector3 = new THREE.Vector3();
-  private debugInfo: Map<string, any> = new Map();
+  private debugInfo: Map<string, Record<string, unknown>> = new Map();
   private options: LODSystemOptions;
   private currentQuality: 'high' | 'medium' | 'low' = 'high';
 
@@ -61,11 +61,11 @@ export class LODSystem {
       maxPolygons: 50000,
       enableDebugMode: false,
       updateFrequency: 100,
-      ...options
+      ...options,
     };
 
     this.performanceMonitor = performanceMonitor;
-    
+
     // Subscribe to performance changes for automatic optimization
     if (this.options.enableAutoOptimization) {
       this.setupPerformanceBasedOptimization();
@@ -86,15 +86,18 @@ export class LODSystem {
   public registerObject(config: LODConfiguration): void {
     // Validate configuration
     this.validateConfiguration(config);
-    
+
     // Set up LOD levels
     this.setupLODLevels(config);
-    
+
     // Store configuration
     this.configurations.set(config.objectId, config);
 
     if (this.options.enableDebugMode) {
-      console.log(`LOD: Registered object ${config.objectId} with ${config.levels.length} LOD levels`);
+      // eslint-disable-next-line no-console
+      console.log(
+        `LOD: Registered object ${config.objectId} with ${config.levels.length} LOD levels`
+      );
     }
   }
 
@@ -117,6 +120,7 @@ export class LODSystem {
     this.updateFrustum();
 
     // Update each registered object's LOD
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_, config] of this.configurations) {
       this.updateObjectLOD(_, config);
     }
@@ -148,6 +152,7 @@ export class LODSystem {
     let frustumCulled = 0;
     let occlusionCulled = 0;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_, config] of this.configurations) {
       const activeLevel = this.getActiveLODLevel(config);
       if (activeLevel?.visible) {
@@ -168,7 +173,7 @@ export class LODSystem {
       totalPolygons,
       currentQuality: this.currentQuality,
       frustumCulled,
-      occlusionCulled
+      occlusionCulled,
     };
   }
 
@@ -177,8 +182,9 @@ export class LODSystem {
    */
   public setQualityLevel(quality: 'high' | 'medium' | 'low'): void {
     this.currentQuality = quality;
-    
+
     // Update all objects to use the new quality level
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_, config] of this.configurations) {
       this.applyQualityBasedLOD(config, quality);
     }
@@ -187,7 +193,9 @@ export class LODSystem {
   /**
    * Get debug information for specific object
    */
-  public getObjectDebugInfo(objectId: string): any {
+  public getObjectDebugInfo(
+    objectId: string
+  ): Record<string, unknown> | undefined {
     return this.debugInfo.get(objectId);
   }
 
@@ -210,7 +218,9 @@ export class LODSystem {
     // Validate distance ordering
     for (let i = 1; i < config.levels.length; i++) {
       if (config.levels[i].distance <= config.levels[i - 1].distance) {
-        throw new Error(`Invalid LOD configuration: distances must be in ascending order for ${config.objectId}`);
+        throw new Error(
+          `Invalid LOD configuration: distances must be in ascending order for ${config.objectId}`
+        );
       }
     }
   }
@@ -219,11 +229,14 @@ export class LODSystem {
     // If no models are provided, generate simplified versions
     for (let i = 0; i < config.levels.length; i++) {
       const level = config.levels[i];
-      
+
       if (!level.model && !level.geometry) {
         // Generate simplified geometry based on level
-        const simplificationRatio = 1 - (i * 0.3); // 100%, 70%, 40%, etc.
-        level.geometry = this.createSimplifiedGeometry(config.baseModel, simplificationRatio);
+        const simplificationRatio = 1 - i * 0.3; // 100%, 70%, 40%, etc.
+        level.geometry = this.createSimplifiedGeometry(
+          config.baseModel,
+          simplificationRatio
+        );
         level.polygonCount = this.calculatePolygonCount(level.geometry);
       }
     }
@@ -232,13 +245,18 @@ export class LODSystem {
   private updateFrustum(): void {
     if (!this.camera) return;
 
-    this.cameraMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+    this.cameraMatrix.multiplyMatrices(
+      this.camera.projectionMatrix,
+      this.camera.matrixWorldInverse
+    );
     this.frustum.setFromProjectionMatrix(this.cameraMatrix);
   }
 
   private updateObjectLOD(_objectId: string, config: LODConfiguration): void {
     const distance = this.calculateDistance(config.baseModel);
-    const isInFrustum = config.enableFrustumCulling ? this.isObjectInFrustum(config.baseModel) : true;
+    const isInFrustum = config.enableFrustumCulling
+      ? this.isObjectInFrustum(config.baseModel)
+      : true;
     const screenSize = this.calculateScreenSize(config.baseModel);
 
     // Cull if too small on screen
@@ -268,9 +286,9 @@ export class LODSystem {
   private isObjectInFrustum(object: THREE.Object3D): boolean {
     // Use bounding sphere for fast frustum test
     let boundingSphere: THREE.Sphere | null = null;
-    
+
     // Try to find geometry in the object hierarchy
-    object.traverse((child) => {
+    object.traverse(child => {
       if (child instanceof THREE.Mesh && child.geometry && !boundingSphere) {
         child.geometry.computeBoundingSphere();
         const sphere = child.geometry.boundingSphere;
@@ -279,13 +297,16 @@ export class LODSystem {
         }
       }
     });
-    
+
     if (!boundingSphere) return true; // Assume visible if no geometry found
 
     // Transform bounding sphere to world space - use type assertion for safety
     try {
       const sphere = boundingSphere as THREE.Sphere;
-      const worldSphere = new THREE.Sphere(sphere.center.clone(), sphere.radius);
+      const worldSphere = new THREE.Sphere(
+        sphere.center.clone(),
+        sphere.radius
+      );
       worldSphere.applyMatrix4(object.matrixWorld);
       return this.frustum.intersectsSphere(worldSphere);
     } catch {
@@ -297,9 +318,9 @@ export class LODSystem {
     if (!this.camera) return 1000;
 
     let boundingSphere: THREE.Sphere | null = null;
-    
+
     // Try to find geometry in the object hierarchy
-    object.traverse((child) => {
+    object.traverse(child => {
       if (child instanceof THREE.Mesh && child.geometry && !boundingSphere) {
         child.geometry.computeBoundingSphere();
         const sphere = child.geometry.boundingSphere;
@@ -308,7 +329,7 @@ export class LODSystem {
         }
       }
     });
-    
+
     if (!boundingSphere) return 1000; // Default large size if no geometry
 
     const distance = this.calculateDistance(object);
@@ -318,7 +339,9 @@ export class LODSystem {
     // Calculate projected size - use type assertion for safety
     try {
       const sphere = boundingSphere as THREE.Sphere;
-      const projectedRadius = (sphere.radius * screenHeight) / (2 * distance * Math.tan((fov * Math.PI) / 360));
+      const projectedRadius =
+        (sphere.radius * screenHeight) /
+        (2 * distance * Math.tan((fov * Math.PI) / 360));
       return projectedRadius * 2;
     } catch {
       return 1000; // Default size if calculation fails
@@ -329,7 +352,7 @@ export class LODSystem {
     // Add hysteresis to prevent flickering
     const hysteresis = config.hysteresis || 5;
     const currentLevel = this.getActiveLODLevel(config);
-    
+
     let selectedLevel = config.levels[config.levels.length - 1]; // Default to lowest detail
 
     for (let i = 0; i < config.levels.length; i++) {
@@ -377,7 +400,10 @@ export class LODSystem {
     return config.levels.find(level => level.visible) || null;
   }
 
-  private setObjectVisibility(config: LODConfiguration, visible: boolean): void {
+  private setObjectVisibility(
+    config: LODConfiguration,
+    visible: boolean
+  ): void {
     config.baseModel.visible = visible;
     config.levels.forEach(level => {
       if (level.model) {
@@ -390,7 +416,7 @@ export class LODSystem {
     // Monitor performance and adjust LOD accordingly
     setInterval(() => {
       const fps = this.performanceMonitor.getAverageFps();
-      
+
       if (fps < this.options.performanceThreshold) {
         // Performance is poor, reduce quality
         if (this.currentQuality === 'high') {
@@ -411,7 +437,7 @@ export class LODSystem {
 
   private updatePerformanceBasedLOD(): void {
     const stats = this.getStatistics();
-    
+
     // If polygon count is too high, force lower quality
     if (stats.totalPolygons > this.options.maxPolygons) {
       if (this.currentQuality !== 'low') {
@@ -420,9 +446,12 @@ export class LODSystem {
     }
   }
 
-  private applyQualityBasedLOD(config: LODConfiguration, quality: 'high' | 'medium' | 'low'): void {
+  private applyQualityBasedLOD(
+    config: LODConfiguration,
+    quality: 'high' | 'medium' | 'low'
+  ): void {
     let targetIndex: number;
-    
+
     switch (quality) {
       case 'high':
         targetIndex = 0;
@@ -441,13 +470,16 @@ export class LODSystem {
     }
   }
 
-  private createSimplifiedGeometry(baseModel: THREE.Object3D, ratio: number): THREE.BufferGeometry {
+  private createSimplifiedGeometry(
+    baseModel: THREE.Object3D,
+    ratio: number
+  ): THREE.BufferGeometry {
     // This is a simplified implementation
     // In a real scenario, you'd use algorithms like QEM (Quadric Error Metrics) for mesh simplification
-    
+
     let baseGeometry: THREE.BufferGeometry | null = null;
-    
-    baseModel.traverse((child) => {
+
+    baseModel.traverse(child => {
       if (child instanceof THREE.Mesh && child.geometry) {
         baseGeometry = child.geometry;
         return;
@@ -458,15 +490,15 @@ export class LODSystem {
       return new THREE.BoxGeometry(1, 1, 1);
     }
 
-    // Simple decimation by removing vertices  
+    // Simple decimation by removing vertices
     const geometry = (baseGeometry as THREE.BufferGeometry).clone();
     const positions = geometry.attributes.position;
-    
+
     if (positions && ratio < 1) {
       const originalCount = positions.count;
       const targetCount = Math.floor(originalCount * ratio);
       const newPositions = new Float32Array(targetCount * 3);
-      
+
       const step = originalCount / targetCount;
       for (let i = 0; i < targetCount; i++) {
         const sourceIndex = Math.floor(i * step);
@@ -474,8 +506,11 @@ export class LODSystem {
         newPositions[i * 3 + 1] = positions.array[sourceIndex * 3 + 1];
         newPositions[i * 3 + 2] = positions.array[sourceIndex * 3 + 2];
       }
-      
-      geometry.setAttribute('position', new THREE.BufferAttribute(newPositions, 3));
+
+      geometry.setAttribute(
+        'position',
+        new THREE.BufferAttribute(newPositions, 3)
+      );
     }
 
     return geometry;
@@ -489,7 +524,10 @@ export class LODSystem {
     }
   }
 
-  private createModelFromLevel(level: LODLevel, _config: LODConfiguration): THREE.Object3D | null {
+  private createModelFromLevel(
+    level: LODLevel,
+    _config: LODConfiguration
+  ): THREE.Object3D | null {
     if (level.geometry) {
       const mesh = new THREE.Mesh(level.geometry, level.material);
       return mesh;
@@ -510,7 +548,7 @@ export class LODSystem {
         isInFrustum,
         screenSize,
         polygonCount: activeLevel?.polygonCount || 0,
-        isVisible: config.baseModel.visible
+        isVisible: config.baseModel.visible,
       });
     }
   }
@@ -519,7 +557,9 @@ export class LODSystem {
 // Singleton instance for global access
 let lodSystemInstance: LODSystem | null = null;
 
-export const getLODSystem = (options?: Partial<LODSystemOptions>): LODSystem => {
+export const getLODSystem = (
+  options?: Partial<LODSystemOptions>
+): LODSystem => {
   if (!lodSystemInstance) {
     lodSystemInstance = new LODSystem(options);
   }
