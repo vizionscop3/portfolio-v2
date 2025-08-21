@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTransitionStore } from '../3d/transitions';
 import Portfolio3D from '../Portfolio3D';
+import { useNavigationAccessibility } from '../../hooks/useAccessibility';
 import {
   AboutSection,
   BlogSection,
@@ -21,6 +22,7 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const { transitionState, startTransition } = useTransitionStore();
+  const { announceNavigation } = useNavigationAccessibility();
 
   // Map routes to section IDs
   const routeToSection = React.useMemo(
@@ -53,6 +55,10 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
     if (currentSection && transitionState.currentSection !== currentSection) {
       // Only start transition if we're not already transitioning to this section
       if (transitionState.targetSection !== currentSection) {
+        // Announce navigation for screen readers
+        const fromSection = transitionState.currentSection || 'home';
+        announceNavigation(fromSection, currentSection);
+
         startTransition(currentSection, {
           duration: 2.0,
           easing: 'easeInOut',
@@ -60,7 +66,13 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
         });
       }
     }
-  }, [location.pathname, transitionState, startTransition, routeToSection]);
+  }, [
+    location.pathname,
+    transitionState,
+    startTransition,
+    routeToSection,
+    announceNavigation,
+  ]);
 
   // Listen for 3D scene transitions and update URL
   useEffect(() => {

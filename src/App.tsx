@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { NavigationOverlay, PortfolioRouter } from './components/routing';
 import { PerformanceMonitor } from './components/performance';
 import { AssetPreloader } from './components/loading';
-import { KeyboardAccessibilityProvider } from './components/accessibility';
+import { AccessibilityProvider } from './components/accessibility';
 import './styles/index.css';
 import {
   ErrorBoundary,
@@ -27,7 +27,7 @@ function App() {
         minLoadingTime={1500}
       >
         <BrowserRouter>
-          <KeyboardAccessibilityProvider
+          <AccessibilityProvider
             onSectionNavigation={section => {
               // This will be handled by the PortfolioRouter
               window.location.hash = `#${section}`;
@@ -41,7 +41,7 @@ function App() {
                 showRecommendations={true}
               />
             </div>
-          </KeyboardAccessibilityProvider>
+          </AccessibilityProvider>
         </BrowserRouter>
       </AssetPreloader>
     </ErrorBoundary>

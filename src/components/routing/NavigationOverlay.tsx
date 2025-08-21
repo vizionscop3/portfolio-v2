@@ -2,6 +2,7 @@ import { SectionId } from '@/types';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTransitionStore } from '../3d/transitions';
+import { useNavigationAccessibility } from '../../hooks/useAccessibility';
 
 interface NavigationOverlayProps {
   className?: string;
@@ -13,6 +14,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const { startTransition, transitionState } = useTransitionStore();
+  const { announceNavigation } = useNavigationAccessibility();
 
   const navigationItems: Array<{
     id: SectionId;
@@ -28,6 +30,11 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
 
   const handleNavigation = (sectionId: SectionId, route: string) => {
     if (transitionState.isTransitioning) return;
+
+    // Announce navigation for screen readers
+    const currentSection =
+      location.pathname === '/' ? '3D scene' : location.pathname.substring(1);
+    announceNavigation(currentSection, sectionId);
 
     // If we're on the home route (3D scene), use 3D transition
     if (location.pathname === '/') {
@@ -52,7 +59,11 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
   const isHome = location.pathname === '/';
 
   return (
-    <nav className={`fixed top-4 right-4 z-50 ${className}`}>
+    <nav
+      className={`fixed top-4 right-4 z-50 ${className}`}
+      aria-label="Main navigation"
+      role="navigation"
+    >
       <div className="bg-black bg-opacity-80 border border-cyan-400 p-4 font-mono">
         {/* Home/3D Scene Button */}
         <button
@@ -60,12 +71,14 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
           className={`block w-full text-left mb-2 pb-2 border-b border-gray-600 transition-colors ${
             isHome ? 'text-cyan-400' : 'text-gray-300 hover:text-cyan-400'
           }`}
+          aria-label="Return to 3D Portfolio home"
+          aria-current={isHome ? 'page' : undefined}
         >
           3D PORTFOLIO
         </button>
 
         {/* Section Navigation */}
-        <div className="space-y-1">
+        <div className="space-y-1" role="list">
           {navigationItems.map(item => (
             <button
               key={item.id}
@@ -80,6 +93,9 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
                   ? 'opacity-50 cursor-not-allowed'
                   : ''
               }`}
+              aria-label={`Navigate to ${item.label} section`}
+              aria-current={isActive(item.route) ? 'page' : undefined}
+              role="listitem"
             >
               {item.label.toUpperCase()}
             </button>

@@ -1,7 +1,17 @@
 import React from 'react';
+import { useSectionAccessibility } from '../../hooks/useAccessibility';
 
 export const TechSection: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = React.useState<string>('all');
+  const { announceEntry } = useSectionAccessibility(
+    'Tech Skills',
+    'Technical skills showcase including programming languages, frameworks, and development projects'
+  );
+
+  // Announce section entry when component mounts
+  React.useEffect(() => {
+    announceEntry();
+  }, [announceEntry]);
   const skills = {
     frontend: [
       { name: 'React', level: 95 },
@@ -106,10 +116,21 @@ export const TechSection: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black text-white p-8">
+    <section
+      className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black text-white p-8"
+      id="tech"
+      aria-labelledby="tech-heading"
+      aria-describedby="tech-description"
+      role="main"
+    >
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-mono text-cyan-400 mb-4">Tech Skills</h1>
-        <p className="text-lg text-gray-300 mb-8 max-w-3xl">
+        <h1 id="tech-heading" className="text-4xl font-mono text-cyan-400 mb-4">
+          Tech Skills
+        </h1>
+        <p
+          id="tech-description"
+          className="text-lg text-gray-300 mb-8 max-w-3xl"
+        >
           Specializing in immersive web experiences, full-stack development, and
           creative technology solutions. My expertise spans modern JavaScript
           frameworks, 3D graphics, audio engineering, and scalable system
@@ -137,7 +158,15 @@ export const TechSection: React.FC = () => {
                         {skill.level}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-800 rounded-full h-1.5">
+                    <div
+                      className="w-full bg-gray-800 rounded-full h-1.5"
+                      role="progressbar"
+                      aria-label={`${skill.name} proficiency`}
+                      aria-valuenow={skill.level}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuetext={`${skill.level} percent proficiency in ${skill.name}`}
+                    >
                       <div
                         className="bg-gradient-to-r from-cyan-400 to-magenta-400 h-1.5 rounded-full transition-all duration-1000"
                         style={{ width: `${skill.level}%` }}
@@ -251,6 +280,6 @@ export const TechSection: React.FC = () => {
             ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };

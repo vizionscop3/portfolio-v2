@@ -5,6 +5,7 @@ import { HoverEffects, PulseEffect, RippleEffect, VisualFeedback } from '.';
 import { useInteractiveStore } from './store';
 import { InteractiveObjectProps, ObjectState } from './types';
 import { useKeyboardAccessibility } from '../accessibility/KeyboardAccessibilityProvider';
+import { useElementAccessibility } from '../../hooks/useAccessibility';
 
 export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   id,
@@ -30,6 +31,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   const { setHoveredObject, setTooltip } = useInteractiveStore();
   const { registerObject, unregisterObject, updateObject, currentFocus } =
     useKeyboardAccessibility();
+  const { announceAction } = useElementAccessibility(id, tooltip);
 
   // Check if this object is currently focused via keyboard
   const isKeyboardFocused = currentFocus === id;
@@ -115,16 +117,21 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
     // Change cursor to pointer
     gl.domElement.style.cursor = 'pointer';
 
+    // Announce hover for screen readers
+    announceAction('hover', `Interactive ${tooltip} in ${_section} section`);
+
     onHover?.(true);
   }, [
     id,
     position,
     tooltip,
+    _section,
     setHoveredObject,
     setTooltip,
     getScreenPosition,
     gl,
     onHover,
+    announceAction,
   ]);
 
   const handlePointerLeave = useCallback(() => {
@@ -150,8 +157,11 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
       setObjectState(prev => ({ ...prev, isClicked: false }));
     }, 200);
 
+    // Announce activation for screen readers
+    announceAction('activate', `Navigating to ${_section} section`);
+
     onClick?.();
-  }, [onClick]);
+  }, [onClick, announceAction, _section]);
 
   // Animation frame for smooth hover effects
   useFrame((_state, delta) => {
@@ -188,6 +198,13 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
       onClick={handleClick}
+      // Add ARIA attributes for screen readers
+      userData={{
+        'aria-label': tooltip,
+        'aria-describedby': `object-desc-${id}`,
+        role: 'button',
+        tabIndex: isKeyboardFocused ? 0 : -1,
+      }}
     >
       <HoverEffects
         isHovered={objectState.isHovered || isKeyboardFocused}
