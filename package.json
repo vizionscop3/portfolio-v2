@@ -26,8 +26,11 @@
   ],
   "author": "Your Name",
   "license": "MIT",
+  "resolutions": {
+    "@react-three/drei": "10.6.0"
+  },
   "dependencies": {
-    "@react-three/drei": "^10.6.0",
+    "@react-three/drei": "10.6.0",
     "@react-three/fiber": "^9.3.0",
     "@react-three/postprocessing": "^3.0.4",
     "clsx": "^2.1.0",
