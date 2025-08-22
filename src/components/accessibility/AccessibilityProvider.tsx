@@ -1,13 +1,14 @@
 /**
- * Accessibility Provider
+ * Accessibility Provider Component
  *
- * Combines keyboard navigation and screen reader support into a unified accessibility system
- * for the 3D portfolio. Provides comprehensive WCAG 2.1 AA compliance.
+ * Provides comprehensive accessibility context and preferences management
+ * throughout the application, combining all accessibility features.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { KeyboardAccessibilityProvider } from './KeyboardAccessibilityProvider';
 import { ScreenReaderProvider } from './ScreenReaderProvider';
+import { useAccessibilityPreferences } from '../../hooks/useAccessibilityPreferences';
 
 interface AccessibilityProviderProps {
   children: React.ReactNode;
@@ -18,12 +19,28 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({
   children,
   onSectionNavigation,
 }) => {
+  const { preferences } = useAccessibilityPreferences();
+
+  // Initialize accessibility preferences on mount
+  useEffect(() => {
+    // Apply initial accessibility classes to body
+    document.body.classList.toggle('reduce-motion', preferences.reduceMotion);
+    document.body.classList.toggle('high-contrast', preferences.highContrast);
+    document.body.classList.toggle('dark-mode', preferences.darkMode);
+    document.body.classList.toggle(
+      'simplify-visuals',
+      preferences.simplifyVisuals
+    );
+    document.body.classList.toggle(
+      'reduce-3d-effects',
+      preferences.reduce3DEffects
+    );
+  }, [preferences]);
+
   return (
-    <ScreenReaderProvider>
-      <KeyboardAccessibilityProvider onSectionNavigation={onSectionNavigation}>
-        {children}
-      </KeyboardAccessibilityProvider>
-    </ScreenReaderProvider>
+    <KeyboardAccessibilityProvider onSectionNavigation={onSectionNavigation}>
+      <ScreenReaderProvider>{children}</ScreenReaderProvider>
+    </KeyboardAccessibilityProvider>
   );
 };
 

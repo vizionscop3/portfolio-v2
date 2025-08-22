@@ -3,6 +3,11 @@ import { SectionId } from '../types';
 import { Scene3DWrapper } from './3d';
 import { MobileScene3D } from './3d/MobileScene3D';
 import { useDevice } from '../hooks/useMobile';
+import {
+  AccessibilityToolbar,
+  SkipLinks,
+  AccessibilityStatusIndicator,
+} from './accessibility/AccessibilityToolbar';
 
 interface Portfolio3DProps {
   onSectionChange?: (section: SectionId) => void;
@@ -55,15 +60,24 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({
 
   return (
     <div className="w-full h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
-      {/* Conditionally render mobile or desktop scene */}
-      {device.isMobile ? (
-        <MobileScene3D
-          onObjectClick={handleSectionChange}
-          className="w-full h-full"
-        />
-      ) : (
-        <Scene3DWrapper />
-      )}
+      {/* Skip links for accessibility */}
+      <SkipLinks />
+
+      {/* Accessibility status indicator */}
+      <AccessibilityStatusIndicator />
+
+      {/* Main content */}
+      <main role="main" className="w-full h-full">
+        {/* Conditionally render mobile or desktop scene */}
+        {device.isMobile ? (
+          <MobileScene3D
+            onObjectClick={handleSectionChange}
+            className="w-full h-full"
+          />
+        ) : (
+          <Scene3DWrapper />
+        )}
+      </main>
 
       {/* Cyberpunk UI overlay - hide on mobile for cleaner experience */}
       {!device.isMobile && (
@@ -84,6 +98,9 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({
           </div>
         </div>
       )}
+
+      {/* Accessibility toolbar */}
+      <AccessibilityToolbar position="bottom-right" />
     </div>
   );
 };

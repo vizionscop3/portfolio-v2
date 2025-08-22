@@ -4,7 +4,12 @@
 
 import { renderHook, act } from '@testing-library/react';
 import * as THREE from 'three';
-import { useLODSystem, useLODObject, useLODStatistics, usePerformanceLOD } from '../useLODSystem';
+import {
+  useLODSystem,
+  useLODObject,
+  useLODStatistics,
+  usePerformanceLOD,
+} from '../useLODSystem';
 import { getLODSystem } from '../../utils/lodSystem';
 
 // Mock the LOD system
@@ -15,8 +20,8 @@ jest.mock('../../utils/lodSystem', () => ({
 // Mock performance monitor
 jest.mock('../usePerformanceMonitor', () => ({
   usePerformanceMonitor: () => ({
-    currentPerformanceMode: 'high'
-  })
+    currentPerformanceMode: 'high',
+  }),
 }));
 
 describe('useLODSystem', () => {
@@ -34,7 +39,7 @@ describe('useLODSystem', () => {
         totalPolygons: 15000,
         currentQuality: 'high',
         frustumCulled: 1,
-        occlusionCulled: 1
+        occlusionCulled: 1,
       })),
       getObjectDebugInfo: jest.fn(() => ({
         distance: 10,
@@ -42,9 +47,9 @@ describe('useLODSystem', () => {
         isInFrustum: true,
         screenSize: 50,
         polygonCount: 1000,
-        isVisible: true
+        isVisible: true,
       })),
-      dispose: jest.fn()
+      dispose: jest.fn(),
     };
 
     (getLODSystem as jest.Mock).mockReturnValue(mockLODSystem);
@@ -66,7 +71,7 @@ describe('useLODSystem', () => {
     const options = {
       enableAutoOptimization: false,
       performanceThreshold: 30,
-      enableDebugMode: true
+      enableDebugMode: true,
     };
 
     renderHook(() => useLODSystem(options));
@@ -82,7 +87,10 @@ describe('useLODSystem', () => {
       result.current.initialize(mockCamera, mockScene);
     });
 
-    expect(mockLODSystem.initialize).toHaveBeenCalledWith(mockCamera, mockScene);
+    expect(mockLODSystem.initialize).toHaveBeenCalledWith(
+      mockCamera,
+      mockScene
+    );
     expect(result.current.isInitialized).toBe(true);
   });
 
@@ -95,7 +103,7 @@ describe('useLODSystem', () => {
       enableFrustumCulling: true,
       enableOcclusionCulling: false,
       minimumScreenSize: 10,
-      hysteresis: 2
+      hysteresis: 2,
     };
 
     act(() => {
@@ -138,14 +146,16 @@ describe('useLODSystem', () => {
 
     const debugInfo = result.current.getObjectDebugInfo('test-object');
 
-    expect(mockLODSystem.getObjectDebugInfo).toHaveBeenCalledWith('test-object');
+    expect(mockLODSystem.getObjectDebugInfo).toHaveBeenCalledWith(
+      'test-object'
+    );
     expect(debugInfo).toEqual({
       distance: 10,
       activeLODIndex: 0,
       isInFrustum: true,
       screenSize: 50,
       polygonCount: 1000,
-      isVisible: true
+      isVisible: true,
     });
   });
 
@@ -168,8 +178,8 @@ describe('useLODObject', () => {
         distance: 15,
         activeLODIndex: 1,
         isInFrustum: true,
-        screenSize: 30
-      }))
+        screenSize: 30,
+      })),
     };
   });
 
@@ -177,10 +187,10 @@ describe('useLODObject', () => {
     const mockObject = new THREE.Object3D();
     const options = {
       enableFrustumCulling: true,
-      distances: [5, 10, 20, 40]
+      distances: [5, 10, 20, 40],
     };
 
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       useLODObject('test-object', mockObject, mockLODSystem, options)
     );
 
@@ -190,7 +200,7 @@ describe('useLODObject', () => {
   });
 
   test('should not register without base model', () => {
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       useLODObject('test-object', null, mockLODSystem)
     );
 
@@ -200,19 +210,19 @@ describe('useLODObject', () => {
 
   test('should update debug info periodically', async () => {
     jest.useFakeTimers();
-    
+
     const mockObject = new THREE.Object3D();
-    const { result } = renderHook(() => 
-      useLODObject('test-object', mockObject, mockLODSystem)
-    );
+    renderHook(() => useLODObject('test-object', mockObject, mockLODSystem));
 
     // Fast forward time to trigger debug info update
     act(() => {
       jest.advanceTimersByTime(1000);
     });
 
-    expect(mockLODSystem.getObjectDebugInfo).toHaveBeenCalledWith('test-object');
-    
+    expect(mockLODSystem.getObjectDebugInfo).toHaveBeenCalledWith(
+      'test-object'
+    );
+
     jest.useRealTimers();
   });
 });
@@ -228,8 +238,8 @@ describe('useLODStatistics', () => {
         totalPolygons: 25000,
         currentQuality: 'medium',
         frustumCulled: 2,
-        occlusionCulled: 1
-      }))
+        occlusionCulled: 1,
+      })),
     };
   });
 
@@ -242,13 +252,13 @@ describe('useLODStatistics', () => {
       totalPolygons: 25000,
       currentQuality: 'medium',
       frustumCulled: 2,
-      occlusionCulled: 1
+      occlusionCulled: 1,
     });
   });
 
   test('should update statistics at specified interval', () => {
     jest.useFakeTimers();
-    
+
     renderHook(() => useLODStatistics(mockLODSystem, 500));
 
     // Fast forward time
@@ -257,7 +267,7 @@ describe('useLODStatistics', () => {
     });
 
     expect(mockLODSystem.getStatistics).toHaveBeenCalledTimes(2); // Initial + 2 updates
-    
+
     jest.useRealTimers();
   });
 });
@@ -267,12 +277,12 @@ describe('usePerformanceLOD', () => {
 
   beforeEach(() => {
     mockLODSystem = {
-      setQualityLevel: jest.fn()
+      setQualityLevel: jest.fn(),
     };
   });
 
   test('should initialize with high quality', () => {
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       usePerformanceLOD(mockLODSystem, 60, true)
     );
 
@@ -280,7 +290,7 @@ describe('usePerformanceLOD', () => {
   });
 
   test('should manually set quality', () => {
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       usePerformanceLOD(mockLODSystem, 60, true)
     );
 
@@ -294,7 +304,7 @@ describe('usePerformanceLOD', () => {
 
   test('should not adjust quality when disabled', () => {
     jest.useFakeTimers();
-    
+
     renderHook(() => usePerformanceLOD(mockLODSystem, 60, false));
 
     // Fast forward time
@@ -303,14 +313,14 @@ describe('usePerformanceLOD', () => {
     });
 
     expect(mockLODSystem.setQualityLevel).not.toHaveBeenCalled();
-    
+
     jest.useRealTimers();
   });
 
   test('should adjust quality based on performance', () => {
     jest.useFakeTimers();
-    
-    const { result } = renderHook(() => 
+
+    const { result } = renderHook(() =>
       usePerformanceLOD(mockLODSystem, 60, true)
     );
 
@@ -321,7 +331,7 @@ describe('usePerformanceLOD', () => {
 
     // Should reduce quality due to poor performance
     expect(result.current.currentQuality).toBe('medium');
-    
+
     jest.useRealTimers();
   });
 });

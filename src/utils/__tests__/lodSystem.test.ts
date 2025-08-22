@@ -14,7 +14,7 @@ describe('LODSystem', () => {
   beforeEach(() => {
     lodSystem = new LODSystem({
       enableAutoOptimization: false,
-      enableDebugMode: true
+      enableDebugMode: true,
     });
 
     mockCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
@@ -23,7 +23,7 @@ describe('LODSystem', () => {
     mockScene = new THREE.Scene();
     mockObject = new THREE.Object3D();
     mockObject.position.set(0, 0, 0);
-    
+
     // Add mock geometry for calculations
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshStandardMaterial();
@@ -50,7 +50,7 @@ describe('LODSystem', () => {
         maxDrawCalls: 50,
         maxPolygons: 25000,
         enableDebugMode: true,
-        updateFrequency: 200
+        updateFrequency: 200,
       });
       expect(system).toBeDefined();
     });
@@ -66,25 +66,25 @@ describe('LODSystem', () => {
             distance: 10,
             visible: false,
             polygonCount: 1000,
-            priority: 'high'
+            priority: 'high',
           },
           {
             distance: 25,
             visible: false,
             polygonCount: 500,
-            priority: 'medium'
+            priority: 'medium',
           },
           {
             distance: 50,
             visible: false,
             polygonCount: 200,
-            priority: 'low'
-          }
+            priority: 'low',
+          },
         ],
         enableFrustumCulling: true,
         enableOcclusionCulling: false,
         minimumScreenSize: 10,
-        hysteresis: 2
+        hysteresis: 2,
       };
 
       expect(() => lodSystem.registerObject(config)).not.toThrow();
@@ -98,7 +98,7 @@ describe('LODSystem', () => {
         enableFrustumCulling: true,
         enableOcclusionCulling: false,
         minimumScreenSize: 10,
-        hysteresis: 2
+        hysteresis: 2,
       } as LODConfiguration;
 
       expect(() => lodSystem.registerObject(invalidConfig)).toThrow();
@@ -113,29 +113,29 @@ describe('LODSystem', () => {
             distance: 50,
             visible: false,
             polygonCount: 200,
-            priority: 'low'
+            priority: 'low',
           },
           {
             distance: 10,
             visible: false,
             polygonCount: 1000,
-            priority: 'high'
+            priority: 'high',
           },
           {
             distance: 25,
             visible: false,
             polygonCount: 500,
-            priority: 'medium'
-          }
+            priority: 'medium',
+          },
         ],
         enableFrustumCulling: true,
         enableOcclusionCulling: false,
         minimumScreenSize: 10,
-        hysteresis: 2
+        hysteresis: 2,
       };
 
       lodSystem.registerObject(config);
-      
+
       // The levels should be automatically sorted by distance
       expect(config.levels[0].distance).toBe(10);
       expect(config.levels[1].distance).toBe(25);
@@ -155,25 +155,25 @@ describe('LODSystem', () => {
             distance: 10,
             visible: false,
             polygonCount: 1000,
-            priority: 'high'
+            priority: 'high',
           },
           {
             distance: 25,
             visible: false,
             polygonCount: 500,
-            priority: 'medium'
+            priority: 'medium',
           },
           {
             distance: 50,
             visible: false,
             polygonCount: 200,
-            priority: 'low'
-          }
+            priority: 'low',
+          },
         ],
         enableFrustumCulling: true,
         enableOcclusionCulling: false,
         minimumScreenSize: 10,
-        hysteresis: 2
+        hysteresis: 2,
       };
 
       lodSystem.registerObject(testConfig);
@@ -187,7 +187,7 @@ describe('LODSystem', () => {
       // Position camera at different distances
       mockCamera.position.set(0, 0, 5);
       lodSystem.update();
-      
+
       const stats = lodSystem.getStatistics();
       expect(stats.totalObjects).toBe(1);
     });
@@ -196,7 +196,7 @@ describe('LODSystem', () => {
       // Position object outside camera frustum
       mockObject.position.set(1000, 0, 0);
       lodSystem.update();
-      
+
       const stats = lodSystem.getStatistics();
       expect(stats.frustumCulled).toBeGreaterThan(0);
     });
@@ -205,7 +205,7 @@ describe('LODSystem', () => {
   describe('statistics', () => {
     test('should return accurate statistics', () => {
       const stats = lodSystem.getStatistics();
-      
+
       expect(stats).toHaveProperty('totalObjects');
       expect(stats).toHaveProperty('visibleObjects');
       expect(stats).toHaveProperty('totalPolygons');
@@ -223,18 +223,18 @@ describe('LODSystem', () => {
             distance: 10,
             visible: true,
             polygonCount: 1000,
-            priority: 'high'
-          }
+            priority: 'high',
+          },
         ],
         enableFrustumCulling: false,
         enableOcclusionCulling: false,
         minimumScreenSize: 0,
-        hysteresis: 0
+        hysteresis: 0,
       };
 
       lodSystem.registerObject(config);
       lodSystem.update();
-      
+
       const stats = lodSystem.getStatistics();
       expect(stats.totalPolygons).toBe(1000);
     });
@@ -250,10 +250,10 @@ describe('LODSystem', () => {
     test('should switch between quality levels', () => {
       lodSystem.setQualityLevel('high');
       expect(lodSystem.getStatistics().currentQuality).toBe('high');
-      
+
       lodSystem.setQualityLevel('medium');
       expect(lodSystem.getStatistics().currentQuality).toBe('medium');
-      
+
       lodSystem.setQualityLevel('low');
       expect(lodSystem.getStatistics().currentQuality).toBe('low');
     });
@@ -269,18 +269,18 @@ describe('LODSystem', () => {
             distance: 10,
             visible: false,
             polygonCount: 500,
-            priority: 'high'
-          }
+            priority: 'high',
+          },
         ],
         enableFrustumCulling: true,
         enableOcclusionCulling: false,
         minimumScreenSize: 10,
-        hysteresis: 2
+        hysteresis: 2,
       };
 
       lodSystem.registerObject(config);
       lodSystem.update();
-      
+
       const debugInfo = lodSystem.getObjectDebugInfo('debug-test');
       expect(debugInfo).toBeDefined();
       expect(debugInfo).toHaveProperty('distance');
@@ -300,18 +300,18 @@ describe('LODSystem', () => {
             distance: 10,
             visible: false,
             polygonCount: 500,
-            priority: 'high'
-          }
+            priority: 'high',
+          },
         ],
         enableFrustumCulling: true,
         enableOcclusionCulling: false,
         minimumScreenSize: 10,
-        hysteresis: 2
+        hysteresis: 2,
       };
 
       lodSystem.registerObject(config);
       expect(lodSystem.getStatistics().totalObjects).toBe(1);
-      
+
       lodSystem.dispose();
       expect(lodSystem.getStatistics().totalObjects).toBe(0);
     });
@@ -321,7 +321,7 @@ describe('LODSystem', () => {
     test('should adjust LOD based on polygon budget', () => {
       const system = new LODSystem({
         enableAutoOptimization: true,
-        maxPolygons: 1000
+        maxPolygons: 1000,
       });
 
       const highPolyConfig: LODConfiguration = {
@@ -332,19 +332,19 @@ describe('LODSystem', () => {
             distance: 10,
             visible: true,
             polygonCount: 5000, // Exceeds budget
-            priority: 'high'
+            priority: 'high',
           },
           {
             distance: 50,
             visible: false,
             polygonCount: 500,
-            priority: 'low'
-          }
+            priority: 'low',
+          },
         ],
         enableFrustumCulling: false,
         enableOcclusionCulling: false,
         minimumScreenSize: 0,
-        hysteresis: 0
+        hysteresis: 0,
       };
 
       system.initialize(mockCamera, mockScene);
@@ -354,43 +354,54 @@ describe('LODSystem', () => {
       const stats = system.getStatistics();
       // System should automatically reduce quality due to high polygon count
       expect(stats.currentQuality).not.toBe('high');
-      
+
       system.dispose();
     });
   });
 });
 
 describe('LOD Configurations', () => {
-  test('should create valid distance thresholds', () => {
-    const { LOD_DISTANCES } = require('../lodConfigurations');
-    
+  test('should create valid distance thresholds', async () => {
+    const { LOD_DISTANCES } = await import('../lodConfigurations');
+
     expect(LOD_DISTANCES.CLOSE).toBeLessThan(LOD_DISTANCES.MEDIUM);
     expect(LOD_DISTANCES.MEDIUM).toBeLessThan(LOD_DISTANCES.FAR);
     expect(LOD_DISTANCES.FAR).toBeLessThan(LOD_DISTANCES.VERY_FAR);
   });
 
-  test('should create polygon counts in descending order', () => {
-    const { POLYGON_COUNTS } = require('../lodConfigurations');
-    
+  test('should create polygon counts in descending order', async () => {
+    const { POLYGON_COUNTS } = await import('../lodConfigurations');
+
     expect(POLYGON_COUNTS.HIGH).toBeGreaterThan(POLYGON_COUNTS.MEDIUM);
     expect(POLYGON_COUNTS.MEDIUM).toBeGreaterThan(POLYGON_COUNTS.LOW);
     expect(POLYGON_COUNTS.LOW).toBeGreaterThan(POLYGON_COUNTS.MINIMAL);
   });
 
-  test('should adjust LOD for performance modes', () => {
-    const { adjustLODForPerformance, getPerformanceDistanceMultiplier } = require('../lodConfigurations');
-    
+  test('should adjust LOD for performance modes', async () => {
+    const { adjustLODForPerformance, getPerformanceDistanceMultiplier } =
+      await import('../lodConfigurations');
+
     const mockConfig: LODConfiguration = {
       objectId: 'test',
       baseModel: new THREE.Object3D(),
       levels: [
-        { distance: 10, visible: false, polygonCount: 1000, priority: 'high' as const },
-        { distance: 20, visible: false, polygonCount: 500, priority: 'medium' as const }
+        {
+          distance: 10,
+          visible: false,
+          polygonCount: 1000,
+          priority: 'high' as const,
+        },
+        {
+          distance: 20,
+          visible: false,
+          polygonCount: 500,
+          priority: 'medium' as const,
+        },
       ],
       enableFrustumCulling: true,
       enableOcclusionCulling: false,
       minimumScreenSize: 10,
-      hysteresis: 2
+      hysteresis: 2,
     };
 
     const highMultiplier = getPerformanceDistanceMultiplier('high');

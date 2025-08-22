@@ -1,13 +1,21 @@
 /**
- * Accessibility Components Index
+ * Accessibility Components Export Index
  *
- * Exports all accessibility-related components for easy importing.
+ * Provides centralized exports for all accessibility components and utilities.
  */
 
-export { FocusIndicator } from './FocusIndicator';
+// Main accessibility components
 export {
-  KeyboardAccessibilityProvider,
-  useKeyboardAccessibility,
-} from './KeyboardAccessibilityProvider';
-export { ScreenReaderProvider, useScreenReader } from './ScreenReaderProvider';
+  AccessibilityToolbar,
+  SkipLinks,
+  AccessibilityStatusIndicator,
+} from './AccessibilityToolbar';
+export { AccessibilityPreferencesPanel } from './AccessibilityPreferencesPanel';
 export { AccessibilityProvider } from './AccessibilityProvider';
+
+// Existing accessibility components
+export { KeyboardAccessibilityProvider } from './KeyboardAccessibilityProvider';
+export { ScreenReaderProvider } from './ScreenReaderProvider';
+
+// Default export
+export default {};

@@ -22,6 +22,11 @@ import {
 } from '../../hooks/useMobile';
 import { useMobilePerformanceOptimization } from '../../hooks/usePerformanceMonitor';
 import { LODManager } from './LODManager';
+import {
+  useMotionPreferences,
+  use3DAccessibility,
+  useVisualAccessibility,
+} from '../../hooks/useAccessibilityPreferences';
 
 interface MobileScene3DProps {
   onObjectClick?: (section: string) => void;
@@ -38,6 +43,9 @@ export const MobileScene3D: React.FC<MobileScene3DProps> = ({
   const mobilePerf = useMobilePerformance();
   const orientation = useOrientation();
   const { optimizations } = useMobilePerformanceOptimization();
+  const motionPrefs = useMotionPreferences();
+  const visualAccessibility = useVisualAccessibility();
+  const accessibility3D = use3DAccessibility();
 
   // Camera positioning for mobile
   const [cameraPosition, setCameraPosition] = useState<Vector3>(() => {
@@ -128,7 +136,7 @@ export const MobileScene3D: React.FC<MobileScene3DProps> = ({
     });
   }, [touchGestures, device.isMobile]);
 
-  // Mobile-specific canvas settings with optimizations
+  // Mobile-specific canvas settings with accessibility optimizations
   const canvasSettings = {
     dpr: Math.min(mobilePerf.pixelRatio, device.isMobile ? 2 : 3),
     performance: {
@@ -140,10 +148,11 @@ export const MobileScene3D: React.FC<MobileScene3DProps> = ({
       powerPreference: device.isMobile
         ? ('default' as const)
         : ('high-performance' as const),
-      antialias: optimizations.antialiasing,
+      antialias: optimizations.antialiasing && !accessibility3D.simplifyVisuals,
       alpha: true,
       preserveDrawingBuffer: false,
-      failIfMajorPerformanceCaveat: device.isMobile,
+      failIfMajorPerformanceCaveat:
+        device.isMobile || accessibility3D.shouldSimplify3D,
       stencil: false,
       depth: true,
     },
@@ -157,16 +166,32 @@ export const MobileScene3D: React.FC<MobileScene3DProps> = ({
     position: cameraPosition,
   };
 
-  // Controls settings for mobile
+  // Controls settings for mobile with accessibility considerations
   const controlsSettings = {
     enablePan: false, // Disable built-in pan, use touch gestures
     enableZoom: !device.hasTouch, // Disable zoom on touch devices, use pinch
     enableRotate: !device.hasTouch, // Disable rotate on touch, use pan gesture
-    enableDamping: true,
-    dampingFactor: device.isMobile ? 0.08 : 0.05,
-    rotateSpeed: device.isMobile ? 0.8 : 1.0,
-    zoomSpeed: device.isMobile ? 0.8 : 1.0,
-    panSpeed: device.isMobile ? 0.8 : 1.0,
+    enableDamping: !motionPrefs.shouldReduceMotion,
+    dampingFactor: motionPrefs.shouldReduceMotion
+      ? 0.01
+      : device.isMobile
+        ? 0.08
+        : 0.05,
+    rotateSpeed: motionPrefs.shouldReduceMotion
+      ? 0.3
+      : device.isMobile
+        ? 0.8
+        : 1.0,
+    zoomSpeed: motionPrefs.shouldReduceMotion
+      ? 0.3
+      : device.isMobile
+        ? 0.8
+        : 1.0,
+    panSpeed: motionPrefs.shouldReduceMotion
+      ? 0.3
+      : device.isMobile
+        ? 0.8
+        : 1.0,
     maxPolarAngle: Math.PI * 0.8, // Prevent camera from going too low
     minPolarAngle: Math.PI * 0.1, // Prevent camera from going too high
     maxDistance: device.isMobile ? 15 : 20,
@@ -190,19 +215,33 @@ export const MobileScene3D: React.FC<MobileScene3DProps> = ({
         {/* LOD Manager for performance optimization */}
         <LODManager enableDebugUI={false} />
 
-        {/* Lighting optimized for mobile */}
-        <ambientLight intensity={0.2} color="#00FFFF" />
+        {/* Lighting optimized for mobile and accessibility */}
+        <ambientLight
+          intensity={visualAccessibility.highContrast ? 0.4 : 0.2}
+          color={visualAccessibility.highContrast ? '#FFFFFF' : '#00FFFF'}
+        />
         <directionalLight
           position={[10, 10, 5]}
-          intensity={optimizations.shadowQuality !== 'low' ? 1 : 0.5}
-          color="#FFFFFF"
-          castShadow={optimizations.shadowQuality !== 'low'}
+          intensity={
+            visualAccessibility.highContrast
+              ? 1.2
+              : optimizations.shadowQuality !== 'low' &&
+                  !accessibility3D.disableShadows
+                ? 1
+                : 0.5
+          }
+          color={visualAccessibility.highContrast ? '#FFFFFF' : '#FFFFFF'}
+          castShadow={
+            optimizations.shadowQuality !== 'low' &&
+            !accessibility3D.disableShadows &&
+            !accessibility3D.simplifyVisuals
+          }
         />
-        {optimizations.maxLights > 2 && (
+        {optimizations.maxLights > 2 && !accessibility3D.simplifyVisuals && (
           <pointLight
             position={[-10, -10, -5]}
-            intensity={0.3}
-            color="#FF00FF"
+            intensity={visualAccessibility.highContrast ? 0.5 : 0.3}
+            color={visualAccessibility.highContrast ? '#FFFFFF' : '#FF00FF'}
           />
         )}
 
@@ -218,12 +257,14 @@ export const MobileScene3D: React.FC<MobileScene3DProps> = ({
           <ObjectManager onObjectClick={onObjectClick} />
         </Suspense>
 
-        {/* Mobile-specific effects */}
-        {optimizations.postProcessing && (
-          <Suspense fallback={null}>
-            <MobilePostProcessing />
-          </Suspense>
-        )}
+        {/* Mobile-specific effects with accessibility considerations */}
+        {optimizations.postProcessing &&
+          !accessibility3D.disableBloom &&
+          !accessibility3D.simplifyVisuals && (
+            <Suspense fallback={null}>
+              <MobilePostProcessing />
+            </Suspense>
+          )}
       </Canvas>
 
       {/* Mobile UI Overlays */}
