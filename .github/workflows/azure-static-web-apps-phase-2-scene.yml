@@ -26,8 +26,10 @@ jobs:
           node-version: '20.11.0'
           cache: 'npm'
 
-      - name: Install dependencies with legacy peer deps
-        run: npm ci --legacy-peer-deps
+      - name: Clean install to fix Rollup optional dependencies
+        run: |
+          rm -rf node_modules package-lock.json || true
+          npm install --legacy-peer-deps
 
       - name: Build application
         run: npm run build
