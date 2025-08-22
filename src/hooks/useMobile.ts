@@ -5,22 +5,22 @@
  * touch handling, and mobile-specific optimizations.
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  detectDevice,
-  getViewportInfo,
-  getCurrentBreakpoint,
-  matchesBreakpoint,
-  isLandscape,
-  getSafeAreaInsets,
   BREAKPOINTS,
+  detectDevice,
+  getCurrentBreakpoint,
+  getSafeAreaInsets,
+  getViewportInfo,
+  isLandscape,
+  matchesBreakpoint,
   type DeviceInfo,
   type ViewportInfo,
 } from '../utils/mobileDetection';
 import {
   TouchHandler,
-  type TouchHandlerOptions,
   type GestureState,
+  type TouchHandlerOptions,
 } from '../utils/touchHandler';
 
 /**
@@ -171,7 +171,7 @@ export const useSafeArea = () => {
  * Hook for touch gesture handling
  */
 export const useTouchGestures = (
-  elementRef: React.RefObject<HTMLElement>,
+  elementRef: React.RefObject<HTMLElement | HTMLCanvasElement | null>,
   options: TouchHandlerOptions = {}
 ) => {
   const touchHandlerRef = useRef<TouchHandler | null>(null);

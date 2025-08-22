@@ -7,8 +7,8 @@
 
 import React, {
   createContext,
-  useContext,
   useCallback,
+  useContext,
   useEffect,
   useRef,
 } from 'react';
@@ -47,7 +47,7 @@ export const ScreenReaderProvider: React.FC<ScreenReaderProviderProps> = ({
   >([]);
   const alternativeTextsRef = useRef<Map<string, string>>(new Map());
   const lastAnnouncementRef = useRef<string>('');
-  const announcementTimeoutRef = useRef<NodeJS.Timeout>();
+  const announcementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Section descriptions for screen readers
   const sectionDescriptions = {

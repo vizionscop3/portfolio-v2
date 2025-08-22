@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   AssetItem,
   AssetLoader,
-  LoadingProgress,
   AssetPriority,
+  LoadingProgress,
   assetLoader,
 } from '@/utils/assetLoader';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface UseAssetLoaderOptions {
   preloadCritical?: boolean;
@@ -290,7 +290,7 @@ export const useImagePreloader = (): {
 
 // Hook for lazy loading with Intersection Observer
 export const useLazyLoading = (
-  ref: React.RefObject<HTMLElement>,
+  ref: React.RefObject<HTMLElement | HTMLDivElement | null>,
   callback: () => void,
   options: IntersectionObserverInit = {}
 ): boolean => {

@@ -2,12 +2,12 @@
  * React hooks for Keyboard Navigation integration
  */
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   getKeyboardNavigation,
-  NavigableObject,
-  KeyboardShortcut,
   KeyboardNavigationOptions,
+  KeyboardShortcut,
+  NavigableObject,
 } from '../utils/keyboardNavigation';
 
 /**
@@ -138,7 +138,7 @@ export const useNavigableObject = (
  */
 export const useFocusIndicator = (isKeyboardFocused: boolean) => {
   const [showIndicator, setShowIndicator] = useState(false);
-  const indicatorTimeoutRef = useRef<NodeJS.Timeout>();
+  const indicatorTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isKeyboardFocused) {
