@@ -31,7 +31,7 @@ const Portfolio: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const handleError = useErrorHandler();
-  
+
   // SEO management
   const { updateSEO } = useSEO();
 
@@ -377,7 +377,7 @@ const Portfolio: React.FC = () => {
                   </button>
                 );
               })}
-              
+
               {/* Share Button */}
               <div className="relative">
                 <button
@@ -388,8 +388,7 @@ const Portfolio: React.FC = () => {
                   <Share2 size={18} />
                   Share
                 </button>
-                
-                {/* Share Menu */}
+                .\scripts\verify-ssl-certificates.ps1 {/* Share Menu */}
                 {showShareMenu && (
                   <div className="absolute right-0 top-full mt-2 bg-white border rounded-lg shadow-lg p-4 z-50 min-w-[200px]">
                     <SocialShareGroup
