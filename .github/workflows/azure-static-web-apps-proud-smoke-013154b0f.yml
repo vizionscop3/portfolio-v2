@@ -9,11 +9,17 @@ on:
     branches:
       - phase-3-interactive-objects
 
+# Prevent conflicting deployments
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    timeout-minutes: 15 # Prevent hanging deployments
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,24 +34,33 @@ jobs:
 
       - name: Clean install to fix Rollup optional dependencies
         run: |
+          echo "Cleaning previous installation..."
           rm -rf node_modules package-lock.json || true
+          echo "Installing dependencies with React 19 compatibility..."
           npm install --legacy-peer-deps
+          echo "Dependencies installed successfully!"
 
       - name: Build application
-        run: npm run build
+        run: |
+          echo "Building Phase 3 Interactive Objects..."
+          npm run build
+          echo "Build completed successfully!"
 
       - name: Clean unnecessary files for deployment
         run: |
+          echo "Cleaning up files for optimized deployment..."
           # Remove development files to reduce deployment size
           rm -rf node_modules
           rm -rf src
           rm -rf tests
           rm -rf .git
+          echo "Cleanup completed. Remaining files:"
           ls -la # List remaining files for verification
 
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
+        timeout-minutes: 10
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_SMOKE_013154B0F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
