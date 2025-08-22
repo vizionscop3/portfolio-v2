@@ -19,19 +19,19 @@ jobs:
         with:
           submodules: true
           lfs: false
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20.11.0'
           cache: 'npm'
-      
+
       - name: Install dependencies with legacy peer deps
         run: npm ci --legacy-peer-deps
-      
+
       - name: Build application
         run: npm run build
-      
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
