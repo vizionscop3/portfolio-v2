@@ -1,0 +1,84 @@
+{
+  "azureConfig": {
+    "subscriptionId": "c6065296-91e7-45f3-a774-908e2225b4d0",
+    "resourceGroupName": "rg-portfolio-3d-interactive",
+    "siteName": "portfolio-3d-interactive",
+    "location": "East US 2",
+    "planType": "Free"
+  },
+  "githubConfig": {
+    "repository": "vizionscop3/portfolio-v2",
+    "branch": "phase-11-completed",
+    "appLocation": "/",
+    "apiLocation": "",
+    "outputLocation": "dist"
+  },
+  "deploymentPhases": [
+    {
+      "phase": 1,
+      "name": "Core 3D Infrastructure",
+      "buildCommand": "npm run build:phase-1",
+      "testCommand": "npm run test:phase-1"
+    },
+    {
+      "phase": 2,
+      "name": "Interactive Objects Foundation",
+      "buildCommand": "npm run build:phase-2",
+      "testCommand": "npm run test:phase-2"
+    },
+    {
+      "phase": 3,
+      "name": "Camera Controls & Navigation",
+      "buildCommand": "npm run build:phase-3",
+      "testCommand": "npm run test:phase-3"
+    },
+    {
+      "phase": 4,
+      "name": "Room Layout & Environment",
+      "buildCommand": "npm run build:phase-4",
+      "testCommand": "npm run test:phase-4"
+    },
+    {
+      "phase": 5,
+      "name": "Basic Lighting System",
+      "buildCommand": "npm run build:phase-5",
+      "testCommand": "npm run test:phase-5"
+    },
+    {
+      "phase": 6,
+      "name": "Materials, Textures & LOD",
+      "buildCommand": "npm run build:phase-6",
+      "testCommand": "npm run test:phase-6"
+    },
+    {
+      "phase": 7,
+      "name": "Transitions & Animations",
+      "buildCommand": "npm run build:phase-7",
+      "testCommand": "npm run test:phase-7"
+    },
+    {
+      "phase": 8,
+      "name": "Accessibility & Mobile Optimization",
+      "buildCommand": "npm run build:phase-8",
+      "testCommand": "npm run test:phase-8"
+    },
+    {
+      "phase": 9,
+      "name": "SEO & Analytics Integration",
+      "buildCommand": "npm run build:phase-9",
+      "testCommand": "npm run test:phase-9"
+    },
+    {
+      "phase": 10,
+      "name": "Visual Enhancements & Effects",
+      "buildCommand": "npm run build:phase-10",
+      "testCommand": "npm run test:phase-10"
+    },
+    {
+      "phase": 11,
+      "name": "Error Handling & Final Optimization",
+      "buildCommand": "npm run build",
+      "testCommand": "npm run test"
+    }
+  ]
+}

@@ -2,18 +2,16 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
+// Phase 1: Core 3D Infrastructure
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@/components': path.resolve(__dirname, './src/components'),
-      '@/pages': path.resolve(__dirname, './src/pages'),
       '@/hooks': path.resolve(__dirname, './src/hooks'),
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/types': path.resolve(__dirname, './src/types'),
-      '@/styles': path.resolve(__dirname, './src/styles'),
     },
   },
   server: {
@@ -22,30 +20,24 @@ export default defineConfig({
     cors: true,
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist-phase-1',
     sourcemap: true,
-    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          icons: ['lucide-react'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          postprocessing: ['@react-three/postprocessing'],
-          utils: ['zustand'],
+          three: ['three', '@react-three/fiber'],
         },
       },
     },
   },
-  preview: {
-    port: 4173,
-    open: true,
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./tests/setup.ts'],
-    css: true,
+  define: {
+    __DEPLOYMENT_PHASE__: JSON.stringify('phase-1'),
+    __FEATURES_ENABLED__: JSON.stringify([
+      'infrastructure',
+      'webgl-detection',
+      'basic-rendering',
+      'error-handling',
+    ]),
   },
 });

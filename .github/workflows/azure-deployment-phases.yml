@@ -1,0 +1,378 @@
+name: Azure Deployment - Phased Rollout
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'Deployment Phase (1-11)'
+        required: true
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2' 
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+      environment:
+        description: 'Deployment Environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - 'staging'
+          - 'production'
+      skip_tests:
+        description: 'Skip tests (emergency deployment)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  AZURE_SUBSCRIPTION_ID: c6065296-91e7-45f3-a774-908e2225b4d0
+  NODE_VERSION: '18.x'
+  BUILD_PATH: 'dist'
+
+jobs:
+  validate-phase:
+    runs-on: ubuntu-latest
+    outputs:
+      phase-valid: ${{ steps.validate.outputs.valid }}
+      phase-name: ${{ steps.validate.outputs.name }}
+      dependencies-met: ${{ steps.validate.outputs.dependencies }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Validate deployment phase
+      id: validate
+      run: |
+        PHASE="${{ github.event.inputs.phase }}"
+        
+        case $PHASE in
+          "1")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Core 3D Infrastructure" >> $GITHUB_OUTPUT
+            echo "dependencies=none" >> $GITHUB_OUTPUT
+            ;;
+          "2")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Interactive Objects Foundation" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1" >> $GITHUB_OUTPUT
+            ;;
+          "3")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Camera Controls & Navigation" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2" >> $GITHUB_OUTPUT
+            ;;
+          "4")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Room Layout & Environment" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3" >> $GITHUB_OUTPUT
+            ;;
+          "5")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Basic Lighting System" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4" >> $GITHUB_OUTPUT
+            ;;
+          "6")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Materials, Textures & LOD" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4,phase-5" >> $GITHUB_OUTPUT
+            ;;
+          "7")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Transitions & Animations" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4,phase-5,phase-6" >> $GITHUB_OUTPUT
+            ;;
+          "8")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Accessibility & Mobile Optimization" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4,phase-5,phase-6,phase-7" >> $GITHUB_OUTPUT
+            ;;
+          "9")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=SEO & Analytics Integration" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4,phase-5,phase-6,phase-7,phase-8" >> $GITHUB_OUTPUT
+            ;;
+          "10")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Visual Enhancements & Effects" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4,phase-5,phase-6,phase-7,phase-8,phase-9" >> $GITHUB_OUTPUT
+            ;;
+          "11")
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "name=Error Handling & Final Optimization" >> $GITHUB_OUTPUT
+            echo "dependencies=phase-1,phase-2,phase-3,phase-4,phase-5,phase-6,phase-7,phase-8,phase-9,phase-10" >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo "valid=false" >> $GITHUB_OUTPUT
+            ;;
+        esac
+
+  setup:
+    runs-on: ubuntu-latest
+    needs: validate-phase
+    if: needs.validate-phase.outputs.phase-valid == 'true'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        npm ci
+        npm run prepare
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.npm
+          node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+  test-phase:
+    runs-on: ubuntu-latest
+    needs: [validate-phase, setup]
+    if: github.event.inputs.skip_tests != 'true'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run TypeScript check
+      run: npm run type-check
+
+    - name: Run linting
+      run: npm run lint:fix
+
+    - name: Run phase-specific tests
+      run: |
+        PHASE="${{ github.event.inputs.phase }}"
+        if [ -f "vitest.config.phase-$PHASE.ts" ]; then
+          npm run test:phase-$PHASE
+        else
+          npm run test
+        fi
+
+    - name: Run health check
+      run: |
+        node scripts/health-check.js --phase ${{ github.event.inputs.phase }}
+
+  build-phase:
+    runs-on: ubuntu-latest
+    needs: [validate-phase, setup, test-phase]
+    if: always() && (needs.test-phase.result == 'success' || github.event.inputs.skip_tests == 'true')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build for Phase ${{ github.event.inputs.phase }}
+      run: |
+        PHASE="${{ github.event.inputs.phase }}"
+        echo "🏗️ Building Phase $PHASE: ${{ needs.validate-phase.outputs.phase-name }}"
+        
+        if [ -f "vite.config.phase-$PHASE.ts" ]; then
+          npm run build:phase-$PHASE
+        else
+          npm run build
+        fi
+
+    - name: Validate build artifacts
+      run: |
+        if [ ! -d "${{ env.BUILD_PATH }}" ]; then
+          echo "❌ Build directory not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "${{ env.BUILD_PATH }}/index.html" ]; then
+          echo "❌ index.html not found in build!"
+          exit 1
+        fi
+        
+        echo "✅ Build artifacts validated"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-phase-${{ github.event.inputs.phase }}
+        path: ${{ env.BUILD_PATH }}
+        retention-days: 30
+
+  deploy-to-azure:
+    runs-on: ubuntu-latest
+    needs: [validate-phase, build-phase]
+    environment: ${{ github.event.inputs.environment }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-phase-${{ github.event.inputs.phase }}
+        path: ${{ env.BUILD_PATH }}
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Static Web Apps
+      id: deploy
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        action: "upload"
+        app_location: "/"
+        api_location: ""
+        output_location: ${{ env.BUILD_PATH }}
+        skip_app_build: true
+
+    - name: Set deployment tags
+      run: |
+        az tag create --resource-id "${{ steps.deploy.outputs.static_web_app_url }}" --tags \
+          Phase="${{ github.event.inputs.phase }}" \
+          Environment="${{ github.event.inputs.environment }}" \
+          PhaseName="${{ needs.validate-phase.outputs.phase-name }}" \
+          DeploymentTime="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+          GitSha="${{ github.sha }}" \
+          Workflow="${{ github.workflow }}" \
+          RunNumber="${{ github.run_number }}"
+
+    - name: Post-deployment health check
+      run: |
+        echo "🏥 Running post-deployment health check..."
+        
+        # Wait for deployment to be ready
+        sleep 30
+        
+        # Basic connectivity test
+        DEPLOYMENT_URL="${{ steps.deploy.outputs.static_web_app_url }}"
+        
+        if curl -f -s "$DEPLOYMENT_URL" > /dev/null; then
+          echo "✅ Deployment is responding"
+        else
+          echo "❌ Deployment health check failed"
+          exit 1
+        fi
+
+    - name: Update deployment status
+      if: always()
+      run: |
+        STATUS="${{ job.status }}"
+        PHASE="${{ github.event.inputs.phase }}"
+        ENV="${{ github.event.inputs.environment }}"
+        
+        echo "📊 Deployment Summary:"
+        echo "Phase: $PHASE (${{ needs.validate-phase.outputs.phase-name }})"
+        echo "Environment: $ENV"
+        echo "Status: $STATUS"
+        echo "URL: ${{ steps.deploy.outputs.static_web_app_url }}"
+        echo "Commit: ${{ github.sha }}"
+
+  rollback:
+    runs-on: ubuntu-latest
+    needs: [validate-phase, deploy-to-azure]
+    if: failure() && needs.deploy-to-azure.result == 'failure'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Automated rollback
+      run: |
+        echo "🔄 Initiating automated rollback..."
+        
+        # Get previous stable deployment
+        PREV_PHASE=$(($((${{ github.event.inputs.phase }} - 1))))
+        
+        if [ $PREV_PHASE -gt 0 ]; then
+          echo "Rolling back to Phase $PREV_PHASE"
+          node scripts/rollback.js full --target deploy-phase-$PREV_PHASE
+        else
+          echo "Rolling back to main branch"
+          node scripts/rollback.js full --target main
+        fi
+
+    - name: Notify rollback completion
+      run: |
+        echo "🎯 Rollback completed"
+        echo "Previous deployment restored"
+        echo "Manual intervention may be required for Phase ${{ github.event.inputs.phase }}"
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [validate-phase, deploy-to-azure]
+    if: always()
+    
+    steps:
+    - name: Deployment notification
+      run: |
+        STATUS="${{ needs.deploy-to-azure.result }}"
+        PHASE="${{ github.event.inputs.phase }}"
+        PHASE_NAME="${{ needs.validate-phase.outputs.phase-name }}"
+        ENV="${{ github.event.inputs.environment }}"
+        
+        if [ "$STATUS" = "success" ]; then
+          echo "🎉 Phase $PHASE deployment successful!"
+          echo "✅ $PHASE_NAME deployed to $ENV"
+          echo "🌐 URL: Available in deployment logs"
+        else
+          echo "❌ Phase $PHASE deployment failed"
+          echo "💥 $PHASE_NAME deployment to $ENV unsuccessful"
+          echo "🔄 Automated rollback initiated"
+        fi

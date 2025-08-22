@@ -1,0 +1,134 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "siteName": {
+      "type": "string",
+      "defaultValue": "portfolio-3d-interactive",
+      "metadata": {
+        "description": "Name of the static web app"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "East US 2",
+      "allowedValues": ["Central US", "East US 2", "East Asia", "West Europe", "West US 2"],
+      "metadata": {
+        "description": "Location for the static web app"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "Free",
+      "allowedValues": ["Free", "Standard"],
+      "metadata": {
+        "description": "The pricing tier for the static web app"
+      }
+    },
+    "repositoryUrl": {
+      "type": "string",
+      "defaultValue": "https://github.com/vizionscop3/portfolio-v2",
+      "metadata": {
+        "description": "GitHub repository URL"
+      }
+    },
+    "branch": {
+      "type": "string",
+      "defaultValue": "main",
+      "metadata": {
+        "description": "GitHub branch to deploy from"
+      }
+    },
+    "buildLocation": {
+      "type": "string",
+      "defaultValue": "/",
+      "metadata": {
+        "description": "App source code path relative to repository root"
+      }
+    },
+    "outputLocation": {
+      "type": "string",
+      "defaultValue": "dist",
+      "metadata": {
+        "description": "Built app content directory relative to app source code path"
+      }
+    },
+    "stagingEnvironments": {
+      "type": "int",
+      "defaultValue": 3,
+      "minValue": 0,
+      "maxValue": 10,
+      "metadata": {
+        "description": "Number of staging environments for phased deployment"
+      }
+    }
+  },
+  "variables": {
+    "staticWebAppName": "[parameters('siteName')]",
+    "resourceGroupName": "[resourceGroup().name]",
+    "subscriptionId": "c6065296-91e7-45f3-a774-908e2225b4d0"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/staticSites",
+      "apiVersion": "2022-09-01",
+      "name": "[variables('staticWebAppName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sku')]",
+        "tier": "[parameters('sku')]"
+      },
+      "properties": {
+        "repositoryUrl": "[parameters('repositoryUrl')]",
+        "branch": "[parameters('branch')]",
+        "buildProperties": {
+          "appLocation": "[parameters('buildLocation')]",
+          "apiLocation": "",
+          "outputLocation": "[parameters('outputLocation')]",
+          "skipGithubActionWorkflowGeneration": true
+        },
+        "stagingEnvironmentPolicy": "Enabled",
+        "allowConfigFileUpdates": true,
+        "provider": "GitHub",
+        "enterpriseGradeCdnStatus": "Disabled"
+      },
+      "tags": {
+        "Environment": "Production",
+        "Project": "3D Interactive Portfolio",
+        "DeploymentType": "Phased",
+        "Repository": "portfolio-v2"
+      }
+    },
+    {
+      "type": "Microsoft.Web/staticSites/config",
+      "apiVersion": "2022-09-01",
+      "name": "[concat(variables('staticWebAppName'), '/appsettings')]",
+      "dependsOn": ["[resourceId('Microsoft.Web/staticSites', variables('staticWebAppName'))]"],
+      "properties": {
+        "NODE_ENV": "production",
+        "BUILD_COMMAND": "npm run build",
+        "DEPLOYMENT_PHASE": "production",
+        "VITE_ENVIRONMENT": "production",
+        "VITE_API_URL": "[concat('https://', variables('staticWebAppName'), '.azurestaticapps.net')]"
+      }
+    }
+  ],
+  "outputs": {
+    "staticWebAppName": {
+      "type": "string",
+      "value": "[variables('staticWebAppName')]"
+    },
+    "staticWebAppUrl": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Web/staticSites', variables('staticWebAppName'))).defaultHostname)]"
+    },
+    "staticWebAppId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Web/staticSites', variables('staticWebAppName'))]"
+    },
+    "deploymentToken": {
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.Web/staticSites', variables('staticWebAppName')), '2022-09-01').properties.apiKey]"
+    }
+  }
+}
