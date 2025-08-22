@@ -5,6 +5,11 @@ import { use3DAnalytics } from '../../hooks/useAnalytics';
 import { logger } from '../../utils/logger';
 import { infrastructure3D } from './Infrastructure3D';
 import { InfrastructureStatus } from './InfrastructureStatus';
+import AdvancedLighting from './lighting';
+import AtmosphericEffects from './effects/AtmosphericEffects';
+import ScreenSpaceReflections from './effects/ScreenSpaceReflections';
+import AmbientAnimations from './animations/AmbientAnimations';
+import AmbientSoundSystem from './audio/AmbientSoundSystem';
 import { LODManager } from './LODManager';
 import { ObjectManager } from './ObjectManager';
 import { Tooltip } from './Tooltip';
@@ -167,49 +172,56 @@ export const Scene3D: React.FC<Scene3DProps> = ({
               infrastructure3D.getPerformanceProfile()?.targetFPS || 60
             }
           >
-            {/* Adaptive Lighting Setup for Cyberpunk Atmosphere */}
-            <ambientLight intensity={0.2} color="#1A0B2E" />
-
-            {/* Main directional light */}
-            <directionalLight
-              position={[10, 10, 5]}
-              intensity={0.5}
-              color="#00FFFF"
-              castShadow={rendererSettings.shadowMap.enabled}
-              shadow-mapSize-width={
-                rendererSettings.shadowMap.enabled ? 2048 : 512
-              }
-              shadow-mapSize-height={
-                rendererSettings.shadowMap.enabled ? 2048 : 512
-              }
+            {/* Advanced Lighting System - Phase 10 Task 10.1 */}
+            <AdvancedLighting
+              cyberpunkMode={true}
+              enableControls={enableLODDebug}
+              initialTimeOfDay="night"
+              initialMode="cyberpunk-cycle"
+              enableShadows={rendererSettings.shadowMap.enabled}
+              enableAmbientOcclusion={true}
+              enableBloom={true}
+              enableDynamicEffects={true}
             />
 
-            {/* Performance-aware accent lights */}
-            {(infrastructure3D.getPerformanceProfile()?.maxLights || 0) > 2 && (
-              <>
-                <pointLight
-                  position={[-5, 2, -5]}
-                  intensity={0.3}
-                  color="#FF00FF"
-                />
-                <pointLight
-                  position={[5, 2, 5]}
-                  intensity={0.3}
-                  color="#0080FF"
-                />
-              </>
-            )}
+            {/* Atmospheric Effects - Phase 10 Task 10.2 */}
+            <AtmosphericEffects
+              enableDustParticles={true}
+              enableLightRays={true}
+              enableFloatingParticles={true}
+              enableHolographicDust={true}
+              holoDustColor="#00ffff"
+            />
 
-            {/* High-performance only: Neon strip lighting */}
-            {infrastructure3D.getPerformanceProfile()?.tier === 'high' && (
-              <rectAreaLight
-                position={[0, 5, -8]}
-                width={10}
-                height={0.1}
-                intensity={2}
-                color="#00FF41"
-              />
-            )}
+            {/* Screen-Space Reflections - Phase 10 Task 10.2 */}
+            <ScreenSpaceReflections
+              enabled={true}
+              intensity={0.5}
+              opacity={0.6}
+            />
+
+            {/* Ambient Animations - Phase 10 Task 10.3 */}
+            <AmbientAnimations
+              enableObjectMovement={true}
+              enableFloatingAnimation={true}
+              enableRotationAnimation={true}
+              enableScaleAnimation={true}
+              enableColorAnimation={true}
+              animationSpeed={1.0}
+              intensity={0.8}
+            />
+
+            {/* Ambient Sound System - Phase 10 Task 10.3 */}
+            <AmbientSoundSystem
+              enableBackgroundMusic={true}
+              enableSpatialAudio={true}
+              enableInteractiveAudio={true}
+              enableUIFeedback={true}
+              timeOfDay="night"
+              masterVolume={0.2}
+              musicVolume={0.3}
+              effectsVolume={0.4}
+            />
 
             {/* Room environment */}
             <mesh
