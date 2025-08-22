@@ -2,9 +2,9 @@
  * React hooks for Level of Detail (LOD) system integration
  */
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { getLODSystem, LODSystem, LODConfiguration } from '../utils/lodSystem';
+import { getLODSystem, LODConfiguration, LODSystem } from '../utils/lodSystem';
 
 /**
  * Hook to initialize and manage the LOD system
@@ -22,26 +22,35 @@ export const useLODSystem = (options?: {
     totalPolygons: 0,
     currentQuality: 'high' as 'high' | 'medium' | 'low',
     frustumCulled: 0,
-    occlusionCulled: 0
+    occlusionCulled: 0,
   });
 
-  const initialize = useCallback((camera: THREE.Camera, scene: THREE.Scene) => {
-    lodSystem.initialize(camera, scene);
-    setIsInitialized(true);
-  }, [lodSystem]);
+  const initialize = useCallback(
+    (camera: THREE.Camera, scene: THREE.Scene) => {
+      lodSystem.initialize(camera, scene);
+      setIsInitialized(true);
+    },
+    [lodSystem]
+  );
 
-  const registerObject = useCallback((config: LODConfiguration) => {
-    lodSystem.registerObject(config);
-  }, [lodSystem]);
+  const registerObject = useCallback(
+    (config: LODConfiguration) => {
+      lodSystem.registerObject(config);
+    },
+    [lodSystem]
+  );
 
-  const setQualityLevel = useCallback((quality: 'high' | 'medium' | 'low') => {
-    lodSystem.setQualityLevel(quality);
-    const stats = lodSystem.getStatistics();
-    setStatistics({
-      ...stats,
-      currentQuality: stats.currentQuality as 'high' | 'medium' | 'low'
-    });
-  }, [lodSystem]);
+  const setQualityLevel = useCallback(
+    (quality: 'high' | 'medium' | 'low') => {
+      lodSystem.setQualityLevel(quality);
+      const stats = lodSystem.getStatistics();
+      setStatistics({
+        ...stats,
+        currentQuality: stats.currentQuality as 'high' | 'medium' | 'low',
+      });
+    },
+    [lodSystem]
+  );
 
   const update = useCallback(() => {
     if (isInitialized) {
@@ -49,14 +58,17 @@ export const useLODSystem = (options?: {
       const stats = lodSystem.getStatistics();
       setStatistics({
         ...stats,
-        currentQuality: stats.currentQuality as 'high' | 'medium' | 'low'
+        currentQuality: stats.currentQuality as 'high' | 'medium' | 'low',
       });
     }
   }, [lodSystem, isInitialized]);
 
-  const getObjectDebugInfo = useCallback((objectId: string) => {
-    return lodSystem.getObjectDebugInfo(objectId);
-  }, [lodSystem]);
+  const getObjectDebugInfo = useCallback(
+    (objectId: string) => {
+      return lodSystem.getObjectDebugInfo(objectId);
+    },
+    [lodSystem]
+  );
 
   // Cleanup on unmount
   useEffect(() => {
@@ -73,15 +85,18 @@ export const useLODSystem = (options?: {
     registerObject,
     setQualityLevel,
     update,
-    getObjectDebugInfo
+    getObjectDebugInfo,
   };
 };
 
 /**
  * Hook for automatic LOD updates in render loop
  */
-export const useLODUpdater = (lodSystem: LODSystem, enabled: boolean = true) => {
-  const animationFrameRef = useRef<number>();
+export const useLODUpdater = (
+  lodSystem: LODSystem,
+  enabled: boolean = true
+) => {
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
@@ -123,7 +138,7 @@ export const useLODObject = (
     if (!baseModel || !lodSystem || isRegistered) return;
 
     const distances = options?.distances || [10, 25, 50, 100];
-    
+
     const config: LODConfiguration = {
       objectId,
       baseModel,
@@ -131,12 +146,12 @@ export const useLODObject = (
         distance,
         visible: false,
         polygonCount: 1000 * (distances.length - index), // Estimated
-        priority: index === 0 ? 'high' : index === 1 ? 'medium' : 'low'
+        priority: index === 0 ? 'high' : index === 1 ? 'medium' : 'low',
       })),
       enableFrustumCulling: options?.enableFrustumCulling ?? true,
       enableOcclusionCulling: options?.enableOcclusionCulling ?? false,
       minimumScreenSize: options?.minimumScreenSize ?? 10,
-      hysteresis: options?.hysteresis ?? 5
+      hysteresis: options?.hysteresis ?? 5,
     };
 
     try {
@@ -160,21 +175,24 @@ export const useLODObject = (
 
   return {
     isRegistered,
-    debugInfo
+    debugInfo,
   };
 };
 
 /**
  * Hook for LOD statistics monitoring
  */
-export const useLODStatistics = (lodSystem: LODSystem, updateInterval: number = 1000) => {
+export const useLODStatistics = (
+  lodSystem: LODSystem,
+  updateInterval: number = 1000
+) => {
   const [statistics, setStatistics] = useState({
     totalObjects: 0,
     visibleObjects: 0,
     totalPolygons: 0,
     currentQuality: 'high' as 'high' | 'medium' | 'low',
     frustumCulled: 0,
-    occlusionCulled: 0
+    occlusionCulled: 0,
   });
 
   useEffect(() => {
@@ -182,7 +200,7 @@ export const useLODStatistics = (lodSystem: LODSystem, updateInterval: number = 
       const stats = lodSystem.getStatistics();
       setStatistics({
         ...stats,
-        currentQuality: stats.currentQuality as 'high' | 'medium' | 'low'
+        currentQuality: stats.currentQuality as 'high' | 'medium' | 'low',
       });
     }, updateInterval);
 
@@ -200,7 +218,9 @@ export const usePerformanceLOD = (
   targetFPS: number = 60,
   enabled: boolean = true
 ) => {
-  const [currentQuality, setCurrentQuality] = useState<'high' | 'medium' | 'low'>('high');
+  const [currentQuality, setCurrentQuality] = useState<
+    'high' | 'medium' | 'low'
+  >('high');
   const fpsHistoryRef = useRef<number[]>([]);
   const lastAdjustmentRef = useRef<number>(0);
 
@@ -211,10 +231,12 @@ export const usePerformanceLOD = (
       // Simple FPS calculation
       const now = Date.now();
       fpsHistoryRef.current.push(now);
-      
+
       // Keep only last second of data
-      fpsHistoryRef.current = fpsHistoryRef.current.filter(time => now - time < 1000);
-      
+      fpsHistoryRef.current = fpsHistoryRef.current.filter(
+        time => now - time < 1000
+      );
+
       const currentFPS = fpsHistoryRef.current.length;
       const timeSinceLastAdjustment = now - lastAdjustmentRef.current;
 
@@ -250,14 +272,17 @@ export const usePerformanceLOD = (
     return () => clearInterval(interval);
   }, [lodSystem, targetFPS, currentQuality, enabled]);
 
-  const manualSetQuality = useCallback((quality: 'high' | 'medium' | 'low') => {
-    lodSystem.setQualityLevel(quality);
-    setCurrentQuality(quality);
-    lastAdjustmentRef.current = Date.now();
-  }, [lodSystem]);
+  const manualSetQuality = useCallback(
+    (quality: 'high' | 'medium' | 'low') => {
+      lodSystem.setQualityLevel(quality);
+      setCurrentQuality(quality);
+      lastAdjustmentRef.current = Date.now();
+    },
+    [lodSystem]
+  );
 
   return {
     currentQuality,
-    setQuality: manualSetQuality
+    setQuality: manualSetQuality,
   };
 };
