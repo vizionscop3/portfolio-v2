@@ -1,6 +1,14 @@
-import Portfolio from './components/Portfolio';
+import { BrowserRouter } from 'react-router-dom';
+import { NavigationOverlay, PortfolioRouter } from './components/routing';
+import { PerformanceMonitor } from './components/performance';
+import { AssetPreloader } from './components/loading';
+import { AccessibilityProvider } from './components/accessibility';
 import './styles/index.css';
-import { ErrorBoundary, setupGlobalErrorHandlers } from './utils/errorHandling';
+import {
+  ErrorBoundary,
+  setupGlobalErrorHandlers,
+} from './utils/errorHandling.tsx';
+// Portfolio assets are automatically initialized in assetRegistry
 
 // Set up global error handlers on app initialization
 setupGlobalErrorHandlers();
@@ -8,7 +16,34 @@ setupGlobalErrorHandlers();
 function App() {
   return (
     <ErrorBoundary>
-      <Portfolio />
+      <AssetPreloader
+        onLoadingComplete={() => {
+          console.log('Portfolio assets loaded successfully');
+        }}
+        onError={errors => {
+          console.warn('Asset loading errors:', errors);
+        }}
+        showLoadingScreen={true}
+        minLoadingTime={1500}
+      >
+        <BrowserRouter>
+          <AccessibilityProvider
+            onSectionNavigation={section => {
+              // This will be handled by the PortfolioRouter
+              window.location.hash = `#${section}`;
+            }}
+          >
+            <div className="relative">
+              <PortfolioRouter />
+              <NavigationOverlay />
+              <PerformanceMonitor
+                position="top-right"
+                showRecommendations={true}
+              />
+            </div>
+          </AccessibilityProvider>
+        </BrowserRouter>
+      </AssetPreloader>
     </ErrorBoundary>
   );
 }

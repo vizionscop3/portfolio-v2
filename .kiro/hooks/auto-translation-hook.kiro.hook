@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Auto Translation Generator",
+  "description": "Monitors changes to localization and text content files, automatically identifying new or modified text and generating translations for all configured target languages while maintaining context and locale-specific conventions",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "src/**/*.tsx",
+      "src/**/*.ts",
+      "public/**/*.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file containing user-facing text content has been modified. Please analyze the changes and:\n\n1. Identify any new or modified text strings that require translation\n2. Determine the primary language of the content\n3. Generate accurate translations for all configured target languages\n4. Ensure translations maintain proper context, meaning, and cultural appropriateness\n5. Follow locale-specific formatting conventions (date formats, number formats, etc.)\n6. Preserve any technical terms, brand names, or code-related content appropriately\n7. Output the translations in the appropriate file format and structure\n\nFocus on user-facing strings like UI labels, messages, content text, and any localization keys. Ignore technical configuration, code comments, or development-specific content."
+  }
+}
