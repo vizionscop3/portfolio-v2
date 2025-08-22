@@ -45,6 +45,16 @@ Successfully created three Azure Static Web Apps with proper SSL certificates au
 - **Token**:
   `593089892a3e0462ca98aa5fb50ae47dcdd0207c192c5ba311d3cb3f44d20ec202-c2959ad2-3ee2-4d46-b056-8566ae93a76700f233202f35a40f`
 
+### Phase 4: Advanced Features 🆕
+
+- **Resource Name**: `portfolio-v2-phase-4-features`
+- **URL**: https://nice-bush-09f3be20f.2.azurestaticapps.net
+- **Branch**: `phase-4-advanced-features`
+- **SSL Status**: ✅ Automatic SSL enabled
+- **GitHub Secret**: `AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_4_FEATURES`
+- **Token**:
+  `6affb3061ed5099048cb82f3a425ba40ada6a164cd50db0c061f4b5c83f9e38d02-d507eae9-a643-4cee-93e3-ba26f2fbb9c800f243009f3be20f`
+
 ## 🏗️ Azure Resources Created
 
 - **Subscription**: `db7105ca-9ee7-459e-abc0-067b8098a5fe` (TTrac)
@@ -68,6 +78,9 @@ Value: 0c4aa813b957ab04d9f01a0f01fa41909b7caae76869387bcc4927d03a2363d102-28ece0
 
 AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_3_INTERACTIVE
 Value: 593089892a3e0462ca98aa5fb50ae47dcdd0207c192c5ba311d3cb3f44d20ec202-c2959ad2-3ee2-4d46-b056-8566ae93a76700f233202f35a40f
+
+AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_4_FEATURES
+Value: 6affb3061ed5099048cb82f3a425ba40ada6a164cd50db0c061f4b5c83f9e38d02-d507eae9-a643-4cee-93e3-ba26f2fbb9c800f243009f3be20f
 ```
 
 ## 🔧 SSL Security Features Enabled

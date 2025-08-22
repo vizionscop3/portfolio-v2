@@ -8,11 +8,13 @@ Write-Host "=====================================================" -ForegroundCo
 $phase1Url = "https://kind-flower-01e3e580f.2.azurestaticapps.net"
 $phase2Url = "https://wonderful-ocean-0b976800f.2.azurestaticapps.net"
 $phase3Url = "https://lively-mud-02f35a40f.2.azurestaticapps.net"
+$phase4Url = "https://nice-bush-09f3be20f.2.azurestaticapps.net"
 
 $urls = @(
     @{ Name = "Phase 1 - Infrastructure"; Url = $phase1Url },
     @{ Name = "Phase 2 - Scene Architecture"; Url = $phase2Url },
-    @{ Name = "Phase 3 - Interactive Objects"; Url = $phase3Url }
+    @{ Name = "Phase 3 - Interactive Objects"; Url = $phase3Url },
+    @{ Name = "Phase 4 - Advanced Features"; Url = $phase4Url }
 )
 
 function Test-SSLCertificate {

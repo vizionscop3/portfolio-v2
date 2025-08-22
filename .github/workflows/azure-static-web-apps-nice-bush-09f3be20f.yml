@@ -1,0 +1,96 @@
+name: Azure Static Web Apps CI/CD - Phase 4
+
+on:
+  push:
+    branches:
+      - phase-4-advanced-features
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - phase-4-advanced-features
+
+# Prevent concurrent deployments for stability
+concurrency:
+  group: phase-4-deployment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          lfs: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.0'
+          cache: 'npm'
+
+      - name: Clean install to fix Rollup optional dependencies
+        run: |
+          echo "Installing dependencies for Phase 4 Advanced Features..."
+          rm -rf node_modules package-lock.json || true
+          npm install --legacy-peer-deps
+          echo "Dependencies installed successfully!"
+
+      - name: Build application
+        run: |
+          echo "Building Phase 4 Advanced Features..."
+          npm run build
+          echo "Build completed successfully!"
+
+      - name: Clean unnecessary files for deployment
+        run: |
+          echo "Cleaning up files for optimized deployment..."
+          # Remove development files to reduce deployment size
+          rm -rf node_modules
+          rm -rf src
+          rm -rf tests
+          rm -rf .git
+          echo "Cleanup completed. Remaining files:"
+          ls -la # List remaining files for verification
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        timeout-minutes: 10
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_4_FEATURES }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: '/' # App source code path
+          api_location: '' # Api source code path - optional
+          output_location: 'dist' # Built app content directory - optional
+          skip_app_build: true # We're building manually above
+          ###### End of Repository/Build Configurations ######
+
+      - name: Deployment Success
+        if: success()
+        run: |
+          echo "✅ Phase 4 deployment completed successfully"
+          echo "🌐 Site URL: https://nice-bush-09f3be20f.2.azurestaticapps.net"
+          echo "🔐 SSL Certificate: Automatically enabled and managed by Azure"
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_4_FEATURES }}
+          action: 'close'
+          app_location: '/'
