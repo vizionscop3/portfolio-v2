@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { SectionId } from '../types';
 import { Scene3DWrapper } from './3d';
+import { MobileScene3D } from './3d/MobileScene3D';
+import { useDevice } from '../hooks/useMobile';
 
 interface Portfolio3DProps {
   onSectionChange?: (section: SectionId) => void;
 }
 
 export const Portfolio3D: React.FC<Portfolio3DProps> = ({
-  onSectionChange: _onSectionChange,
+  onSectionChange,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const device = useDevice();
 
   // Simulate loading completion
   React.useEffect(() => {
@@ -44,27 +47,43 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({
     );
   }
 
+  const handleSectionChange = (section: string) => {
+    if (onSectionChange) {
+      onSectionChange(section as SectionId);
+    }
+  };
+
   return (
     <div className="w-full h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
-      <Scene3DWrapper />
+      {/* Conditionally render mobile or desktop scene */}
+      {device.isMobile ? (
+        <MobileScene3D
+          onObjectClick={handleSectionChange}
+          className="w-full h-full"
+        />
+      ) : (
+        <Scene3DWrapper />
+      )}
 
-      {/* Cyberpunk UI overlay */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {/* Top bar */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-magenta-500 to-cyan-400 opacity-60"></div>
+      {/* Cyberpunk UI overlay - hide on mobile for cleaner experience */}
+      {!device.isMobile && (
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          {/* Top bar */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-magenta-500 to-cyan-400 opacity-60"></div>
 
-        {/* Corner decorations */}
-        <div className="absolute top-4 right-4 text-cyan-400 font-mono text-xs">
-          <div className="border border-cyan-400 p-2 bg-black bg-opacity-50">
-            PORTFOLIO v2.0
+          {/* Corner decorations */}
+          <div className="absolute top-4 right-4 text-cyan-400 font-mono text-xs">
+            <div className="border border-cyan-400 p-2 bg-black bg-opacity-50">
+              PORTFOLIO v2.0
+            </div>
+          </div>
+
+          {/* Scan lines effect */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="w-full h-full opacity-10 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse"></div>
           </div>
         </div>
-
-        {/* Scan lines effect */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="w-full h-full opacity-10 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse"></div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import {
   PerformanceMode,
   performanceMonitor,
 } from '@/utils/performance';
+import { useDevice } from './useMobile';
 
 export interface UsePerformanceMonitorOptions {
   autoStart?: boolean;
@@ -25,9 +26,16 @@ export const usePerformanceMonitor = (
   options: UsePerformanceMonitorOptions = {}
 ): UsePerformanceMonitorReturn => {
   const { autoStart = true, onModeChange } = options;
+  const device = useDevice();
 
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
-  const [mode, setModeState] = useState<PerformanceMode>('high');
+  const [mode, setModeState] = useState<PerformanceMode>(() => {
+    // Initialize with mobile-appropriate performance mode
+    if (device.isMobile) {
+      return device.performanceLevel === 'high' ? 'medium' : 'low';
+    }
+    return 'high';
+  });
   const [isMonitoring, setIsMonitoring] = useState(false);
 
   const start = useCallback(() => {
@@ -139,4 +147,65 @@ export const useMemoryUsage = (): { used: number; formatted: string } => {
   }, []);
 
   return memory;
+};
+
+/**
+ * Mobile-specific performance optimization hook
+ */
+export const useMobilePerformanceOptimization = () => {
+  const device = useDevice();
+  const { mode, setMode } = usePerformanceMonitor();
+
+  useEffect(() => {
+    // Auto-adjust performance based on device capabilities
+    if (device.isMobile) {
+      // Aggressive optimization for mobile devices
+      if (device.performanceLevel === 'low') {
+        setMode('low');
+      } else if (device.performanceLevel === 'medium') {
+        setMode('medium');
+      } else {
+        // Even high-performance mobile devices should use medium mode
+        setMode('medium');
+      }
+    } else if (device.isTablet) {
+      // Balanced optimization for tablets
+      setMode(device.performanceLevel === 'high' ? 'high' : 'medium');
+    }
+  }, [device, setMode]);
+
+  const optimizations = useCallback(() => {
+    return {
+      // Rendering optimizations
+      maxLights: device.isMobile ? 2 : device.isTablet ? 4 : 8,
+      shadowQuality: device.performanceLevel,
+      antialiasing: device.performanceLevel !== 'low',
+      postProcessing: device.performanceLevel === 'high' && !device.isMobile,
+
+      // Texture optimizations
+      textureSize: device.isMobile ? 512 : device.isTablet ? 1024 : 2048,
+      mipmaps: device.performanceLevel !== 'low',
+
+      // LOD optimizations
+      maxDistance: device.isMobile ? 50 : device.isTablet ? 75 : 100,
+      lodBias: device.isMobile ? 0.5 : device.isTablet ? 0.75 : 1.0,
+
+      // Animation optimizations
+      reducedMotion:
+        device.isMobile &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      maxParticles: device.isMobile ? 25 : device.isTablet ? 50 : 100,
+
+      // Memory optimizations
+      garbageCollectionThreshold: device.isMobile ? 30 : 60, // seconds
+      textureMemoryLimit: device.isMobile ? 64 : device.isTablet ? 128 : 256, // MB
+    };
+  }, [device]);
+
+  return {
+    mode,
+    device,
+    optimizations: optimizations(),
+    setMode,
+  };
 };
