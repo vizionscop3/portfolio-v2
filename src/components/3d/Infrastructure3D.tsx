@@ -58,8 +58,13 @@ export class Infrastructure3D {
     try {
       logger.info('Phase 1: Initializing 3D Infrastructure');
 
-      // Detect WebGL capabilities
+      // Detect WebGL capabilities with error handling
       this.capabilities = await this.detectWebGLCapabilities();
+
+      // Check if WebGL is supported at all
+      if (!this.capabilities.isWebGLSupported) {
+        throw new Error('WebGL is not supported on this device');
+      }
 
       // Determine performance profile
       this.performanceProfile = this.calculatePerformanceProfile();
@@ -75,8 +80,51 @@ export class Infrastructure3D {
       this.isInitialized = true;
     } catch (error) {
       logger.error('Failed to initialize 3D infrastructure', error as Error);
-      throw new Error('3D Infrastructure initialization failed');
+
+      // Set fallback capabilities for graceful degradation
+      this.capabilities = this.getFallbackCapabilities();
+      this.performanceProfile = this.getFallbackPerformanceProfile();
+
+      throw new Error(
+        `3D Infrastructure initialization failed: ${(error as Error).message}`
+      );
     }
+  }
+
+  /**
+   * Get fallback capabilities when WebGL detection fails
+   */
+  private getFallbackCapabilities(): WebGLCapabilities {
+    return {
+      isWebGLSupported: false,
+      isWebGL2Supported: false,
+      maxTextureSize: 0,
+      maxRenderBufferSize: 0,
+      maxVertexTextures: 0,
+      maxFragmentTextures: 0,
+      maxCombinedTextures: 0,
+      renderer: 'Unknown',
+      vendor: 'Unknown',
+      version: 'Unknown',
+      shadingLanguageVersion: 'Unknown',
+      extensions: [],
+    };
+  }
+
+  /**
+   * Get fallback performance profile for unsupported devices
+   */
+  private getFallbackPerformanceProfile(): PerformanceProfile {
+    return {
+      tier: 'low',
+      maxComplexity: 0,
+      enableShadows: false,
+      enablePostProcessing: false,
+      enableLOD: false,
+      maxLights: 0,
+      renderScale: 0.5,
+      targetFPS: 30,
+    };
   }
 
   /**

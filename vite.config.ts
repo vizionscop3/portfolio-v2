@@ -1,6 +1,6 @@
-import react from '@vitejs/plugin-react'
-import path from 'path'
-import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,12 +24,16 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           icons: ['lucide-react'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          postprocessing: ['@react-three/postprocessing'],
+          utils: ['zustand', 'lottie-react'],
         },
       },
     },
@@ -44,4 +48,4 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     css: true,
   },
-})
+});
