@@ -1,6 +1,6 @@
 import { OrbitControls } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import React, { Suspense } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import React, { Suspense, useRef } from 'react';
 import { ObjectManager } from './ObjectManager';
 import { Tooltip } from './Tooltip';
 import { LODManager } from './LODManager';
@@ -9,6 +9,7 @@ import {
   LoadingIndicator,
   TransitionManager,
 } from './transitions';
+import { use3DAnalytics } from '../../hooks/useAnalytics';
 
 interface Scene3DProps {
   className?: string;
@@ -16,6 +17,47 @@ interface Scene3DProps {
   enableLODDebug?: boolean;
   performanceThreshold?: number;
 }
+
+// Performance tracking component for 3D scene
+const ScenePerformanceTracker: React.FC = () => {
+  const { trackScenePerformance, trackCameraMovement } = use3DAnalytics();
+  const frameCountRef = useRef(0);
+  const lastFPSLogRef = useRef(Date.now());
+  const lastCameraPositionRef = useRef({ x: 0, y: 0, z: 0 });
+
+  useFrame((state) => {
+    frameCountRef.current++;
+    const now = Date.now();
+
+    // Track FPS every 5 seconds
+    if (now - lastFPSLogRef.current > 5000) {
+      const fps = Math.round((frameCountRef.current * 1000) / (now - lastFPSLogRef.current));
+      const renderTime = state.clock.getDelta() * 1000; // Convert to ms
+      
+      trackScenePerformance(fps, renderTime, 0); // Polygon count would be tracked by LODManager
+      
+      frameCountRef.current = 0;
+      lastFPSLogRef.current = now;
+    }
+
+    // Track camera movement
+    const { x, y, z } = state.camera.position;
+    const lastPos = lastCameraPositionRef.current;
+    const distance = Math.sqrt(
+      Math.pow(x - lastPos.x, 2) + 
+      Math.pow(y - lastPos.y, 2) + 
+      Math.pow(z - lastPos.z, 2)
+    );
+
+    // Only track if camera moved significantly (> 0.1 units)
+    if (distance > 0.1) {
+      trackCameraMovement({ x, y, z });
+      lastCameraPositionRef.current = { x, y, z };
+    }
+  });
+
+  return null;
+};
 
 export const Scene3D: React.FC<Scene3DProps> = ({
   className = '',
@@ -31,6 +73,9 @@ export const Scene3D: React.FC<Scene3DProps> = ({
         gl={{ antialias: true, alpha: true }}
       >
         <Suspense fallback={null}>
+          {/* 3D Analytics Performance Tracker */}
+          <ScenePerformanceTracker />
+          
           {/* LOD System Manager */}
           <LODManager
             enableAutoOptimization={true}

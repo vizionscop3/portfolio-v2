@@ -1,6 +1,7 @@
 // Error boundary and error handling utilities
 import { ErrorInfo as ErrorInfoType } from '@/types';
 import { logger } from '@/utils/logger';
+import { analytics } from './analytics';
 import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryState {
@@ -45,6 +46,13 @@ export class ErrorBoundary extends Component<
     logger.error('React Error Boundary caught an error', error, {
       componentStack: errorInfo.componentStack,
       errorBoundary: this.constructor.name,
+    });
+
+    // Track error with analytics
+    analytics.trackError(error, {
+      componentStack: errorInfo.componentStack,
+      errorBoundary: this.constructor.name,
+      type: 'react_error_boundary'
     });
 
     // Call custom error handler if provided
@@ -136,6 +144,13 @@ export const useErrorHandler = () => {
   const handleError = (error: Error, context?: string) => {
     logger.error(`Async error${context ? ` in ${context}` : ''}`, error);
 
+    // Track async errors with analytics
+    analytics.trackError(error, {
+      type: 'async_error',
+      context: context || 'unknown',
+      timestamp: Date.now()
+    });
+
     // You can add custom error handling logic here
     // For example, show toast notifications, redirect, etc.
   };
@@ -151,6 +166,15 @@ export const withErrorHandling = <T extends (...args: any[]) => Promise<any>>(
   return ((...args: Parameters<T>) => {
     return asyncFn(...args).catch((error: Error) => {
       logger.error(`Error in ${context || asyncFn.name}`, error);
+      
+      // Track wrapped function errors with analytics
+      analytics.trackError(error, {
+        type: 'wrapped_async_error',
+        context: context || asyncFn.name,
+        functionName: asyncFn.name,
+        timestamp: Date.now()
+      });
+      
       throw error; // Re-throw to allow component-level handling
     });
   }) as T;
@@ -162,16 +186,33 @@ export const setupGlobalErrorHandlers = () => {
   window.addEventListener('unhandledrejection', event => {
     logger.error('Unhandled promise rejection', event.reason);
 
+    // Track unhandled promise rejections with analytics
+    analytics.trackError(new Error(String(event.reason)), {
+      type: 'unhandled_promise_rejection',
+      reason: String(event.reason),
+      timestamp: Date.now()
+    });
+
     // Prevent the default console error
     event.preventDefault();
   });
 
   // Handle uncaught errors
   window.addEventListener('error', event => {
-    logger.error('Uncaught error', new Error(event.message), {
+    const error = new Error(event.message);
+    logger.error('Uncaught error', error, {
       filename: event.filename,
       lineno: event.lineno,
       colno: event.colno,
+    });
+
+    // Track uncaught errors with analytics
+    analytics.trackError(error, {
+      type: 'uncaught_error',
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+      timestamp: Date.now()
     });
   });
 };

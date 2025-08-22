@@ -1,0 +1,177 @@
+name: Phase-Based Deployment
+
+on:
+  push:
+    branches:
+      - 'phase-*'
+      - 'feature/*'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - 'phase-*'
+      - 'feature/*'
+
+jobs:
+  determine-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      environment_name: ${{ steps.get-env.outputs.environment_name }}
+      deployment_token: ${{ steps.get-env.outputs.deployment_token }}
+      should_deploy: ${{ steps.get-env.outputs.should_deploy }}
+    steps:
+      - name: Determine deployment environment
+        id: get-env
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+
+          # Extract phase/feature name
+          if [[ "$BRANCH_NAME" == phase-* ]]; then
+            ENV_NAME=$(echo "$BRANCH_NAME" | sed 's/phase-//')
+            echo "environment_name=phase-$ENV_NAME" >> $GITHUB_OUTPUT
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            
+            # Map phase to Azure Static Web App token
+            case "$ENV_NAME" in
+              "1-infrastructure-setup"|"2-scene-architecture"|"3-interactive-objects")
+                echo "deployment_token=AZURE_STATIC_WEB_APPS_API_TOKEN_PHASE_FOUNDATION" >> $GITHUB_OUTPUT
+                ;;
+              "4-cyberpunk-navigation"|"5-section-transitions"|"6-content-personalization")
+                echo "deployment_token=AZURE_STATIC_WEB_APPS_API_TOKEN_PHASE_CONTENT" >> $GITHUB_OUTPUT
+                ;;
+              "7-performance-monitoring"|"8-accessibility-mobile"|"9-seo-analytics")
+                echo "deployment_token=AZURE_STATIC_WEB_APPS_API_TOKEN_PHASE_OPTIMIZATION" >> $GITHUB_OUTPUT
+                ;;
+              "10-visual-enhancements"|"11-final-integration")
+                echo "deployment_token=AZURE_STATIC_WEB_APPS_API_TOKEN_PHASE_POLISH" >> $GITHUB_OUTPUT
+                ;;
+              *)
+                echo "deployment_token=AZURE_STATIC_WEB_APPS_API_TOKEN_PHASE_PREVIEW" >> $GITHUB_OUTPUT
+                ;;
+            esac
+          elif [[ "$BRANCH_NAME" == feature/* ]]; then
+            FEATURE_NAME=$(echo "$BRANCH_NAME" | sed 's/feature\///' | sed 's/[^a-zA-Z0-9-]/-/g')
+            echo "environment_name=feature-$FEATURE_NAME" >> $GITHUB_OUTPUT
+            echo "deployment_token=AZURE_STATIC_WEB_APPS_API_TOKEN_FEATURE_PREVIEW" >> $GITHUB_OUTPUT
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+  build_and_deploy:
+    needs: determine-environment
+    if: needs.determine-environment.outputs.should_deploy == 'true' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
+    runs-on: ubuntu-latest
+    name: Build and Deploy Phase
+    environment: ${{ needs.determine-environment.outputs.environment_name }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          lfs: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run type check
+        run: npm run type-check
+
+      - name: Run linting (allow warnings for preview)
+        run: npm run lint -- --max-warnings 200 || true
+
+      - name: Run tests (allow failures for preview)
+        run: npm run test -- --run || true
+
+      - name: Build application with environment info
+        run: |
+          # Add environment info to build
+          echo "VITE_DEPLOYMENT_ENVIRONMENT=${{ needs.determine-environment.outputs.environment_name }}" > .env.local
+          echo "VITE_BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> .env.local
+          echo "VITE_GIT_COMMIT=${{ github.sha }}" >> .env.local
+          echo "VITE_BRANCH_NAME=${{ github.ref_name }}" >> .env.local
+          npm run build
+        env:
+          CI: true
+
+      - name: Install OIDC Client from Core Package
+        run: npm install @actions/core@1.6.0 @actions/http-client
+
+      - name: Get Id Token
+        uses: actions/github-script@v6
+        id: idtoken
+        with:
+          script: |
+            const coredemo = require('@actions/core')
+            return await coredemo.getIDToken()
+          result-encoding: string
+
+      - name: Deploy to Azure Static Web Apps
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets[needs.determine-environment.outputs.deployment_token] }}
+          action: 'upload'
+          app_location: '/'
+          api_location: ''
+          output_location: 'dist'
+          skip_app_build: true
+          github_id_token: ${{ steps.idtoken.outputs.result }}
+          deployment_environment: ${{ needs.determine-environment.outputs.environment_name }}
+
+      - name: Comment PR with deployment URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            const environmentName = '${{ needs.determine-environment.outputs.environment_name }}';
+            const branchName = '${{ github.ref_name }}';
+
+            const comment = `## 🚀 Phase Deployment Preview
+
+            **Environment**: \`${environmentName}\`
+            **Branch**: \`${branchName}\`
+            **Commit**: \`${{ github.sha }}\`
+
+            🔗 **Preview URL**: Will be available once deployment completes
+
+            ### What's included in this phase:
+            - Latest changes from \`${branchName}\`
+            - Independent testing environment
+            - Isolated from production
+
+            > 💡 This is a preview deployment for testing. Merge to \`main\` for production deployment.
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  close_preview:
+    needs: determine-environment
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && needs.determine-environment.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    name: Close Preview Environment
+    steps:
+      - name: Close Preview Deployment
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PHASE_PREVIEW }}
+          action: 'close'
+          app_location: '/'

@@ -8,6 +8,7 @@ import {
   Menu,
   Palette,
   ShoppingBag,
+  Share2,
   Twitter,
   User,
   X,
@@ -22,11 +23,17 @@ import {
   trackUserInteraction,
 } from '../utils/logger';
 import { BlogSection } from './sections';
+import { useSEO } from '../hooks/useSEO';
+import { SocialShareGroup } from './seo';
 
 const Portfolio: React.FC = () => {
   const [activeSection, setActiveSection] = useState<SectionId>('about');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
   const handleError = useErrorHandler();
+  
+  // SEO management
+  const { updateSEO } = useSEO();
 
   // Navigation items with icons
   const navigation = [
@@ -86,6 +93,10 @@ const Portfolio: React.FC = () => {
 
       setActiveSection(sectionId);
       setMobileMenuOpen(false);
+      setShowShareMenu(false);
+
+      // Update SEO for the new section
+      updateSEO(sectionId);
 
       logger.info(`Section changed to: ${sectionId}`);
 
@@ -347,7 +358,7 @@ const Portfolio: React.FC = () => {
             <div className="font-bold text-xl text-gray-900">Portfolio</div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex items-center space-x-8">
               {navigation.map(item => {
                 const Icon = item.icon;
                 return (
@@ -366,6 +377,33 @@ const Portfolio: React.FC = () => {
                   </button>
                 );
               })}
+              
+              {/* Share Button */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowShareMenu(!showShareMenu)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-gray-600 hover:text-gray-900"
+                  aria-label="Share this section"
+                >
+                  <Share2 size={18} />
+                  Share
+                </button>
+                
+                {/* Share Menu */}
+                {showShareMenu && (
+                  <div className="absolute right-0 top-full mt-2 bg-white border rounded-lg shadow-lg p-4 z-50 min-w-[200px]">
+                    <SocialShareGroup
+                      section={activeSection}
+                      variant="button"
+                      size="small"
+                      orientation="vertical"
+                      showLabels={true}
+                      title="Share this section"
+                      className="space-y-2"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Mobile Menu Button */}

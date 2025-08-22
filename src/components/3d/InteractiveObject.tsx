@@ -6,6 +6,7 @@ import { useInteractiveStore } from './store';
 import { InteractiveObjectProps, ObjectState } from './types';
 import { useKeyboardAccessibility } from '../accessibility/KeyboardAccessibilityProvider';
 import { useElementAccessibility } from '../../hooks/useAccessibility';
+import { use3DAnalytics } from '../../hooks/useAnalytics';
 
 export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   id,
@@ -32,6 +33,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
   const { registerObject, unregisterObject, updateObject, currentFocus } =
     useKeyboardAccessibility();
   const { announceAction } = useElementAccessibility(id, tooltip);
+  const { trackObjectHover, trackObjectClick } = use3DAnalytics();
 
   // Check if this object is currently focused via keyboard
   const isKeyboardFocused = currentFocus === id;
@@ -117,6 +119,13 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
     // Change cursor to pointer
     gl.domElement.style.cursor = 'pointer';
 
+    // Track 3D object hover analytics
+    trackObjectHover(id, 'interactive-object', {
+      section: _section,
+      tooltip,
+      position: { x: position.x, y: position.y, z: position.z }
+    });
+
     // Announce hover for screen readers
     announceAction('hover', `Interactive ${tooltip} in ${_section} section`);
 
@@ -132,6 +141,7 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
     gl,
     onHover,
     announceAction,
+    trackObjectHover,
   ]);
 
   const handlePointerLeave = useCallback(() => {
@@ -157,11 +167,19 @@ export const InteractiveObject: React.FC<InteractiveObjectProps> = ({
       setObjectState(prev => ({ ...prev, isClicked: false }));
     }, 200);
 
+    // Track 3D object click analytics
+    trackObjectClick(id, 'interactive-object', {
+      section: _section,
+      tooltip,
+      position: { x: position.x, y: position.y, z: position.z },
+      isKeyboardActivated: isKeyboardFocused
+    });
+
     // Announce activation for screen readers
     announceAction('activate', `Navigating to ${_section} section`);
 
     onClick?.();
-  }, [onClick, announceAction, _section]);
+  }, [onClick, announceAction, _section, trackObjectClick, id, tooltip, position, isKeyboardFocused]);
 
   // Animation frame for smooth hover effects
   useFrame((_state, delta) => {

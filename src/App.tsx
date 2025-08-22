@@ -1,8 +1,10 @@
 import { BrowserRouter } from 'react-router-dom';
-import { NavigationOverlay, PortfolioRouter } from './components/routing';
-import { PerformanceMonitor } from './components/performance';
-import { AssetPreloader } from './components/loading';
 import { AccessibilityProvider } from './components/accessibility';
+import { AnalyticsProvider } from './components/analytics';
+import { DeploymentInfo } from './components/DeploymentInfo';
+import { AssetPreloader } from './components/loading';
+import { PerformanceMonitor } from './components/performance';
+import { NavigationOverlay, PortfolioRouter } from './components/routing';
 import './styles/index.css';
 import {
   ErrorBoundary,
@@ -27,21 +29,28 @@ function App() {
         minLoadingTime={1500}
       >
         <BrowserRouter>
-          <AccessibilityProvider
-            onSectionNavigation={section => {
-              // This will be handled by the PortfolioRouter
-              window.location.hash = `#${section}`;
-            }}
+          <AnalyticsProvider
+            enabled={true}
+            showDashboard={process.env.NODE_ENV === 'development'}
+            dashboardPosition="bottom-right"
           >
-            <div className="relative">
-              <PortfolioRouter />
-              <NavigationOverlay />
-              <PerformanceMonitor
-                position="top-right"
-                showRecommendations={true}
-              />
-            </div>
-          </AccessibilityProvider>
+            <AccessibilityProvider
+              onSectionNavigation={section => {
+                // This will be handled by the PortfolioRouter
+                window.location.hash = `#${section}`;
+              }}
+            >
+              <div className="relative">
+                <PortfolioRouter />
+                <NavigationOverlay />
+                <PerformanceMonitor
+                  position="top-right"
+                  showRecommendations={true}
+                />
+                <DeploymentInfo />
+              </div>
+            </AccessibilityProvider>
+          </AnalyticsProvider>
         </BrowserRouter>
       </AssetPreloader>
     </ErrorBoundary>
