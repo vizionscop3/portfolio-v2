@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run seo:generate && tsc && vite build",
+    "install:safe": "npm install --legacy-peer-deps",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "preview": "vite preview",
@@ -26,8 +27,11 @@
   ],
   "author": "Your Name",
   "license": "MIT",
+  "resolutions": {
+    "@react-three/drei": "10.6.0"
+  },
   "dependencies": {
-    "@react-three/drei": "^10.6.0",
+    "@react-three/drei": "10.6.0",
     "@react-three/fiber": "^9.3.0",
     "@react-three/postprocessing": "^3.0.4",
     "clsx": "^2.1.0",
