@@ -1,9 +1,9 @@
 import { SectionId } from '@/types';
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useTransitionStore } from '../3d/transitions';
-import Portfolio3D from '../Portfolio3D';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
+import { useTransitionStore } from '../3d/transitions';
+import Portfolio3D from '../Portfolio3D'; // 3D Interactive Room
 import {
   AboutSection,
   BlogSection,
@@ -111,7 +111,7 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
   return (
     <div className={className}>
       <Routes>
-        {/* 3D Scene Route (Home) */}
+        {/* 3D Interactive Room (Home) */}
         <Route path="/" element={<Portfolio3D />} />
 
         {/* Section Routes */}
@@ -121,7 +121,7 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
         <Route path="/fashion" element={<FashionSection />} />
         <Route path="/merch" element={<MerchSection />} />
 
-        {/* Fallback to 3D scene */}
+        {/* Fallback to 3D interactive room */}
         <Route path="*" element={<Portfolio3D />} />
       </Routes>
     </div>

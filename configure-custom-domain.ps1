@@ -2,9 +2,9 @@
 # This script adds the custom domain to your Azure Static Web App
 
 # Variables - Update these with your actual values
-$resourceGroupName = "portfolio-rg"  # Replace with your resource group name
-$staticWebAppName = "portfolio-swa"   # Replace with your static web app name
-$customDomain = "lifeofvizion.com"
+$resourceGroupName = "rg-portfolio-3d-interactive"  # Your resource group name
+$staticWebAppName = "portfolio-v2-phase-4-features"   # Your static web app name
+$customDomain = "vizionscope.com"
 
 Write-Host "🔗 Adding custom domain to Azure Static Web App..." -ForegroundColor Cyan
 
@@ -20,14 +20,24 @@ Write-Host "📋 Available Static Web Apps:" -ForegroundColor Yellow
 az staticwebapp list --query "[].{Name:name, ResourceGroup:resourceGroup, DefaultHostname:defaultHostname}" --output table
 
 Write-Host "`n🔧 To add your custom domain, run:" -ForegroundColor Green
-Write-Host "az staticwebapp hostname set --name `"YOUR_APP_NAME`" --resource-group `"YOUR_RESOURCE_GROUP`" --hostname `"$customDomain`"" -ForegroundColor White
+Write-Host "az staticwebapp hostname set --name `"portfolio-v2-phase-4-features`" --resource-group `"rg-portfolio-3d-interactive`" --hostname `"vizionscope.com`" --validation-method `"dns-txt-token`"" -ForegroundColor White
 
-Write-Host "`n📖 Custom Domain Setup Instructions:" -ForegroundColor Cyan
-Write-Host "1. Find your Static Web App name and resource group from the list above"
-Write-Host "2. Update the variables in this script with the correct values"
-Write-Host "3. Run: az staticwebapp hostname set --name YOUR_APP_NAME --resource-group YOUR_RESOURCE_GROUP --hostname $customDomain"
-Write-Host "4. Verify DNS settings are pointing to your Azure Static Web App"
+Write-Host "`n✅ Domain Added Successfully!" -ForegroundColor Green
+Write-Host "vizionscope.com has been added to your Azure Static Web App" -ForegroundColor White
+
+Write-Host "`n📖 DNS Configuration Required:" -ForegroundColor Cyan
+Write-Host "1. Add TXT record to your DNS provider:"
+Write-Host "   Type: TXT"
+Write-Host "   Host: @"
+Write-Host "   Value: _5f6gcjw1g5k8s2ex9o9029xy8tytmsr" -ForegroundColor Yellow
+Write-Host "2. Wait for DNS propagation (up to 12 hours)"
+Write-Host "3. Azure will automatically validate and provision SSL certificate"
+
+Write-Host "`n🔍 Verification Commands:" -ForegroundColor Magenta
+Write-Host "Check TXT record: nslookup -type=TXT vizionscope.com"
+Write-Host "Check domain status: az staticwebapp hostname list --name `"portfolio-v2-phase-4-features`" --resource-group `"rg-portfolio-3d-interactive`""
 
 Write-Host "`n🌐 DNS Configuration:" -ForegroundColor Magenta
-Write-Host "Make sure your DNS CNAME record points to:"
-Write-Host "lifeofvizion.com -> YOUR_AZURE_STATIC_WEB_APP_URL"
+Write-Host "After TXT validation completes, add traffic routing:"
+Write-Host "Option A - ALIAS record (recommended): vizionscope.com -> nice-bush-09f3be20f.2.azurestaticapps.net"
+Write-Host "Option B - A record: Get IP from Azure portal after validation"

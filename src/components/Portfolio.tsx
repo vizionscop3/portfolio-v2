@@ -7,13 +7,14 @@ import {
   Mail,
   Menu,
   Palette,
-  ShoppingBag,
   Share2,
+  ShoppingBag,
   Twitter,
   User,
   X,
 } from 'lucide-react';
 import React, { useState } from 'react';
+import { useSEO } from '../hooks/useSEO';
 import { Project, SectionId } from '../types';
 import { cache } from '../utils/cache';
 import { useErrorHandler } from '../utils/errorHandling.tsx';
@@ -23,7 +24,6 @@ import {
   trackUserInteraction,
 } from '../utils/logger';
 import { BlogSection } from './sections';
-import { useSEO } from '../hooks/useSEO';
 import { SocialShareGroup } from './seo';
 
 const Portfolio: React.FC = () => {
@@ -388,7 +388,8 @@ const Portfolio: React.FC = () => {
                   <Share2 size={18} />
                   Share
                 </button>
-                .\scripts\verify-ssl-certificates.ps1 {/* Share Menu */}
+
+                {/* Share Menu */}
                 {showShareMenu && (
                   <div className="absolute right-0 top-full mt-2 bg-white border rounded-lg shadow-lg p-4 z-50 min-w-[200px]">
                     <SocialShareGroup
