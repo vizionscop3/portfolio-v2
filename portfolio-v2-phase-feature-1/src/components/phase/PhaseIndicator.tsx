@@ -2,13 +2,19 @@ import React from 'react';
 
 interface PhaseIndicatorProps {
   currentPhase: string;
-  phases: string[];
+  phases?: string[];
 }
 
-export const PhaseIndicator: React.FC<PhaseIndicatorProps> = ({ currentPhase, phases }) => {
+export const PhaseIndicator: React.FC<PhaseIndicatorProps> = ({
+  currentPhase,
+  phases = [],
+}) => {
+  // Validate phases is an array before using .map
+  const validPhases = Array.isArray(phases) ? phases : [];
+
   return (
     <div className="phase-indicator">
-      {phases.map((phase, index) => (
+      {validPhases.map((phase, index) => (
         <div
           key={index}
           className={`phase ${phase === currentPhase ? 'active' : ''}`}

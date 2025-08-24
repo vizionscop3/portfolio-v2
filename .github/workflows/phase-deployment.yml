@@ -3,12 +3,18 @@ name: Phase-Based Deployment
 on:
   push:
     branches:
-      - 'phase-*'
+      - 'phase-1-*'
+      - 'phase-2-*'
+      - 'phase-3-*'
+      # Excluding phase-4-advanced-features - it has its own workflow
       - 'feature/*'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - 'phase-*'
+      - 'phase-1-*'
+      - 'phase-2-*'
+      - 'phase-3-*'
+      # Excluding phase-4-advanced-features - it has its own workflow
       - 'feature/*'
 
 jobs:

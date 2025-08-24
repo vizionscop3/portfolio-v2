@@ -22,7 +22,9 @@ export const getNextPhase = (currentPhaseId: string): Phase | undefined => {
   const currentPhase = getPhaseById(currentPhaseId);
   if (!currentPhase) return undefined;
 
-  const nextPhase = phases.find(phase => phase.order === currentPhase.order + 1);
+  const nextPhase = phases.find(
+    phase => phase.order === currentPhase.order + 1
+  );
   return nextPhase;
 };
 
@@ -30,6 +32,24 @@ export const getPreviousPhase = (currentPhaseId: string): Phase | undefined => {
   const currentPhase = getPhaseById(currentPhaseId);
   if (!currentPhase) return undefined;
 
-  const previousPhase = phases.find(phase => phase.order === currentPhase.order - 1);
+  const previousPhase = phases.find(
+    phase => phase.order === currentPhase.order - 1
+  );
   return previousPhase;
+};
+
+// Add missing functions that are being imported in tests
+export const calculatePhaseProgress = (
+  currentPhase: number,
+  totalPhases: number
+): number => {
+  if (totalPhases === 0) return 0;
+  return Math.floor((currentPhase / totalPhases) * 100);
+};
+
+export const getPhaseData = (
+  phaseId: string,
+  phasesList: Phase[] = phases
+): Phase | undefined => {
+  return phasesList.find(phase => phase.id === phaseId);
 };
