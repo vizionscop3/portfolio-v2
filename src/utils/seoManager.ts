@@ -1,6 +1,6 @@
 /**
  * SEO and Meta Tag Management System
- * 
+ *
  * Provides comprehensive SEO functionality including dynamic meta tags,
  * Open Graph support, structured data, and social sharing optimization.
  */
@@ -50,7 +50,8 @@ export interface StructuredData {
 // Default SEO configuration
 export const DEFAULT_SEO: SEOData = {
   title: 'John Developer - Full Stack Developer & Creative Portfolio',
-  description: 'Immersive 3D portfolio showcasing full-stack development projects, technical blog, fashion photography, and creative merchandise. Experience cutting-edge web development in a cyberpunk virtual environment.',
+  description:
+    'Immersive 3D portfolio showcasing full-stack development projects, technical blog, fashion photography, and creative merchandise. Experience cutting-edge web development in a cyberpunk virtual environment.',
   keywords: [
     'full stack developer',
     'web development',
@@ -65,17 +66,19 @@ export const DEFAULT_SEO: SEOData = {
     'portfolio',
     'cyberpunk',
     'interactive',
-    'immersive'
+    'immersive',
   ],
   image: '/og-image.jpg',
-  type: 'website'
+  type: 'website',
 };
 
 // Section-specific SEO configurations
 export const SECTION_SEO: Record<SectionId, SEOData> = {
   about: {
-    title: 'About John Developer - Full Stack Developer & Creative Professional',
-    description: 'Learn about John Developer\'s journey in full-stack development, creative coding, and innovative web experiences. Expertise in React, TypeScript, Node.js, and immersive 3D web applications.',
+    title:
+      'About John Developer - Full Stack Developer & Creative Professional',
+    description:
+      "Learn about John Developer's journey in full-stack development, creative coding, and innovative web experiences. Expertise in React, TypeScript, Node.js, and immersive 3D web applications.",
     keywords: [
       'about john developer',
       'full stack developer bio',
@@ -84,16 +87,17 @@ export const SECTION_SEO: Record<SectionId, SEOData> = {
       'typescript developer',
       'creative developer',
       'software engineer',
-      'tech professional'
+      'tech professional',
     ],
     image: '/og-about.jpg',
     type: 'profile',
-    section: 'about'
+    section: 'about',
   },
 
   tech: {
     title: 'Technical Projects - Full Stack Development Portfolio',
-    description: 'Explore cutting-edge web development projects featuring React, TypeScript, Three.js, and modern web technologies. Interactive demos, code examples, and technical deep-dives.',
+    description:
+      'Explore cutting-edge web development projects featuring React, TypeScript, Three.js, and modern web technologies. Interactive demos, code examples, and technical deep-dives.',
     keywords: [
       'web development projects',
       'react projects',
@@ -103,16 +107,17 @@ export const SECTION_SEO: Record<SectionId, SEOData> = {
       'backend systems',
       'api development',
       'database design',
-      'cloud architecture'
+      'cloud architecture',
     ],
     image: '/og-tech.jpg',
     type: 'website',
-    section: 'tech'
+    section: 'tech',
   },
 
   blog: {
     title: 'Tech Blog - Web Development Insights & Tutorials',
-    description: 'In-depth articles on modern web development, React patterns, TypeScript tips, performance optimization, and emerging web technologies. Practical tutorials and industry insights.',
+    description:
+      'In-depth articles on modern web development, React patterns, TypeScript tips, performance optimization, and emerging web technologies. Practical tutorials and industry insights.',
     keywords: [
       'web development blog',
       'react tutorials',
@@ -121,16 +126,17 @@ export const SECTION_SEO: Record<SectionId, SEOData> = {
       'frontend optimization',
       'web performance',
       'coding best practices',
-      'tech articles'
+      'tech articles',
     ],
     image: '/og-blog.jpg',
     type: 'website',
-    section: 'blog'
+    section: 'blog',
   },
 
   fashion: {
     title: 'Fashion Photography - Creative Visual Portfolio',
-    description: 'Stunning fashion photography portfolio featuring editorial shoots, creative concepts, and artistic visual storytelling. Explore the intersection of technology and creative arts.',
+    description:
+      'Stunning fashion photography portfolio featuring editorial shoots, creative concepts, and artistic visual storytelling. Explore the intersection of technology and creative arts.',
     keywords: [
       'fashion photography',
       'creative photography',
@@ -139,16 +145,17 @@ export const SECTION_SEO: Record<SectionId, SEOData> = {
       'creative portfolio',
       'artistic photography',
       'fashion editorial',
-      'creative direction'
+      'creative direction',
     ],
     image: '/og-fashion.jpg',
     type: 'website',
-    section: 'fashion'
+    section: 'fashion',
   },
 
   merch: {
     title: 'Creative Merchandise - Developer & Designer Goods',
-    description: 'Unique merchandise collection featuring developer-themed designs, creative artwork, and tech-inspired products. Premium quality items for the creative tech community.',
+    description:
+      'Unique merchandise collection featuring developer-themed designs, creative artwork, and tech-inspired products. Premium quality items for the creative tech community.',
     keywords: [
       'developer merchandise',
       'tech t-shirts',
@@ -157,26 +164,26 @@ export const SECTION_SEO: Record<SectionId, SEOData> = {
       'developer gear',
       'tech accessories',
       'coding apparel',
-      'geek fashion'
+      'geek fashion',
     ],
     image: '/og-merch.jpg',
     type: 'website',
-    section: 'merch'
-  }
+    section: 'merch',
+  },
 };
 
 // Site configuration
 export const SITE_CONFIG = {
   siteName: 'John Developer Portfolio',
-  siteUrl: 'https://johndeveloper.dev',
+  siteUrl: 'https://vizionscope.com',
   locale: 'en_US',
   twitterSite: '@johndeveloper',
   twitterCreator: '@johndeveloper',
   author: {
     name: 'John Developer',
-    url: 'https://johndeveloper.dev',
-    email: 'hello@johndeveloper.dev'
-  }
+    url: 'https://vizionscope.com',
+    email: 'hello@vizionscope.com',
+  },
 };
 
 /**
@@ -191,7 +198,9 @@ export class SEOManager {
   updateMetaTags(section?: SectionId): void {
     const seoData = section ? SECTION_SEO[section] : DEFAULT_SEO;
     const fullTitle = section ? seoData.title : DEFAULT_SEO.title;
-    const url = section ? `${SITE_CONFIG.siteUrl}/${section}` : SITE_CONFIG.siteUrl;
+    const url = section
+      ? `${SITE_CONFIG.siteUrl}/${section}`
+      : SITE_CONFIG.siteUrl;
 
     // Update document title
     document.title = fullTitle;
@@ -215,7 +224,7 @@ export class SEOManager {
       locale: SITE_CONFIG.locale,
       twitterSite: SITE_CONFIG.twitterSite,
       twitterCreator: SITE_CONFIG.twitterCreator,
-      twitterCard: 'summary_large_image'
+      twitterCard: 'summary_large_image',
     });
 
     // Update structured data
@@ -237,11 +246,14 @@ export class SEOManager {
     this.setMetaProperty('og:locale', data.locale || 'en_US');
 
     if (data.image) {
-      const imageUrl = data.image.startsWith('http') 
-        ? data.image 
+      const imageUrl = data.image.startsWith('http')
+        ? data.image
         : `${SITE_CONFIG.siteUrl}${data.image}`;
       this.setMetaProperty('og:image', imageUrl);
-      this.setMetaProperty('og:image:alt', `${data.title} - ${SITE_CONFIG.siteName}`);
+      this.setMetaProperty(
+        'og:image:alt',
+        `${data.title} - ${SITE_CONFIG.siteName}`
+      );
       this.setMetaProperty('og:image:width', '1200');
       this.setMetaProperty('og:image:height', '630');
     }
@@ -252,10 +264,10 @@ export class SEOManager {
     this.setMetaName('twitter:creator', data.twitterCreator || '');
     this.setMetaName('twitter:title', data.title);
     this.setMetaName('twitter:description', data.description);
-    
+
     if (data.image) {
-      const imageUrl = data.image.startsWith('http') 
-        ? data.image 
+      const imageUrl = data.image.startsWith('http')
+        ? data.image
         : `${SITE_CONFIG.siteUrl}${data.image}`;
       this.setMetaName('twitter:image', imageUrl);
     }
@@ -266,7 +278,9 @@ export class SEOManager {
    */
   private updateStructuredData(seoData: SEOData, section?: SectionId): void {
     // Remove existing structured data
-    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    const existingScript = document.querySelector(
+      'script[type="application/ld+json"]'
+    );
     if (existingScript) {
       existingScript.remove();
     }
@@ -277,7 +291,9 @@ export class SEOManager {
       name: section === 'about' ? SITE_CONFIG.author.name : seoData.title,
       description: seoData.description,
       url: seoData.url || SITE_CONFIG.siteUrl,
-      image: seoData.image ? `${SITE_CONFIG.siteUrl}${seoData.image}` : undefined
+      image: seoData.image
+        ? `${SITE_CONFIG.siteUrl}${seoData.image}`
+        : undefined,
     };
 
     // Add person-specific data for about section
@@ -285,11 +301,17 @@ export class SEOManager {
       (structuredData as any).jobTitle = 'Full Stack Developer';
       (structuredData as any).worksFor = {
         '@type': 'Organization',
-        name: 'Freelance Developer'
+        name: 'Freelance Developer',
       };
       structuredData.skills = [
-        'JavaScript', 'TypeScript', 'React', 'Node.js', 'Three.js',
-        'Full Stack Development', 'Web Development', 'Creative Coding'
+        'JavaScript',
+        'TypeScript',
+        'React',
+        'Node.js',
+        'Three.js',
+        'Full Stack Development',
+        'Web Development',
+        'Creative Coding',
       ];
     }
 
@@ -299,15 +321,17 @@ export class SEOManager {
         {
           '@type': 'CreativeWork',
           name: '3D Interactive Portfolio',
-          description: 'Immersive 3D portfolio built with React Three Fiber and TypeScript',
-          url: `${SITE_CONFIG.siteUrl}/tech`
+          description:
+            'Immersive 3D portfolio built with React Three Fiber and TypeScript',
+          url: `${SITE_CONFIG.siteUrl}/tech`,
         },
         {
-          '@type': 'CreativeWork', 
+          '@type': 'CreativeWork',
           name: 'Performance Monitoring System',
-          description: 'Real-time performance monitoring and optimization system for web applications',
-          url: `${SITE_CONFIG.siteUrl}/tech`
-        }
+          description:
+            'Real-time performance monitoring and optimization system for web applications',
+          url: `${SITE_CONFIG.siteUrl}/tech`,
+        },
       ];
     }
 
@@ -329,7 +353,9 @@ export class SEOManager {
    * Set meta tag with name attribute
    */
   private setMetaName(name: string, content: string): void {
-    let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+    let meta = document.querySelector(
+      `meta[name="${name}"]`
+    ) as HTMLMetaElement;
     if (!meta) {
       meta = document.createElement('meta');
       meta.name = name;
@@ -342,7 +368,9 @@ export class SEOManager {
    * Set meta tag with property attribute (for Open Graph)
    */
   private setMetaProperty(property: string, content: string): void {
-    let meta = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
+    let meta = document.querySelector(
+      `meta[property="${property}"]`
+    ) as HTMLMetaElement;
     if (!meta) {
       meta = document.createElement('meta');
       meta.setAttribute('property', property);
@@ -369,7 +397,9 @@ export class SEOManager {
    */
   generateSharingUrls(section?: SectionId): Record<string, string> {
     const seoData = section ? SECTION_SEO[section] : DEFAULT_SEO;
-    const url = section ? `${SITE_CONFIG.siteUrl}/${section}` : SITE_CONFIG.siteUrl;
+    const url = section
+      ? `${SITE_CONFIG.siteUrl}/${section}`
+      : SITE_CONFIG.siteUrl;
     const title = encodeURIComponent(seoData.title);
     const description = encodeURIComponent(seoData.description);
 
@@ -378,7 +408,7 @@ export class SEOManager {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
       email: `mailto:?subject=${title}&body=${description}%0A%0A${encodeURIComponent(url)}`,
-      copy: url
+      copy: url,
     };
   }
 

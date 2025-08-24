@@ -1,14 +1,14 @@
 /**
  * SEO Head Component
- * 
+ *
  * Manages document head meta tags, Open Graph tags, structured data,
  * and other SEO-related elements. Can be used declaratively in components.
  */
 
 import { useEffect } from 'react';
 import { useSEO } from '../../hooks/useSEO';
-import { SEOData } from '../../utils/seoManager';
 import { SectionId } from '../../types';
+import { SEOData } from '../../utils/seoManager';
 
 interface SEOHeadProps {
   title?: string;
@@ -37,13 +37,13 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   section,
   noIndex,
   customMeta = [],
-  structuredData
+  structuredData,
 }) => {
   const { updateSEO } = useSEO({ updateOnMount: false });
 
   useEffect(() => {
     const customData: Partial<SEOData> = {};
-    
+
     if (title) customData.title = title;
     if (description) customData.description = description;
     if (keywords) customData.keywords = keywords;
@@ -56,7 +56,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     // Add custom meta tags
     customMeta.forEach(meta => {
       let element: HTMLMetaElement | null = null;
-      
+
       if (meta.name) {
         element = document.querySelector(`meta[name="${meta.name}"]`);
         if (!element) {
@@ -72,7 +72,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
           document.head.appendChild(element);
         }
       }
-      
+
       if (element) {
         element.content = meta.content;
       }
@@ -80,7 +80,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
     // Add structured data if provided
     if (structuredData) {
-      const existingScript = document.querySelector('script[type="application/ld+json"][data-custom]');
+      const existingScript = document.querySelector(
+        'script[type="application/ld+json"][data-custom]'
+      );
       if (existingScript) {
         existingScript.remove();
       }
@@ -94,7 +96,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
     // Handle noIndex
     if (noIndex) {
-      let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
+      let robotsMeta = document.querySelector(
+        'meta[name="robots"]'
+      ) as HTMLMetaElement;
       if (!robotsMeta) {
         robotsMeta = document.createElement('meta');
         robotsMeta.name = 'robots';
@@ -102,7 +106,19 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       }
       robotsMeta.content = 'noindex, nofollow';
     }
-  }, [title, description, keywords, image, url, type, section, noIndex, customMeta, structuredData, updateSEO]);
+  }, [
+    title,
+    description,
+    keywords,
+    image,
+    url,
+    type,
+    section,
+    noIndex,
+    customMeta,
+    structuredData,
+    updateSEO,
+  ]);
 
   // This component doesn't render anything
   return null;
@@ -112,7 +128,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
  * Prebuilt SEO components for common pages
  */
 
-export const AboutSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customData = {} }) => (
+export const AboutSEO: React.FC<{ customData?: Partial<SEOData> }> = ({
+  customData = {},
+}) => (
   <SEOHead
     section="about"
     title={customData.title}
@@ -125,22 +143,31 @@ export const AboutSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customDa
       '@type': 'Person',
       name: 'John Developer',
       jobTitle: 'Full Stack Developer',
-      description: 'Full Stack Developer specializing in React, TypeScript, and creative web experiences',
-      url: 'https://johndeveloper.dev/about',
+      description:
+        'Full Stack Developer specializing in React, TypeScript, and creative web experiences',
+      url: 'https://vizionscope.com/about',
       sameAs: [
         'https://github.com/johndeveloper',
         'https://linkedin.com/in/johndeveloper',
-        'https://twitter.com/johndeveloper'
+        'https://twitter.com/johndeveloper',
       ],
       skills: [
-        'JavaScript', 'TypeScript', 'React', 'Node.js', 'Three.js',
-        'Full Stack Development', 'Web Development', 'Creative Coding'
-      ]
+        'JavaScript',
+        'TypeScript',
+        'React',
+        'Node.js',
+        'Three.js',
+        'Full Stack Development',
+        'Web Development',
+        'Creative Coding',
+      ],
     }}
   />
 );
 
-export const TechSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customData = {} }) => (
+export const TechSEO: React.FC<{ customData?: Partial<SEOData> }> = ({
+  customData = {},
+}) => (
   <SEOHead
     section="tech"
     title={customData.title}
@@ -151,7 +178,9 @@ export const TechSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customDat
   />
 );
 
-export const BlogSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customData = {} }) => (
+export const BlogSEO: React.FC<{ customData?: Partial<SEOData> }> = ({
+  customData = {},
+}) => (
   <SEOHead
     section="blog"
     title={customData.title}
@@ -162,7 +191,9 @@ export const BlogSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customDat
   />
 );
 
-export const FashionSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customData = {} }) => (
+export const FashionSEO: React.FC<{ customData?: Partial<SEOData> }> = ({
+  customData = {},
+}) => (
   <SEOHead
     section="fashion"
     title={customData.title}
@@ -173,7 +204,9 @@ export const FashionSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ custom
   />
 );
 
-export const MerchSEO: React.FC<{ customData?: Partial<SEOData> }> = ({ customData = {} }) => (
+export const MerchSEO: React.FC<{ customData?: Partial<SEOData> }> = ({
+  customData = {},
+}) => (
   <SEOHead
     section="merch"
     title={customData.title}
@@ -208,10 +241,10 @@ export const BlogPostSEO: React.FC<BlogPostSEOProps> = ({
   image,
   slug,
   tags = [],
-  readTime
+  readTime,
 }) => {
-  const url = `https://johndeveloper.dev/blog/${slug}`;
-  
+  const url = `https://vizionscope.com/blog/${slug}`;
+
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -220,35 +253,37 @@ export const BlogPostSEO: React.FC<BlogPostSEOProps> = ({
     author: {
       '@type': 'Person',
       name: author,
-      url: 'https://johndeveloper.dev/about'
+      url: 'https://vizionscope.com/about',
     },
     publisher: {
       '@type': 'Organization',
       name: 'John Developer',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://johndeveloper.dev/logo.png'
-      }
+        url: 'https://vizionscope.com/logo.png',
+      },
     },
     datePublished: publishDate,
     dateModified: modifiedDate || publishDate,
     url,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': url
+      '@id': url,
     },
     ...(image && {
       image: {
         '@type': 'ImageObject',
-        url: image.startsWith('http') ? image : `https://johndeveloper.dev${image}`,
+        url: image.startsWith('http')
+          ? image
+          : `https://vizionscope.com${image}`,
         width: 1200,
-        height: 630
-      }
+        height: 630,
+      },
     }),
     ...(tags.length > 0 && { keywords: tags.join(', ') }),
     ...(readTime && {
-      timeRequired: `PT${readTime}M`
-    })
+      timeRequired: `PT${readTime}M`,
+    }),
   };
 
   return (
@@ -262,10 +297,13 @@ export const BlogPostSEO: React.FC<BlogPostSEOProps> = ({
       structuredData={structuredData}
       customMeta={[
         { property: 'article:published_time', content: publishDate },
-        { property: 'article:modified_time', content: modifiedDate || publishDate },
+        {
+          property: 'article:modified_time',
+          content: modifiedDate || publishDate,
+        },
         { property: 'article:author', content: author },
         { property: 'article:section', content: 'Technology' },
-        ...tags.map(tag => ({ property: 'article:tag', content: tag }))
+        ...tags.map(tag => ({ property: 'article:tag', content: tag })),
       ]}
     />
   );

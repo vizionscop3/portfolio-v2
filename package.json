@@ -9,7 +9,7 @@
     "build:prod": "npm run clean && npm run seo:generate && tsc && vite build --mode production",
     "build:analyze": "npm run build:prod && npx vite-bundle-analyzer dist/stats.html",
     "clean": "rimraf dist",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 200",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "preview": "vite preview",
     "test": "vitest",

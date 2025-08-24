@@ -44,20 +44,15 @@ jobs:
 
       - name: Build application
         run: |
-          echo "Building Phase 4 Advanced Features..."
-          npm run build
-          echo "Build completed successfully!"
+          echo "Building Phase 4 Advanced Features with optimizations..."
+          npm run build:prod
+          echo "Optimized build completed successfully!"
 
-      - name: Clean unnecessary files for deployment
+      - name: Verify build output
         run: |
-          echo "Cleaning up files for optimized deployment..."
-          # Remove development files to reduce deployment size
-          rm -rf node_modules
-          rm -rf src
-          rm -rf tests
-          rm -rf .git
-          echo "Cleanup completed. Remaining files:"
-          ls -la # List remaining files for verification
+          echo "Verifying build output..."
+          ls -la dist/
+          echo "Build verification complete!"
 
       - name: Build And Deploy
         id: builddeploy
