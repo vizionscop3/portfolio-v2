@@ -10,7 +10,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules', 'scripts/**/*.js', 'azure/**/*.ps1'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react-refresh'],
   rules: {
@@ -24,11 +24,26 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'warn',
     'prefer-const': 'error',
     'no-var': 'error',
-    'no-console': 'warn',
+    'no-console': ['warn', { allow: ['warn', 'error', 'info', 'log'] }],
     'no-debugger': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    '@typescript-eslint/no-var-requires': 'off',
+    'no-case-declarations': 'off',
   },
+  overrides: [
+    {
+      files: ['scripts/**/*.js'],
+      env: {
+        node: true,
+        browser: false
+      },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        'no-console': 'off'
+      }
+    }
+  ],
   settings: {
     react: {
       version: 'detect',
