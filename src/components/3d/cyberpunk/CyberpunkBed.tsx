@@ -1,5 +1,6 @@
+import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { InteractiveObject } from '../InteractiveObject';
 import { VisualFeedback } from '../VisualFeedback';
@@ -20,23 +21,9 @@ const CyberpunkBed: React.FC<CyberpunkBedProps> = ({
 }) => {
   const bedRef = useRef<THREE.Group>(null);
   const { transitionState } = useTransitionStore();
-  const [bedScene, setBedScene] = useState<THREE.Object3D | null>(null);
 
-  // Try to load the bed model
-  useEffect(() => {
-    const loader = new THREE.ObjectLoader();
-    loader.load(
-      '/models/bed.glb',
-      object => setBedScene(object),
-      undefined,
-      () => {
-        // Model not found, use procedural bed
-        setBedScene(null);
-      }
-    );
-  }, []);
-
-  // Procedural bed geometry as fallback
+  // Load the uploaded bed model
+  const { scene: bedScene } = useGLTF('/models/bed.glb'); // Procedural bed geometry as fallback
   const proceduralBed = useMemo(() => {
     const group = new THREE.Group();
 
@@ -167,7 +154,7 @@ const CyberpunkBed: React.FC<CyberpunkBedProps> = ({
     >
       <group ref={bedRef} position={position} rotation={rotation} scale={scale}>
         {bedScene ? (
-          // Use uploaded 3D model if available
+          // Use uploaded 3D model
           <primitive object={bedScene.clone()} />
         ) : (
           // Use procedural bed as fallback

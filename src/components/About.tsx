@@ -11,12 +11,12 @@ interface ServiceCardProps {
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ index, title, icon }) => (
   <motion.div
-    variants={fadeIn('right', 'spring', index * 0.5, 0.75)}
-    className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card"
+    variants={fadeIn('right', 'spring', index * 0.1, 0.75)}
+    className="flex-1 green-pink-gradient p-[1px] rounded-[20px] shadow-card min-w-[200px]"
   >
-    <div className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
-      <div className="text-6xl">{icon}</div>
-      <h3 className="text-white text-[20px] font-bold text-center">{title}</h3>
+    <div className="bg-tertiary rounded-[20px] py-4 px-6 min-h-[180px] flex justify-evenly items-center flex-col">
+      <div className="text-4xl">{icon}</div>
+      <h3 className="text-white text-[16px] font-bold text-center">{title}</h3>
     </div>
   </motion.div>
 );
@@ -44,7 +44,7 @@ export const About: React.FC = () => {
         real-world problems. Let's work together to bring your ideas to life!
       </motion.p>
 
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 flex flex-nowrap gap-4 justify-center items-stretch">
         {services.map((service, index) => (
           <ServiceCard key={service.title} index={index} {...service} />
         ))}
