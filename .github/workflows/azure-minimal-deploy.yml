@@ -32,6 +32,25 @@ jobs:
           echo "Index.html size:"
           ls -lh dist/index.html
 
+      - name: Clean workspace before deployment
+        run: |
+          echo "Cleaning workspace to reduce upload size..."
+          # Keep only essential files for deployment
+          find . -name "node_modules" -type d -exec rm -rf {} + 2>/dev/null || true
+          rm -rf .git || true
+          rm -rf tests || true
+          rm -rf scripts || true
+          rm -rf src || true
+          rm -rf portfolio-v2-phase-feature* || true
+          echo "Workspace cleaned. Only dist and config files remain."
+
+      - name: Verify clean workspace
+        run: |
+          echo "Remaining files and sizes:"
+          du -sh * 2>/dev/null || true
+          echo "Total workspace size:"
+          du -sh . 2>/dev/null || true
+
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
