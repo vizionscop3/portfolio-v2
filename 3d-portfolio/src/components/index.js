@@ -1,0 +1,11 @@
+export { default as Hero } from './Hero';
+export { default as About } from './About';
+export { default as Experience } from './Experience';
+export { default as Tech } from './Tech';
+export { default as Works } from './Works';
+export { default as Feedbacks } from './Feedbacks';
+export { default as Contact } from './Contact';
+export { default as Ball } from './canvas/Ball';
+export { default as Computers } from './canvas/Computers';
+export { default as Earth } from './canvas/Earth';
+export { default as Stars } from './canvas/Stars';

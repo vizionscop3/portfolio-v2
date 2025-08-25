@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AccessibilityProvider } from './components/accessibility';
 import { AnalyticsProvider } from './components/analytics';
 import { DeploymentInfo } from './components/DeploymentInfo';
-import { AssetPreloader } from './components/loading';
+// import { AssetPreloader } from './components/loading'; // Temporarily disabled
 import { PerformanceMonitor } from './components/performance';
 import { NavigationOverlay, PortfolioRouter } from './components/routing';
 import './styles/index.css';
@@ -18,7 +18,8 @@ setupGlobalErrorHandlers();
 function App() {
   return (
     <ErrorBoundary>
-      <AssetPreloader
+      {/* Temporarily disabled AssetPreloader to fix loading issues */}
+      {/* <AssetPreloader
         onLoadingComplete={() => {
           console.log('Portfolio assets loaded successfully');
         }}
@@ -27,32 +28,32 @@ function App() {
         }}
         showLoadingScreen={true}
         minLoadingTime={1500}
-      >
-        <BrowserRouter>
-          <AnalyticsProvider
-            enabled={true}
-            showDashboard={process.env.NODE_ENV === 'development'}
-            dashboardPosition="bottom-right"
+      > */}
+      <BrowserRouter>
+        <AnalyticsProvider
+          enabled={true}
+          showDashboard={process.env.NODE_ENV === 'development'}
+          dashboardPosition="bottom-right"
+        >
+          <AccessibilityProvider
+            onSectionNavigation={section => {
+              // This will be handled by the PortfolioRouter
+              window.location.hash = `#${section}`;
+            }}
           >
-            <AccessibilityProvider
-              onSectionNavigation={section => {
-                // This will be handled by the PortfolioRouter
-                window.location.hash = `#${section}`;
-              }}
-            >
-              <div className="relative">
-                <PortfolioRouter />
-                <NavigationOverlay />
-                <PerformanceMonitor
-                  position="top-right"
-                  showRecommendations={true}
-                />
-                <DeploymentInfo />
-              </div>
-            </AccessibilityProvider>
-          </AnalyticsProvider>
-        </BrowserRouter>
-      </AssetPreloader>
+            <div className="relative">
+              <PortfolioRouter />
+              <NavigationOverlay />
+              <PerformanceMonitor
+                position="top-right"
+                showRecommendations={true}
+              />
+              <DeploymentInfo />
+            </div>
+          </AccessibilityProvider>
+        </AnalyticsProvider>
+      </BrowserRouter>
+      {/* </AssetPreloader> */}
     </ErrorBoundary>
   );
 }

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
 import { useTransitionStore } from '../3d/transitions';
-import Portfolio3D from '../Portfolio3D'; // 3D Interactive Room
+import NewPortfolio3D from '../NewPortfolio3D'; // New tutorial-based portfolio
 import {
   AboutSection,
   BlogSection,
@@ -111,8 +111,8 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
   return (
     <div className={className}>
       <Routes>
-        {/* 3D Interactive Room (Home) */}
-        <Route path="/" element={<Portfolio3D />} />
+        {/* 3D Interactive Room (Home) - Using new tutorial-based version */}
+        <Route path="/" element={<NewPortfolio3D />} />
 
         {/* Section Routes */}
         <Route path="/about" element={<AboutSection />} />
@@ -122,7 +122,7 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
         <Route path="/merch" element={<MerchSection />} />
 
         {/* Fallback to 3D interactive room */}
-        <Route path="*" element={<Portfolio3D />} />
+        <Route path="*" element={<NewPortfolio3D />} />
       </Routes>
     </div>
   );

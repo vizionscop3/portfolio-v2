@@ -33,15 +33,19 @@
     "@react-three/drei": "^9.88.13"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@react-three/drei": "^9.88.13",
     "@react-three/fiber": "^8.15.19",
     "@react-three/postprocessing": "^2.16.2",
     "clsx": "^2.1.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "latest",
+    "maath": "^0.10.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.8.1",
+    "react-tilt": "^1.0.2",
+    "react-vertical-timeline-component": "^3.5.3",
     "tailwind-merge": "^2.2.1",
     "three": "^0.160.1",
     "zustand": "^5.0.8"
@@ -58,7 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-v8": "^1.3.1",
+    "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -72,10 +76,10 @@
     "tailwindcss": "^3.4.1",
     "terser": "^5.43.1",
     "typescript": "^5.2.2",
-    "vite": "^5.1.4",
+    "vite": "^7.1.3",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^1.0.3",
-    "vitest": "^1.3.1"
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
