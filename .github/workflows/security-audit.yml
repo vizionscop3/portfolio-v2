@@ -15,7 +15,7 @@ jobs:
   audit:
     name: Security Audit
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,15 +32,15 @@ jobs:
       - name: Run npm audit
         run: |
           npm audit --audit-level=moderate --json > audit-results.json || echo "Audit completed with findings"
-          
+
       - name: Check for high/critical vulnerabilities
         run: |
           CRITICAL=$(cat audit-results.json | jq '.metadata.vulnerabilities.critical // 0')
           HIGH=$(cat audit-results.json | jq '.metadata.vulnerabilities.high // 0')
-          
+
           echo "Critical vulnerabilities: $CRITICAL"
           echo "High vulnerabilities: $HIGH"
-          
+
           if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
             echo "❌ High or critical vulnerabilities found!"
             cat audit-results.json | jq '.vulnerabilities'
@@ -51,7 +51,7 @@ jobs:
 
       - name: Upload audit results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-audit-results
           path: audit-results.json
@@ -63,24 +63,24 @@ jobs:
           script: |
             const fs = require('fs');
             const audit = JSON.parse(fs.readFileSync('audit-results.json', 'utf8'));
-            
+
             const issueTitle = '🚨 Security Vulnerabilities Found';
             const issueBody = `
             ## Security Audit Results
-            
+
             **Critical:** ${audit.metadata.vulnerabilities.critical || 0}
             **High:** ${audit.metadata.vulnerabilities.high || 0}
             **Moderate:** ${audit.metadata.vulnerabilities.moderate || 0}
             **Low:** ${audit.metadata.vulnerabilities.low || 0}
-            
+
             Please review and fix the security vulnerabilities found in the dependencies.
-            
+
             Run \`npm audit fix\` to automatically fix issues where possible.
-            
+
             **Workflow:** ${{ github.workflow }}
             **Run:** ${{ github.run_number }}
             `;
-            
+
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
