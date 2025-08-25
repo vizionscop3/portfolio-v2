@@ -12,7 +12,7 @@ on:
 # Prevent concurrent deployments for stability
 concurrency:
   group: phase-4-deployment-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build_and_deploy_job:
@@ -57,18 +57,13 @@ jobs:
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
-        timeout-minutes: 10
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_4_FEATURES }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: '/' # App source code path
-          api_location: '' # Api source code path - optional
-          output_location: 'dist' # Built app content directory - optional
-          skip_app_build: true # We're building manually above
-          ###### End of Repository/Build Configurations ######
+          app_location: '/'
+          output_location: 'dist'
+          skip_app_build: true
 
       - name: Deployment Success
         if: success()
