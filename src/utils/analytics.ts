@@ -1,6 +1,6 @@
 /**
  * Analytics and User Tracking System
- * 
+ *
  * Provides comprehensive analytics functionality including user behavior tracking,
  * 3D interaction analytics, performance monitoring, and error reporting.
  */
@@ -17,7 +17,13 @@ export interface AnalyticsEvent {
 }
 
 export interface UserBehaviorEvent extends AnalyticsEvent {
-  event: 'page_view' | 'section_change' | 'user_interaction' | 'scroll' | 'click' | 'form_submit';
+  event:
+    | 'page_view'
+    | 'section_change'
+    | 'user_interaction'
+    | 'scroll'
+    | 'click'
+    | 'form_submit';
   properties: {
     section?: SectionId;
     element?: string;
@@ -36,7 +42,12 @@ export interface UserBehaviorEvent extends AnalyticsEvent {
 }
 
 export interface ThreeDInteractionEvent extends AnalyticsEvent {
-  event: '3d_object_hover' | '3d_object_click' | '3d_camera_move' | '3d_scene_load' | '3d_performance';
+  event:
+    | '3d_object_hover'
+    | '3d_object_click'
+    | '3d_camera_move'
+    | '3d_scene_load'
+    | '3d_performance';
   properties: {
     objectId?: string;
     objectType?: string;
@@ -54,7 +65,12 @@ export interface ThreeDInteractionEvent extends AnalyticsEvent {
 }
 
 export interface PerformanceEvent extends AnalyticsEvent {
-  event: 'performance_metric' | 'asset_load' | 'render_time' | 'memory_usage' | 'error';
+  event:
+    | 'performance_metric'
+    | 'asset_load'
+    | 'render_time'
+    | 'memory_usage'
+    | 'error';
   properties: {
     metric?: string;
     value?: number;
@@ -110,18 +126,18 @@ const DEFAULT_CONFIG: AnalyticsConfig = {
   endpoints: {
     events: '/api/analytics/events',
     errors: '/api/analytics/errors',
-    performance: '/api/analytics/performance'
+    performance: '/api/analytics/performance',
   },
   privacy: {
     respectDoNotTrack: true,
     anonymizeIPs: true,
-    collectPersonalData: false
+    collectPersonalData: false,
   },
   sampling: {
     events: 1.0,
     performance: 0.1, // Sample 10% for performance
-    errors: 1.0
-  }
+    errors: 1.0,
+  },
 };
 
 /**
@@ -139,7 +155,7 @@ export class AnalyticsManager {
   constructor(config: Partial<AnalyticsConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
     this.sessionId = this.generateSessionId();
-    
+
     if (this.shouldTrack()) {
       this.initialize();
     }
@@ -150,23 +166,23 @@ export class AnalyticsManager {
    */
   private initialize(): void {
     this.log('Analytics initialized');
-    
+
     // Start flush timer
     this.startFlushTimer();
-    
+
     // Set up performance monitoring
     this.setupPerformanceMonitoring();
-    
+
     // Track session start
     this.track('session_start', {
       sessionId: this.sessionId,
       userAgent: navigator.userAgent,
       viewport: {
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       },
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      language: navigator.language
+      language: navigator.language,
     });
 
     // Set up unload handler
@@ -177,7 +193,7 @@ export class AnalyticsManager {
     // Track visibility changes
     document.addEventListener('visibilitychange', () => {
       this.track('visibility_change', {
-        hidden: document.hidden
+        hidden: document.hidden,
       });
     });
   }
@@ -197,11 +213,11 @@ export class AnalyticsManager {
         sessionId: this.sessionId,
         timestamp: Date.now(),
         url: window.location.href,
-        referrer: document.referrer
+        referrer: document.referrer,
       },
       timestamp: Date.now(),
       sessionId: this.sessionId,
-      userId: this.userId
+      userId: this.userId,
     };
 
     this.log('Tracking event:', analyticsEvent);
@@ -219,7 +235,7 @@ export class AnalyticsManager {
   trackUserBehavior(event: UserBehaviorEvent): void {
     this.track(event.event, {
       ...event.properties,
-      category: 'user_behavior'
+      category: 'user_behavior',
     });
   }
 
@@ -229,7 +245,7 @@ export class AnalyticsManager {
   track3DInteraction(event: ThreeDInteractionEvent): void {
     this.track(event.event, {
       ...event.properties,
-      category: '3d_interaction'
+      category: '3d_interaction',
     });
   }
 
@@ -243,7 +259,7 @@ export class AnalyticsManager {
 
     this.track(event.event, {
       ...event.properties,
-      category: 'performance'
+      category: 'performance',
     });
   }
 
@@ -260,20 +276,23 @@ export class AnalyticsManager {
       errorMessage: error.message,
       stackTrace: error.stack,
       context,
-      category: 'error'
+      category: 'error',
     });
   }
 
   /**
    * Track page views
    */
-  trackPageView(section: SectionId, additionalData: Record<string, any> = {}): void {
+  trackPageView(
+    section: SectionId,
+    additionalData: Record<string, any> = {}
+  ): void {
     this.trackUserBehavior({
       event: 'page_view',
       properties: {
         section,
-        ...additionalData
-      }
+        ...additionalData,
+      },
     });
   }
 
@@ -286,8 +305,8 @@ export class AnalyticsManager {
       properties: {
         from,
         to,
-        method: method || 'navigation'
-      }
+        method: method || 'navigation',
+      },
     });
   }
 
@@ -300,8 +319,8 @@ export class AnalyticsManager {
       properties: {
         element,
         action,
-        value
-      }
+        value,
+      },
     });
   }
 
@@ -319,8 +338,8 @@ export class AnalyticsManager {
       properties: {
         objectId,
         objectType,
-        ...additionalData
-      }
+        ...additionalData,
+      },
     });
   }
 
@@ -331,8 +350,8 @@ export class AnalyticsManager {
     this.trackUserBehavior({
       event: 'scroll',
       properties: {
-        scrollDepth: depth
-      }
+        scrollDepth: depth,
+      },
     });
   }
 
@@ -385,23 +404,18 @@ export class AnalyticsManager {
    * Send events to server
    */
   private async sendEvents(events: AnalyticsEvent[]): Promise<void> {
-    try {
-      const response = await fetch(this.config.endpoints.events, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ events })
-      });
+    // Import safe API caller from logging service
+    const { logger } = await import('./loggingService');
 
-      if (!response.ok) {
-        this.log('Failed to send events:', response.statusText);
-      }
-    } catch (error) {
-      this.log('Error sending events:', error);
-      // Re-queue events on failure
-      this.eventQueue.unshift(...events);
-    }
+    // Use the safe API call method that handles localhost detection
+    await logger.safeAPICall(
+      this.config.endpoints.events,
+      {
+        method: 'POST',
+        body: JSON.stringify({ events }),
+      },
+      'analytics-events'
+    );
   }
 
   /**
@@ -426,37 +440,37 @@ export class AnalyticsManager {
     // For now, we'll use basic Performance API
 
     // Largest Contentful Paint
-    new PerformanceObserver((list) => {
+    new PerformanceObserver(list => {
       const entries = list.getEntries();
       const lastEntry = entries[entries.length - 1];
-      
+
       this.trackPerformance({
         event: 'performance_metric',
         properties: {
           metric: 'LCP',
           value: lastEntry.startTime,
-          unit: 'ms'
-        }
+          unit: 'ms',
+        },
       });
     }).observe({ entryTypes: ['largest-contentful-paint'] });
 
     // First Input Delay would need polyfill
     // Cumulative Layout Shift
-    new PerformanceObserver((list) => {
+    new PerformanceObserver(list => {
       let clsValue = 0;
       for (const entry of list.getEntries()) {
         if (!(entry as any).hadRecentInput) {
           clsValue += (entry as any).value;
         }
       }
-      
+
       this.trackPerformance({
         event: 'performance_metric',
         properties: {
           metric: 'CLS',
           value: clsValue,
-          unit: 'score'
-        }
+          unit: 'score',
+        },
       });
     }).observe({ entryTypes: ['layout-shift'] });
   }
@@ -465,18 +479,18 @@ export class AnalyticsManager {
    * Monitor resource loading
    */
   private monitorResourceLoading(): void {
-    new PerformanceObserver((list) => {
+    new PerformanceObserver(list => {
       for (const entry of list.getEntries()) {
         const resource = entry as PerformanceResourceTiming;
-        
+
         this.trackPerformance({
           event: 'asset_load',
           properties: {
             assetType: this.getResourceType(resource.name),
             assetSize: resource.transferSize,
             loadTime: resource.duration,
-            url: resource.name
-          }
+            url: resource.name,
+          },
         });
       }
     }).observe({ entryTypes: ['resource'] });
@@ -487,15 +501,15 @@ export class AnalyticsManager {
    */
   private monitorLongTasks(): void {
     if ('PerformanceObserver' in window) {
-      new PerformanceObserver((list) => {
+      new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           this.trackPerformance({
             event: 'performance_metric',
             properties: {
               metric: 'long_task',
               value: entry.duration,
-              unit: 'ms'
-            }
+              unit: 'ms',
+            },
           });
         }
       }).observe({ entryTypes: ['longtask'] });
@@ -529,11 +543,11 @@ export class AnalyticsManager {
    */
   private shouldTrack(): boolean {
     if (!this.config.enabled) return false;
-    
+
     if (this.config.privacy.respectDoNotTrack && navigator.doNotTrack === '1') {
       return false;
     }
-    
+
     return true;
   }
 
@@ -567,11 +581,11 @@ export class AnalyticsManager {
     if (this.flushTimer) {
       clearInterval(this.flushTimer);
     }
-    
+
     if (this.performanceObserver) {
       this.performanceObserver.disconnect();
     }
-    
+
     this.flush(true);
   }
 }
@@ -584,11 +598,18 @@ export const trackEvent = (event: string, properties?: Record<string, any>) => {
   analytics.track(event, properties);
 };
 
-export const trackPageView = (section: SectionId, additionalData?: Record<string, any>) => {
+export const trackPageView = (
+  section: SectionId,
+  additionalData?: Record<string, any>
+) => {
   analytics.trackPageView(section, additionalData);
 };
 
-export const trackUserInteraction = (element: string, action: string, value?: any) => {
+export const trackUserInteraction = (
+  element: string,
+  action: string,
+  value?: any
+) => {
   analytics.trackUserInteraction(element, action, value);
 };
 
@@ -598,7 +619,12 @@ export const track3DInteraction = (
   objectType: string,
   additionalData?: Record<string, any>
 ) => {
-  analytics.track3DObjectInteraction(action, objectId, objectType, additionalData);
+  analytics.track3DObjectInteraction(
+    action,
+    objectId,
+    objectType,
+    additionalData
+  );
 };
 
 export const trackError = (error: Error, context?: Record<string, any>) => {

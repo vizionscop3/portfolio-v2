@@ -1,6 +1,36 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './public/**/*.html'],
+  // Enable CSS purging for production builds
+  purge: {
+    enabled: process.env.NODE_ENV === 'production',
+    content: [
+      './index.html',
+      './src/**/*.{js,ts,jsx,tsx}',
+      './public/**/*.html',
+    ],
+    options: {
+      safelist: [
+        // Preserve 3D and animation classes
+        /^animate-/,
+        /^transition-/,
+        /^transform/,
+        /^rotate-/,
+        /^scale-/,
+        /^translate-/,
+        // Preserve cyberpunk theme classes
+        /^bg-gradient/,
+        /^text-gradient/,
+        /^green-pink-gradient/,
+        // Preserve responsive classes
+        /^sm:/,
+        /^md:/,
+        /^lg:/,
+        /^xl:/,
+        /^2xl:/,
+      ],
+    },
+  },
   theme: {
     extend: {
       colors: {

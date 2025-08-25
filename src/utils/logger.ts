@@ -19,7 +19,12 @@ class Logger {
   private logs: LogEntry[] = [];
   private maxLogs = 1000;
 
-  private createLogEntry(level: LogLevel, message: string, data?: any, error?: Error): LogEntry {
+  private createLogEntry(
+    level: LogLevel,
+    message: string,
+    data?: any,
+    error?: Error
+  ): LogEntry {
     return {
       level,
       message,
@@ -92,6 +97,12 @@ class Logger {
   }
 
   private async sendToLoggingService(entry: LogEntry) {
+    // Only send logs to external service in production environment
+    // and when not running on localhost (preview server)
+    if (this.isDevelopment || window.location.hostname === 'localhost') {
+      return; // Skip API call for development/preview
+    }
+
     try {
       // Implement your logging service integration here
       // Example: Send to Sentry, LogRocket, DataDog, etc.
@@ -128,7 +139,11 @@ export class PerformanceMonitor {
 
     if (startTime && endTime) {
       const duration = endTime - startTime;
-      logger.info(`Performance measure: ${name}`, { duration, startMark, endMark });
+      logger.info(`Performance measure: ${name}`, {
+        duration,
+        startMark,
+        endMark,
+      });
 
       if (performance.measure) {
         try {
@@ -145,14 +160,16 @@ export class PerformanceMonitor {
   }
 
   static getEntries(): PerformanceEntry[] {
-    return performance.getEntriesByType ? performance.getEntriesByType('measure') : [];
+    return performance.getEntriesByType
+      ? performance.getEntriesByType('measure')
+      : [];
   }
 }
 
 // User interaction tracking
 export const trackUserInteraction = (action: string, data?: any) => {
   logger.info(`User interaction: ${action}`, data);
-  
+
   // In production, send to analytics service
   if (!import.meta.env.DEV) {
     // Example: Google Analytics, Mixpanel, etc.

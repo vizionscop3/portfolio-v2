@@ -7,8 +7,12 @@
     "dev": "vite",
     "build": "npm run seo:generate && tsc && vite build",
     "build:prod": "npm run clean && npm run seo:generate && tsc && vite build --mode production",
+    "build:minified": "npm run clean && npm run seo:generate && tsc && vite build --mode production --minify",
     "build:analyze": "npm run build:prod && npx vite-bundle-analyzer dist/stats.html",
     "clean": "rimraf dist",
+    "compress": "npm run build:minified && node scripts/compress-assets.js",
+    "optimize": "npm run compress && npm run analyze-bundle",
+    "analyze-bundle": "npx bundlephobia .",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 200",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "preview": "vite preview",
@@ -30,7 +34,9 @@
   "author": "Your Name",
   "license": "MIT",
   "resolutions": {
-    "@react-three/drei": "^9.88.13"
+    "@react-three/drei": "^9.88.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -64,6 +70,8 @@
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.17",
+    "cssnano": "^7.1.1",
+    "cssnano-preset-advanced": "^7.0.9",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",

@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import React, { useMemo, useRef } from 'react';
+import React, { Suspense, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { InteractiveObject } from '../InteractiveObject';
 import { VisualFeedback } from '../VisualFeedback';
@@ -13,6 +13,12 @@ interface CyberpunkBedProps {
   isVisible?: boolean;
 }
 
+// Separate component for GLB model loading
+const BedModel: React.FC = () => {
+  const { scene } = useGLTF('/models/bed.glb');
+  return <primitive object={scene.clone()} />;
+};
+
 const CyberpunkBed: React.FC<CyberpunkBedProps> = ({
   position = [2, 0, 1],
   rotation = [0, 0, 0],
@@ -20,10 +26,7 @@ const CyberpunkBed: React.FC<CyberpunkBedProps> = ({
   isVisible = true,
 }) => {
   const bedRef = useRef<THREE.Group>(null);
-  const { transitionState } = useTransitionStore();
-
-  // Load the uploaded bed model
-  const { scene: bedScene } = useGLTF('/models/bed.glb'); // Procedural bed geometry as fallback
+  const { transitionState } = useTransitionStore(); // Procedural bed geometry as fallback
   const proceduralBed = useMemo(() => {
     const group = new THREE.Group();
 
@@ -153,13 +156,9 @@ const CyberpunkBed: React.FC<CyberpunkBedProps> = ({
       onClick={() => handleInteraction('click')}
     >
       <group ref={bedRef} position={position} rotation={rotation} scale={scale}>
-        {bedScene ? (
-          // Use uploaded 3D model
-          <primitive object={bedScene.clone()} />
-        ) : (
-          // Use procedural bed as fallback
-          <primitive object={proceduralBed} />
-        )}
+        <Suspense fallback={<primitive object={proceduralBed} />}>
+          <BedModel />
+        </Suspense>
 
         {/* Interactive book on bed (existing functionality) */}
         <InteractiveObject

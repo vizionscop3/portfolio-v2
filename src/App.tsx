@@ -3,14 +3,19 @@ import { AccessibilityProvider } from './components/accessibility';
 import { AnalyticsProvider } from './components/analytics';
 import { DeploymentInfo } from './components/DeploymentInfo';
 // import { AssetPreloader } from './components/loading'; // Temporarily disabled
+import { Layout } from './components/layout';
 import { PerformanceMonitor } from './components/performance';
-import { NavigationOverlay, PortfolioRouter } from './components/routing';
+import { PortfolioRouter } from './components/routing';
 import './styles/index.css';
 import {
   ErrorBoundary,
   setupGlobalErrorHandlers,
 } from './utils/errorHandling.tsx';
+import { initializeLogging } from './utils/loggingService';
 // Portfolio assets are automatically initialized in assetRegistry
+
+// Initialize professional logging system
+initializeLogging();
 
 // Set up global error handlers on app initialization
 setupGlobalErrorHandlers();
@@ -32,7 +37,7 @@ function App() {
       <BrowserRouter>
         <AnalyticsProvider
           enabled={true}
-          showDashboard={process.env.NODE_ENV === 'development'}
+          showDashboard={false}
           dashboardPosition="bottom-right"
         >
           <AccessibilityProvider
@@ -41,15 +46,14 @@ function App() {
               window.location.hash = `#${section}`;
             }}
           >
-            <div className="relative">
+            <Layout>
               <PortfolioRouter />
-              <NavigationOverlay />
               <PerformanceMonitor
                 position="top-right"
                 showRecommendations={true}
               />
               <DeploymentInfo />
-            </div>
+            </Layout>
           </AccessibilityProvider>
         </AnalyticsProvider>
       </BrowserRouter>
