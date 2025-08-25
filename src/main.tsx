@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { logger } from './utils/logger';
 
-// Log app initialization
+// Log app initialization (forced deployment)
 logger.info('Portfolio application starting...');
 
 const rootElement = document.getElementById('root');

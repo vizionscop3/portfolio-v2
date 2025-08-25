@@ -1,4 +1,5 @@
 export { AudioEngineeringStation } from './AudioEngineeringStation';
+export { CyberpunkBed } from './CyberpunkBed';
 export { CyberpunkEffects } from './CyberpunkEffects';
 export { DigitalCodex } from './DigitalCodex';
 export { HolographicComputer } from './HolographicComputer';

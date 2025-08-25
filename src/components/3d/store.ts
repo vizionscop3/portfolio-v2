@@ -6,7 +6,7 @@ import { InteractiveObjectStore, TooltipData } from './types';
 // Extended types for object management
 export interface ObjectDefinition {
   id: string;
-  type: 'computer' | 'book' | 'closet' | 'merchandise' | 'personal';
+  type: 'computer' | 'book' | 'closet' | 'merchandise' | 'personal' | 'bed';
   position: Vector3;
   rotation?: Euler;
   scale?: Vector3;

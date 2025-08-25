@@ -1,20 +1,21 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Euler, Vector3, Object3D } from 'three';
+import { Euler, Object3D, Vector3 } from 'three';
+import { useLODSystem } from '../../hooks/useLODSystem';
+import { usePerformanceMonitor } from '../../hooks/usePerformanceMonitor';
+import {
+  adjustLODForPerformance,
+  createAllLODConfigurations,
+} from '../../utils/lodConfigurations';
 import { InteractiveObject } from './InteractiveObject';
 import { PlacementConstraints, PositioningUtils } from './PositioningUtils';
 import {
   AudioEngineeringStation,
+  CyberpunkBed,
   DigitalCodex,
   HolographicComputer,
   NeonWardrobePod,
 } from './cyberpunk/index';
 import { ObjectDefinition, useInteractiveStore } from './store';
-import { useLODSystem } from '../../hooks/useLODSystem';
-import {
-  createAllLODConfigurations,
-  adjustLODForPerformance
-} from '../../utils/lodConfigurations';
-import { usePerformanceMonitor } from '../../hooks/usePerformanceMonitor';
 
 interface ObjectManagerProps {
   children?: React.ReactNode;
@@ -27,7 +28,7 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
 }) => {
   const { objects, objectStates, placements, addObject, getVisibleObjects } =
     useInteractiveStore();
-  
+
   // LOD System integration
   const { registerObject } = useLODSystem();
   const { mode: currentPerformanceMode } = usePerformanceMonitor();
@@ -90,6 +91,17 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
         isVisible: true,
         priority: 5,
       },
+      {
+        id: 'cyberpunk-bed',
+        type: 'bed',
+        position: new Vector3(2, 0, 1),
+        rotation: new Euler(0, -Math.PI / 6, 0),
+        scale: new Vector3(1, 1, 1),
+        tooltip: 'Rest & Reflection - Blog',
+        section: 'blog',
+        isVisible: true,
+        priority: 6,
+      },
     ];
 
     // Add objects with optimized positioning
@@ -141,31 +153,37 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
       digitalCodex: objectRefsMap.current.get('bed-book'),
       neonWardrobePod: objectRefsMap.current.get('closet-main'),
       holographicMerchDisplay: objectRefsMap.current.get('shelf-merch'),
-      audioEngineeringStation: objectRefsMap.current.get('desk-headphones')
+      audioEngineeringStation: objectRefsMap.current.get('desk-headphones'),
     };
 
     // Create and register LOD configurations
     const lodConfigurations = createAllLODConfigurations(models);
-    
+
     lodConfigurations.forEach(config => {
       try {
         // Adjust configuration based on current performance
-        const adjustedConfig = adjustLODForPerformance(config, currentPerformanceMode);
+        const adjustedConfig = adjustLODForPerformance(
+          config,
+          currentPerformanceMode
+        );
         registerObject(adjustedConfig);
       } catch (error) {
-        console.warn(`Failed to register LOD for ${config.objectId}:`, error);
+        // Failed to register LOD configuration
       }
     });
   }, [registerObject, currentPerformanceMode]);
 
   // Callback to register object refs for LOD system
-  const handleObjectRef = useCallback((objectId: string, ref: Object3D | null) => {
-    if (ref) {
-      objectRefsMap.current.set(objectId, ref);
-    } else {
-      objectRefsMap.current.delete(objectId);
-    }
-  }, []);
+  const handleObjectRef = useCallback(
+    (objectId: string, ref: Object3D | null) => {
+      if (ref) {
+        objectRefsMap.current.set(objectId, ref);
+      } else {
+        objectRefsMap.current.delete(objectId);
+      }
+    },
+    []
+  );
 
   const getSurfacesForObjectType = (
     type: ObjectDefinition['type']
@@ -181,6 +199,8 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
         return ['shelf', 'desk'];
       case 'personal':
         return ['desk', 'shelf'];
+      case 'bed':
+        return ['floor'];
       default:
         return ['floor'];
     }
@@ -253,6 +273,12 @@ export const ObjectManager: React.FC<ObjectManagerProps> = ({
                 scale={1}
                 isActive={state?.isHovered || false}
               />
+            ) : object.type === 'bed' ? (
+              <CyberpunkBed
+                position={[0, 0, 0]}
+                scale={[1, 1, 1]}
+                isVisible={state?.isVisible || false}
+              />
             ) : (
               /* Placeholder geometry for merchandise and other object types */
               <mesh>
@@ -285,6 +311,8 @@ const getColorForObjectType = (type: ObjectDefinition['type']): string => {
       return '#f59e0b'; // Orange
     case 'personal':
       return '#ef4444'; // Red
+    case 'bed':
+      return '#06b6d4'; // Cyan
     default:
       return '#6b7280'; // Gray
   }
