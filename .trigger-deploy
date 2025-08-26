@@ -1,0 +1,4 @@
+Deploy trigger - Fix 404 main.tsx issue
+Timestamp: 2025-08-26T00:13:00.000Z
+Issue: Azure serving source index.html instead of built dist/index.html
+Solution: Force fresh deployment with correct build output
