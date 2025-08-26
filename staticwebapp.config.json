@@ -1,6 +1,12 @@
 {
   "routes": [
     {
+      "route": "/src/*",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
+    },
+    {
       "route": "/assets/*",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
@@ -13,10 +19,14 @@
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/images/*", "/*.{png,jpg,gif,ico,svg,css,js,json}"]
+    "exclude": ["/assets/*", "/images/*", "/src/*", "/*.{png,jpg,gif,ico,svg,css,js,json,ts,tsx,jsx}"]
   },
   "mimeTypes": {
-    ".json": "application/json"
+    ".json": "application/json",
+    ".js": "application/javascript",
+    ".mjs": "application/javascript",
+    ".ts": "application/typescript",
+    ".tsx": "application/typescript"
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
