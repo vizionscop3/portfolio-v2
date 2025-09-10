@@ -1,0 +1,85 @@
+/* Adobe Fonts Integration - Using Adobe Fonts Kit */
+
+/* Global font application for the full site - TT Frantz C */
+body {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Header title styling */
+.header-title {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  background-color: #00f7ed;
+  color: #8a038c;
+}
+
+/* Quirkwood Chunky for special elements */
+.font-quirkwood {
+  font-family: 'quirkwood-chunky', 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Lee Aulder brand colors */
+:root {
+  --brand-primary: #8a038c;
+  --brand-secondary: #580259;
+  --brand-accent: #00f7ed;
+  --brand-dark: #404040;
+  --brand-black: #0d0d0d;
+}
+
+/* Matte black header */
+.header-matte-black {
+  background-color: var(--brand-black);
+  color: white;
+}
+
+/* Menu items styling */
+.menu-item {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.menu-item:hover {
+  color: var(--brand-accent);
+}
+
+/* Mobile menu hamburger styling */
+.hamburger-menu {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  .desktop-menu {
+    display: none;
+  }
+}
+
+/* Responsive design for mobile collapse */
+@media (max-width: 768px) {
+  .nav-menu {
+    position: fixed;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--brand-black);
+    border-top: 1px solid var(--brand-dark);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .nav-menu.open {
+    transform: translateY(0);
+  }
+}

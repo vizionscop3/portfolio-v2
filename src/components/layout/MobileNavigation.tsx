@@ -27,7 +27,6 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
     { id: 'about', label: 'About', path: '/about', icon: '👨‍💻' },
     { id: 'tech', label: 'Tech Stack', path: '/tech', icon: '⚡' },
     { id: 'blog', label: 'Blog', path: '/blog', icon: '📝' },
-    { id: 'fashion', label: 'Fashion', path: '/fashion', icon: '👔' },
     { id: 'merch', label: 'Merch', path: '/merch', icon: '🛒' },
   ];
 

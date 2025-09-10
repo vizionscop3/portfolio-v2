@@ -1,9 +1,6 @@
-import { SectionId } from '@/types';
-import React, { useEffect } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useNavigationAccessibility } from '../../hooks/useAccessibility';
-import { useTransitionStore } from '../3d/transitions';
-import NewPortfolio3D from '../NewPortfolio3D'; // New tutorial-based portfolio
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import CleanPortfolioHome from '../CleanPortfolioHome'; // Clean homepage without 3D
 import {
   AboutSection,
   BlogSection,
@@ -19,100 +16,11 @@ interface PortfolioRouterProps {
 export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
   className = '',
 }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { transitionState, startTransition } = useTransitionStore();
-  const { announceNavigation } = useNavigationAccessibility();
-
-  // Map routes to section IDs
-  const routeToSection = React.useMemo(
-    (): Record<string, SectionId> => ({
-      '/about': 'about',
-      '/tech': 'tech',
-      '/blog': 'blog',
-      '/fashion': 'fashion',
-      '/merch': 'merch',
-    }),
-    []
-  );
-
-  const sectionToRoute = React.useMemo(
-    (): Record<SectionId, string> => ({
-      about: '/about',
-      tech: '/tech',
-      blog: '/blog',
-      fashion: '/fashion',
-      merch: '/merch',
-    }),
-    []
-  );
-
-  // Handle URL changes and sync with 3D scene
-  useEffect(() => {
-    const currentSection = routeToSection[location.pathname];
-
-    // If we're on a section route and not currently transitioning to it
-    if (currentSection && transitionState.currentSection !== currentSection) {
-      // Only start transition if we're not already transitioning to this section
-      if (transitionState.targetSection !== currentSection) {
-        // Announce navigation for screen readers
-        const fromSection = transitionState.currentSection || 'home';
-        announceNavigation(fromSection, currentSection);
-
-        startTransition(currentSection, {
-          duration: 2.0,
-          easing: 'easeInOut',
-          fadeOverlay: true,
-        });
-      }
-    }
-  }, [
-    location.pathname,
-    transitionState,
-    startTransition,
-    routeToSection,
-    announceNavigation,
-  ]);
-
-  // Listen for 3D scene transitions and update URL
-  useEffect(() => {
-    const unsubscribe = useTransitionStore.subscribe(
-      state => state.transitionState.currentSection,
-      currentSection => {
-        if (currentSection) {
-          const targetRoute = sectionToRoute[currentSection];
-          if (targetRoute && location.pathname !== targetRoute) {
-            // Update URL without triggering navigation
-            navigate(targetRoute, { replace: true });
-          }
-        }
-      }
-    );
-
-    return unsubscribe;
-  }, [navigate, location.pathname, sectionToRoute]);
-
-  // Handle browser back/forward navigation
-  useEffect(() => {
-    const handlePopState = () => {
-      const currentSection = routeToSection[location.pathname];
-      if (currentSection) {
-        startTransition(currentSection, {
-          duration: 1.5,
-          easing: 'easeInOut',
-        });
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [location.pathname, routeToSection, startTransition]);
-
   return (
     <div className={className}>
       <Routes>
-        {/* 3D Interactive Room (Home) - Using new tutorial-based version */}
-        <Route path="/" element={<NewPortfolio3D />} />
+        {/* Clean Homepage - Fast loading without 3D */}
+        <Route path="/" element={<CleanPortfolioHome />} />
 
         {/* Section Routes */}
         <Route path="/about" element={<AboutSection />} />
@@ -121,8 +29,8 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
         <Route path="/fashion" element={<FashionSection />} />
         <Route path="/merch" element={<MerchSection />} />
 
-        {/* Fallback to 3D interactive room */}
-        <Route path="*" element={<NewPortfolio3D />} />
+        {/* Fallback to clean homepage */}
+        <Route path="*" element={<CleanPortfolioHome />} />
       </Routes>
     </div>
   );

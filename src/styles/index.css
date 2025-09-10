@@ -1,5 +1,33 @@
+/* Import revolutionary fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* Import Adobe fonts via Adobe Fonts kit */
+@import url('https://use.typekit.net/ozv6urf.css');
+/* Import header-specific Adobe fonts kit */
+@import url('https://use.typekit.net/bwc7fwp.css');
+
+/* Fallback Google fonts for similar appearance */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Import Adobe fonts styling */
+@import './adobe-fonts.css';
+
+/* Import revolutionary design system */
+@import './revolutionary.css';
+
 /* Import accessibility styles */
 @import './accessibility.css';
+
+/* Import cyberpunk theme system */
+@import './cyberpunk-theme.css';
+
+/* Import space theme */
+@import './space-theme.css';
 
 @tailwind base;
 @tailwind components;
@@ -12,17 +40,10 @@
   }
 
   body {
-    font-family:
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      sans-serif;
+    font-family: 'tt-frantz-c', sans-serif;
     line-height: 1.6;
+    background-color: #0d0d0d; /* Matte black background */
+    color: white; /* White text by default */
   }
 }
 

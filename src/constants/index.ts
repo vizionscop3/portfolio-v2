@@ -1,4 +1,4 @@
-export const HERO_TITLE = 'Denward Lee - Full Stack Developer';
+export const HERO_TITLE = 'Denward Aulder - Full Stack Developer';
 export const HERO_DESCRIPTION =
   'I develop 3D visuals, user interfaces and web applications';
 

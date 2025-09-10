@@ -1,0 +1,456 @@
+/* ================================================
+   CYBERPUNK THEME SYSTEM
+   ================================================ */
+
+/* Global Cyberpunk Variables */
+:root {
+  /* Neon Colors */
+  --cyber-purple: #915eff;
+  --cyber-cyan: #00ffff;
+  --cyber-pink: #ff00ff;
+  --cyber-green: #00ff41;
+  --cyber-orange: #ff6b00;
+  --cyber-blue: #0080ff;
+  --cyber-red: #ff073a;
+  --cyber-gold: #ffd700;
+
+  /* Background Layers */
+  --bg-primary: #050816;
+  --bg-secondary: #151030;
+  --bg-tertiary: #100d25;
+
+  /* Grid System */
+  --cyber-grid-size: 50px;
+  --cyber-grid-color: rgba(145, 94, 255, 0.1);
+}
+
+/* ================================================
+   CYBERPUNK BACKGROUNDS
+   ================================================ */
+
+.cyber-grid-bg {
+  background:
+    linear-gradient(var(--cyber-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cyber-grid-color) 1px, transparent 1px);
+  background-size: var(--cyber-grid-size) var(--cyber-grid-size);
+  position: relative;
+}
+
+.cyber-grid-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(145, 94, 255, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.hologram-bg {
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 70%
+  );
+  background-size: 100px 100px;
+  animation: hologram-drift 5s ease-in-out infinite;
+}
+
+@keyframes hologram-drift {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+/* ================================================
+   NEON GLOW EFFECTS
+   ================================================ */
+
+.neon-glow-purple {
+  box-shadow:
+    0 0 5px var(--cyber-purple),
+    0 0 10px var(--cyber-purple),
+    0 0 20px var(--cyber-purple),
+    0 0 40px var(--cyber-purple);
+}
+
+.neon-glow-cyan {
+  box-shadow:
+    0 0 5px var(--cyber-cyan),
+    0 0 10px var(--cyber-cyan),
+    0 0 20px var(--cyber-cyan),
+    0 0 40px var(--cyber-cyan);
+}
+
+.neon-glow-pink {
+  box-shadow:
+    0 0 5px var(--cyber-pink),
+    0 0 10px var(--cyber-pink),
+    0 0 20px var(--cyber-pink),
+    0 0 40px var(--cyber-pink);
+}
+
+.neon-text-purple {
+  color: var(--cyber-purple);
+  text-shadow:
+    0 0 5px var(--cyber-purple),
+    0 0 10px var(--cyber-purple),
+    0 0 20px var(--cyber-purple);
+}
+
+.neon-text-cyan {
+  color: var(--cyber-cyan);
+  text-shadow:
+    0 0 5px var(--cyber-cyan),
+    0 0 10px var(--cyber-cyan),
+    0 0 20px var(--cyber-cyan);
+}
+
+/* ================================================
+   GLITCH EFFECTS
+   ================================================ */
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 0.3s infinite;
+  color: var(--cyber-cyan);
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 0.3s infinite;
+  color: var(--cyber-pink);
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+@keyframes glitch-2 {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-2px, 2px);
+  }
+  80% {
+    transform: translate(-2px, -2px);
+  }
+}
+
+/* ================================================
+   HOLOGRAPHIC EFFECTS
+   ================================================ */
+
+.holographic-button {
+  position: relative;
+  background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-cyan));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.holographic-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    var(--cyber-purple),
+    var(--cyber-cyan),
+    var(--cyber-pink),
+    var(--cyber-green)
+  );
+  z-index: -1;
+  filter: blur(1px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.holographic-button:hover::before {
+  opacity: 1;
+}
+
+.holographic-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.holographic-button:hover::after {
+  left: 100%;
+}
+
+/* ================================================
+   SCANNING EFFECTS
+   ================================================ */
+
+.scan-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cyber-cyan),
+    transparent
+  );
+  animation: scan-horizontal 2s linear infinite;
+}
+
+@keyframes scan-horizontal {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* ================================================
+   MATRIX RAIN EFFECT
+   ================================================ */
+
+.matrix-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.1;
+}
+
+.matrix-char {
+  position: absolute;
+  color: var(--cyber-green);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  animation: matrix-fall linear infinite;
+}
+
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* ================================================
+   CYBERPUNK BUTTONS
+   ================================================ */
+
+.cyber-button {
+  position: relative;
+  background: transparent;
+  border: 2px solid var(--cyber-purple);
+  color: var(--cyber-purple);
+  font-family: 'Orbitron', monospace;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--cyber-purple);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+.cyber-button:hover {
+  color: black;
+  box-shadow: 0 0 20px var(--cyber-purple);
+}
+
+.cyber-button:hover::before {
+  width: 100%;
+}
+
+/* ================================================
+   LOADING ANIMATIONS
+   ================================================ */
+
+.cyber-loader {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(145, 94, 255, 0.1);
+  border-top: 3px solid var(--cyber-purple);
+  border-radius: 50%;
+  animation: cyber-spin 1s linear infinite;
+}
+
+@keyframes cyber-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pulse-ring {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--cyber-purple);
+  border-radius: 50%;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ================================================
+   RESPONSIVE ADJUSTMENTS
+   ================================================ */
+
+@media (max-width: 768px) {
+  :root {
+    --cyber-grid-size: 30px;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    display: none; /* Disable glitch on mobile for performance */
+  }
+
+  .matrix-rain {
+    display: none; /* Disable matrix rain on mobile */
+  }
+}
+
+/* ================================================
+   ACCESSIBILITY IMPROVEMENTS
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text::before,
+  .glitch-text::after,
+  .scan-line::before,
+  .matrix-char {
+    animation: none;
+  }
+
+  .holographic-button::after {
+    display: none;
+  }
+}
+
+/* ================================================
+   PRINT STYLES
+   ================================================ */
+
+@media print {
+  .neon-glow-purple,
+  .neon-glow-cyan,
+  .neon-glow-pink,
+  .cyber-grid-bg,
+  .hologram-bg,
+  .matrix-rain {
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  .neon-text-purple,
+  .neon-text-cyan {
+    color: black !important;
+    text-shadow: none !important;
+  }
+}

@@ -198,11 +198,9 @@
     - Add project descriptions, technologies used, and outcomes
     - _Requirements: Requirement 5_
 
-  - [x] 6.3 Implement blog content management system
-    - Create blog post display with publication dates and reading time
-    - Implement rich text formatting and code syntax highlighting
-    - Add search and filtering capabilities for blog posts
-    - _Requirements: Requirement 6_
+  - [x] 6.3 Implement blog content management system - Create blog post display with publication dates and reading
+        time - Implement rich text formatting and code syntax highlighting - Add search and filtering capabilities for
+        blog posts .n - _Requirements: Requirement 6_
 
   - [ ] 6.4 Create fashion gallery and creative showcase
     - Build curated gallery for creative work display

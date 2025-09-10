@@ -1,8 +1,8 @@
 import { SectionId } from '@/types';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useTransitionStore } from '../3d/transitions';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
+import { useTransitionStore } from '../../hooks/useTransitionStore';
 
 interface NavigationOverlayProps {
   className?: string;
@@ -13,7 +13,7 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { startTransition, transitionState } = useTransitionStore();
+  const { transitionState } = useTransitionStore();
   const { announceNavigation } = useNavigationAccessibility();
 
   const navigationItems: Array<{
@@ -24,29 +24,17 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
     { id: 'about', label: 'About', route: '/about' },
     { id: 'tech', label: 'Tech', route: '/tech' },
     { id: 'blog', label: 'Blog', route: '/blog' },
-    { id: 'fashion', label: 'Fashion', route: '/fashion' },
     { id: 'merch', label: 'Merch', route: '/merch' },
   ];
 
   const handleNavigation = (sectionId: SectionId, route: string) => {
-    if (transitionState.isTransitioning) return;
+    // Always navigate directly to ensure links work reliably
+    navigate(route);
 
     // Announce navigation for screen readers
     const currentSection =
       location.pathname === '/' ? '3D scene' : location.pathname.substring(1);
     announceNavigation(currentSection, sectionId);
-
-    // If we're on the home route (3D scene), use 3D transition
-    if (location.pathname === '/') {
-      startTransition(sectionId, {
-        duration: 2.5,
-        easing: 'easeInOut',
-        fadeOverlay: true,
-      });
-    } else {
-      // Otherwise, navigate directly
-      navigate(route);
-    }
   };
 
   const handleHomeNavigation = () => {
@@ -83,15 +71,10 @@ export const NavigationOverlay: React.FC<NavigationOverlayProps> = ({
             <button
               key={item.id}
               onClick={() => handleNavigation(item.id, item.route)}
-              disabled={transitionState.isTransitioning}
               className={`block w-full text-left px-2 py-1 text-sm transition-colors ${
                 isActive(item.route)
                   ? 'text-magenta-400 bg-magenta-900 bg-opacity-30'
                   : 'text-gray-300 hover:text-cyan-400 hover:bg-cyan-900 hover:bg-opacity-20'
-              } ${
-                transitionState.isTransitioning
-                  ? 'opacity-50 cursor-not-allowed'
-                  : ''
               }`}
               aria-label={`Navigate to ${item.label} section`}
               aria-current={isActive(item.route) ? 'page' : undefined}

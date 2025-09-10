@@ -34,7 +34,12 @@ function App() {
         showLoadingScreen={true}
         minLoadingTime={1500}
       > */}
-      <BrowserRouter>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <AnalyticsProvider
           enabled={true}
           showDashboard={false}
