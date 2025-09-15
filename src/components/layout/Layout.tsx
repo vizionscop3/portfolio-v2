@@ -7,11 +7,11 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-primary">
+    <div className="min-h-screen bg-brand-black">
       <Header />
 
       {/* Main content area */}
-      <main className="pt-16 min-h-screen">{children}</main>
+      <main className="pt-16 min-h-screen bg-brand-black">{children}</main>
     </div>
   );
 };

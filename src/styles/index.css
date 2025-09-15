@@ -8,6 +8,9 @@
 /* Import Adobe fonts via Adobe Fonts kit */
 @import url('https://use.typekit.net/ozv6urf.css');
 /* Import header-specific Adobe fonts kit */
+
+/* Import scroll transitions */
+@import './scroll-transitions.css';
 @import url('https://use.typekit.net/bwc7fwp.css');
 
 /* Fallback Google fonts for similar appearance */
@@ -42,8 +45,19 @@
   body {
     font-family: 'tt-frantz-c', sans-serif;
     line-height: 1.6;
-    background-color: #0d0d0d; /* Matte black background */
+    background-color: #0d0d0d; /* Polished semi-glossed background */
     color: white; /* White text by default */
+  }
+
+  /* Ensure all main containers use the polished semi-glossed background */
+  #root {
+    background-color: #0d0d0d;
+    min-height: 100vh;
+  }
+
+  /* Main application wrapper */
+  .app {
+    background-color: #0d0d0d;
   }
 }
 

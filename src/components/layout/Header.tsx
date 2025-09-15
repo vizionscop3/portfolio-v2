@@ -43,7 +43,6 @@ export const Header: React.FC = () => {
   };
 
   const isActive = (route: string) => location.pathname === route;
-  const isHome = location.pathname === '/';
 
   return (
     <>
@@ -57,18 +56,15 @@ export const Header: React.FC = () => {
               <div className="relative">
                 <div className="relative w-12 h-12 bg-brand-accent rounded-lg flex items-center justify-center group-hover:scale-105 transition-all duration-300">
                   <span className="text-brand-primary font-bold text-xl tracking-wide font-tt-frantz">
-                    LA
+                    VS
                   </span>
                 </div>
               </div>
 
               <div className="hidden sm:block">
-                <h1 className="text-white font-tt-frantz text-xl font-bold group-hover:opacity-90 transition-all duration-300 tracking-wider">
-                  LEE AULDER
+                <h1 className="tt-frantz-welcome tt-frantz-header-logo font-bold group-hover:opacity-90 transition-all duration-300 tracking-wider">
+                  VIZIONSCOPE
                 </h1>
-                <p className="text-white/70 text-sm font-tt-frantz tracking-wide opacity-80">
-                  &lt;FullStack Developer /&gt;
-                </p>
               </div>
             </div>
 
@@ -76,39 +72,19 @@ export const Header: React.FC = () => {
               className="hidden lg:flex items-center space-x-2"
               aria-label="Main navigation"
             >
-              <button
-                onClick={handleLogoClick}
-                className={`relative px-4 py-2 text-sm font-tt-frantz transition-all duration-300 rounded-lg border ${
-                  isHome
-                    ? 'text-brand-accent border-brand-accent/50 bg-brand-accent/10'
-                    : 'text-white hover:text-brand-accent border-transparent hover:border-brand-accent/30'
-                }`}
-                aria-current={isHome ? 'page' : undefined}
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  <span className="text-base group-hover:animate-micro-bounce transition-transform">
-                    🏠
-                  </span>
-                  <span className="tracking-wider">PORTFOLIO</span>
-                </span>
-              </button>
-
               {navigationItems.map(item => (
                 <button
                   key={item.id}
                   onClick={() => handleNavigation(item.id, item.route)}
-                  className={`relative px-4 py-2 text-sm font-tt-frantz transition-all duration-300 rounded-lg border group ${
+                  className={`relative px-4 py-2 transition-all duration-300 rounded-lg border group ${
                     isActive(item.route)
-                      ? 'text-brand-accent border-brand-accent/50 bg-brand-accent/10'
-                      : 'text-white hover:text-brand-accent border-transparent hover:border-brand-accent/30'
+                      ? 'border-brand-accent/50 bg-brand-accent/10'
+                      : 'border-transparent hover:border-brand-accent/30'
                   }`}
                   aria-current={isActive(item.route) ? 'page' : undefined}
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    <span className="text-base group-hover:animate-micro-scale transition-transform">
-                      {item.icon}
-                    </span>
-                    <span className="tracking-wider font-tt-frantz">
+                    <span className="tracking-wider tt-frantz-menu tt-frantz-header-menu">
                       {item.label.toUpperCase()}
                     </span>
                   </span>
@@ -120,7 +96,7 @@ export const Header: React.FC = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden relative p-2 rounded-lg border border-brand-accent/30 bg-brand-accent/5 hover:bg-brand-accent/10 transition-all duration-300 group"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
+              aria-expanded={isMobileMenuOpen}
             >
               <svg
                 className={`w-6 h-6 text-white transition-transform ${
@@ -177,35 +153,19 @@ export const Header: React.FC = () => {
             aria-label="Mobile navigation"
           >
             <div className="flex flex-col space-y-4">
-              <button
-                onClick={handleLogoClick}
-                className={`text-left p-4 transition-all duration-300 rounded-lg border ${
-                  isHome
-                    ? 'border-brand-accent/50 bg-brand-accent/10 text-brand-accent'
-                    : 'border-brand-dark/30 hover:border-brand-accent/30 text-white hover:text-brand-accent'
-                }`}
-                aria-current={isHome ? 'page' : undefined}
-              >
-                <span className="flex items-center gap-3 font-tt-frantz">
-                  <span className="text-xl">🏠</span>
-                  <span className="tracking-wider">PORTFOLIO</span>
-                </span>
-              </button>
-
               {navigationItems.map(item => (
                 <button
                   key={item.id}
                   onClick={() => handleNavigation(item.id, item.route)}
                   className={`text-left p-4 transition-all duration-300 rounded-lg border ${
                     isActive(item.route)
-                      ? 'border-brand-accent/50 bg-brand-accent/10 text-brand-accent'
-                      : 'border-brand-dark/30 hover:border-brand-accent/30 text-white hover:text-brand-accent'
+                      ? 'border-brand-accent/50 bg-brand-accent/10'
+                      : 'border-brand-dark/30 hover:border-brand-accent/30'
                   }`}
                   aria-current={isActive(item.route) ? 'page' : undefined}
                 >
-                  <span className="flex items-center gap-3 font-tt-frantz">
-                    <span className="text-xl">{item.icon}</span>
-                    <span className="tracking-wider">
+                  <span className="flex items-center gap-3">
+                    <span className="tracking-wider tt-frantz-menu tt-frantz-header-menu">
                       {item.label.toUpperCase()}
                     </span>
                   </span>

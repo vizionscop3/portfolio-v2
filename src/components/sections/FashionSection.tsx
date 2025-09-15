@@ -1,7 +1,4 @@
 import {
-  ArrowLeft,
-  ArrowRight,
-  Calendar,
   Camera,
   Eye,
   Grid,
@@ -15,6 +12,7 @@ import {
   Zap,
 } from 'lucide-react';
 import React, { useState } from 'react';
+import { CollapsibleSection, ExpandableCard } from '../ui/CollapsibleSection';
 
 interface LookbookItem {
   id: string;
@@ -44,7 +42,6 @@ export const FashionSection: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<LookbookItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('masonry');
-  const [currentSlide, setCurrentSlide] = useState(0);
 
   const lookbookItems: LookbookItem[] = [
     {
@@ -198,16 +195,6 @@ export const FashionSection: React.FC = () => {
     return cat?.color || 'cyber-primary';
   };
 
-  const nextSlide = () => {
-    setCurrentSlide(prev => (prev + 1) % filteredItems.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      prev => (prev - 1 + filteredItems.length) % filteredItems.length
-    );
-  };
-
   const formatNumber = (num: number): string => {
     if (num >= 1000) {
       return (num / 1000).toFixed(1) + 'K';
@@ -261,10 +248,7 @@ export const FashionSection: React.FC = () => {
               {categories.map(category => (
                 <button
                   key={category.id}
-                  onClick={() => {
-                    setSelectedCategory(category.id);
-                    setCurrentSlide(0);
-                  }}
+                  onClick={() => setSelectedCategory(category.id)}
                   className={`relative px-4 py-3 font-mono font-bold tracking-wider transition-all duration-300 rounded-xl mx-1 ${
                     selectedCategory === category.id
                       ? `text-${category.color} bg-gradient-to-r from-${category.color}/20 to-cyber-secondary/20 shadow-cyber-glow animate-cyber-pulse`
@@ -316,166 +300,140 @@ export const FashionSection: React.FC = () => {
         {!selectedItem ? (
           /* Lookbook Gallery */
           <div className="space-y-8">
-            {/* Featured Slider */}
+            {/* Featured Highlights */}
             {filteredItems.some(item => item.featured) && (
-              <div className="card-revolutionary relative overflow-hidden">
-                <div className="relative h-96 lg:h-[500px]">
+              <CollapsibleSection
+                title="Featured Looks"
+                subtitle={`${filteredItems.filter(item => item.featured).length} spotlight collections`}
+                icon={<Star className="w-5 h-5" />}
+                variant="card"
+                defaultOpen={true}
+              >
+                <div className="space-y-4">
                   {filteredItems
                     .filter(item => item.featured)
-                    .map((item, index) => (
+                    .map(item => (
                       <div
                         key={item.id}
-                        className={`absolute inset-0 transition-opacity duration-500 ${
-                          index ===
-                          currentSlide %
-                            filteredItems.filter(i => i.featured).length
-                            ? 'opacity-100'
-                            : 'opacity-0'
-                        }`}
+                        className="relative overflow-hidden rounded-lg bg-gradient-to-r from-cyber-primary/10 to-cyber-secondary/10 p-4 cursor-pointer hover:from-cyber-primary/20 hover:to-cyber-secondary/20 transition-all duration-300"
+                        onClick={() => setSelectedItem(item)}
                       >
-                        <div className="relative h-full bg-gradient-to-r from-black/50 to-transparent">
+                        <div className="flex items-center gap-4">
                           <img
                             src={item.imageUrl}
                             alt={item.title}
-                            className="w-full h-full object-cover"
+                            className="w-16 h-16 object-cover rounded-lg"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70"></div>
-
-                          {/* Overlay Content */}
-                          <div className="absolute bottom-0 left-0 right-0 p-8">
-                            <div className="max-w-2xl">
-                              <div className="flex items-center gap-3 mb-4">
-                                <Star className="w-6 h-6 text-neon-gold" />
-                                <span
-                                  className={`text-${getCategoryColor(item.category)} font-cyber text-sm uppercase tracking-wider`}
-                                >
-                                  {item.category} • Featured
-                                </span>
-                              </div>
-
-                              <h3 className="text-4xl font-cyber text-white mb-4">
-                                {item.title}
-                              </h3>
-
-                              <p className="text-secondary text-lg mb-6 line-clamp-2">
-                                {item.description}
-                              </p>
-
-                              <div className="flex items-center gap-6 text-sm text-secondary font-mono">
-                                <div className="flex items-center gap-2">
-                                  <Heart className="w-4 h-4 text-neon-pink" />
-                                  <span>{formatNumber(item.likes)}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Eye className="w-4 h-4 text-cyber-secondary" />
-                                  <span>{formatNumber(item.views)}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Calendar className="w-4 h-4" />
-                                  <span>{item.year}</span>
-                                </div>
-                              </div>
-
-                              <button
-                                onClick={() => setSelectedItem(item)}
-                                className="button-revolutionary button-primary mt-6"
-                              >
-                                VIEW.DETAILS
-                              </button>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Star className="w-4 h-4 text-neon-gold" />
+                              <span className="text-cyber-primary text-xs uppercase tracking-wider">
+                                {item.category} • Featured
+                              </span>
+                            </div>
+                            <h3 className="text-white font-medium mb-1">
+                              {item.title}
+                            </h3>
+                            <p className="text-secondary text-sm line-clamp-1">
+                              {item.description}
+                            </p>
+                            <div className="flex items-center gap-4 text-xs text-secondary mt-2">
+                              <span className="flex items-center gap-1">
+                                <Heart className="w-3 h-3 text-neon-pink" />
+                                {formatNumber(item.likes)}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Eye className="w-3 h-3" />
+                                {formatNumber(item.views)}
+                              </span>
+                              <span>{item.year}</span>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
-
-                  {/* Navigation Arrows */}
-                  <button
-                    onClick={prevSlide}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-cyber-primary/50 transition-colors"
-                    aria-label="Previous slide"
-                  >
-                    <ArrowLeft className="w-6 h-6 text-white" />
-                  </button>
-                  <button
-                    onClick={nextSlide}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-cyber-primary/50 transition-colors"
-                    aria-label="Next slide"
-                  >
-                    <ArrowRight className="w-6 h-6 text-white" />
-                  </button>
                 </div>
-              </div>
+              </CollapsibleSection>
             )}
 
-            {/* Gallery Grid */}
-            <div
-              className={`grid gap-6 ${
-                viewMode === 'grid'
-                  ? 'md:grid-cols-2 lg:grid-cols-3'
-                  : 'masonry-grid'
-              }`}
-            >
+            {/* Fashion Lookbook */}
+            <div className="space-y-4">
               {filteredItems.map(item => (
-                <div
+                <ExpandableCard
                   key={item.id}
-                  className="card-revolutionary hover-glow group cursor-pointer relative overflow-hidden"
-                  onClick={() => setSelectedItem(item)}
-                >
-                  <div className="relative">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                        viewMode === 'grid' ? 'h-80' : 'h-auto'
-                      }`}
-                    />
-
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <div className="flex items-center gap-2 mb-2">
-                          {item.featured && (
-                            <Star className="w-4 h-4 text-neon-gold" />
-                          )}
-                          <span
-                            className={`text-${getCategoryColor(item.category)} font-cyber text-xs uppercase tracking-wider`}
-                          >
-                            {item.category}
-                          </span>
-                        </div>
-
-                        <h3 className="text-xl font-cyber text-white mb-2">
-                          {item.title}
-                        </h3>
-
-                        <div className="flex items-center justify-between text-xs text-secondary font-mono">
-                          <span>{item.collection}</span>
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-1">
-                              <Heart className="w-3 h-3 text-neon-pink" />
-                              <span>{formatNumber(item.likes)}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              <span>{formatNumber(item.views)}</span>
-                            </div>
-                          </div>
-                        </div>
+                  title={item.title}
+                  summary={`${item.collection} • ${item.category} • ${item.year}`}
+                  icon={
+                    <div className="flex items-center gap-2">
+                      <Image className="w-5 h-5" />
+                      {item.featured && (
+                        <Star className="w-4 h-4 text-neon-gold" />
+                      )}
+                      <div className="flex gap-1">
+                        {item.colorPalette.slice(0, 3).map((color, index) => (
+                          <div
+                            key={index}
+                            className="w-3 h-3 rounded-full border border-white/50"
+                            data-color={color}
+                          ></div>
+                        ))}
                       </div>
                     </div>
+                  }
+                >
+                  <div className="space-y-4">
+                    {/* Description */}
+                    <p className="text-secondary leading-relaxed">
+                      {item.description}
+                    </p>
 
-                    {/* Color Palette */}
-                    <div className="absolute top-4 right-4 flex gap-1">
-                      {item.colorPalette.slice(0, 3).map((color, index) => (
-                        <div
-                          key={index}
-                          className="w-3 h-3 rounded-full border border-white/50"
-                          data-color={color}
-                        ></div>
+                    {/* Image Preview */}
+                    <div className="relative overflow-hidden rounded-lg">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-48 object-cover"
+                      />
+                    </div>
+
+                    {/* Engagement Stats */}
+                    <div className="flex items-center justify-between text-xs text-secondary border-t border-white/10 pt-3">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1">
+                          <Heart className="w-3 h-3 text-neon-pink" />
+                          <span>{formatNumber(item.likes)}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Eye className="w-3 h-3" />
+                          <span>{formatNumber(item.views)}</span>
+                        </div>
+                      </div>
+                      <span className="text-cyber-primary text-xs uppercase tracking-wider">
+                        {item.category}
+                      </span>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {item.tags.slice(0, 4).map(tag => (
+                        <span
+                          key={tag}
+                          className="px-2 py-1 bg-cyber-primary/20 text-cyber-primary rounded text-xs"
+                        >
+                          #{tag}
+                        </span>
                       ))}
                     </div>
+
+                    {/* View Details Button */}
+                    <button
+                      onClick={() => setSelectedItem(item)}
+                      className="w-full px-4 py-2 bg-cyber-primary hover:bg-cyber-primary/80 text-white rounded-lg text-sm font-medium transition-colors duration-300"
+                    >
+                      View Full Details
+                    </button>
                   </div>
-                </div>
+                </ExpandableCard>
               ))}
             </div>
           </div>
@@ -636,29 +594,35 @@ export const FashionSection: React.FC = () => {
           </div>
         )}
 
-        {/* Revolutionary Fashion Philosophy */}
+        {/* Fashion Philosophy */}
         {!selectedItem && (
-          <div className="mt-16 card-revolutionary text-center revolutionary-shimmer">
-            <div className="p-8">
-              <h3 className="text-3xl font-cyber text-revolutionary mb-4 flex items-center justify-center gap-3">
-                <span className="text-4xl animate-revolutionary">👗</span>
-                FASHION.PHILOSOPHY
-              </h3>
-              <p className="text-white mb-6 text-lg max-w-4xl mx-auto leading-relaxed">
-                Fashion is the bridge between personal expression and cultural
-                conversation. Each look tells a story, each collection explores
-                an idea, and every collaboration pushes the boundaries of what
-                wearable art can become. This is fashion as a form of digital
-                and physical storytelling.
-              </p>
-              <div className="flex justify-center gap-4 flex-wrap">
-                <div className="pill-revolutionary">Sustainable Practices</div>
-                <div className="pill-revolutionary">Tech Integration</div>
-                <div className="pill-revolutionary">Cultural Fusion</div>
-                <div className="pill-revolutionary">Artistic Expression</div>
-                <div className="pill-revolutionary">Future-Forward</div>
+          <div className="mt-12">
+            <CollapsibleSection
+              title="Fashion Philosophy"
+              subtitle="Storytelling through wearable art and digital expression"
+              icon={<span className="text-2xl">👗</span>}
+              variant="card"
+              defaultOpen={false}
+            >
+              <div className="text-center space-y-6">
+                <p className="text-white leading-relaxed">
+                  Fashion is the bridge between personal expression and cultural
+                  conversation. Each look tells a story, each collection
+                  explores an idea, and every collaboration pushes the
+                  boundaries of what wearable art can become. This is fashion as
+                  a form of digital and physical storytelling.
+                </p>
+                <div className="flex justify-center gap-4 flex-wrap">
+                  <div className="pill-revolutionary">
+                    Sustainable Practices
+                  </div>
+                  <div className="pill-revolutionary">Tech Integration</div>
+                  <div className="pill-revolutionary">Cultural Fusion</div>
+                  <div className="pill-revolutionary">Artistic Expression</div>
+                  <div className="pill-revolutionary">Future-Forward</div>
+                </div>
               </div>
-            </div>
+            </CollapsibleSection>
           </div>
         )}
       </div>

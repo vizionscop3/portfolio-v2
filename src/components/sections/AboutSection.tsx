@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { SpacePageLayout } from '../layout/SpacePageLayout';
+import { CollapsibleSection } from '../ui/CollapsibleSection';
+import { MinimalSkillGrid } from '../ui/MinimalComponents';
 import { SpaceCard } from '../ui/SpaceCard';
 
 interface Skill {
@@ -111,7 +113,7 @@ Projects:
       <div className="max-w-6xl mx-auto">
         {/* Tab Navigation */}
         <div className="flex justify-center mb-12">
-          <div className="flex bg-black/50 backdrop-blur-sm rounded-2xl p-2 border border-purple-500/30">
+          <div className="flex bg-brand-black/50 backdrop-blur-sm rounded-2xl p-2 border border-purple-500/30">
             <button
               onClick={() => setActiveTab('about')}
               className={`relative px-8 py-4 font-semibold tracking-wider transition-all duration-300 rounded-xl ${
@@ -214,195 +216,199 @@ Projects:
               </div>
             </SpaceCard>
 
-            {/* Skills Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Skills Overview */}
+            <div className="space-y-6">
               {Object.entries(skills).map(([category, skillList]) => (
-                <SpaceCard key={category} gradient="dark">
-                  <h3 className="text-2xl font-bold text-purple-400 mb-6 capitalize glow-text">
-                    {category} Skills
-                  </h3>
-                  <div className="space-y-4">
-                    {skillList.map((skill: Skill) => (
-                      <div key={skill.name} className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center gap-2 text-white">
-                            <span className="text-xl">{skill.icon}</span>
-                            {skill.name}
-                          </span>
-                          <span className="text-purple-300 text-sm font-mono">
-                            {skill.level}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-black/50 rounded-full h-2 overflow-hidden">
-                          <div
-                            className={`h-full bg-gradient-to-r from-purple-500 to-purple-300 rounded-full transition-all duration-1000`}
-                            style={{ width: `${skill.level}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </SpaceCard>
+                <CollapsibleSection
+                  key={category}
+                  title={`${category.charAt(0).toUpperCase() + category.slice(1)} Skills`}
+                  subtitle={`${skillList.length} core technologies and expertise areas`}
+                  icon={
+                    category === 'frontend' ? (
+                      <Code className="w-5 h-5" />
+                    ) : category === 'backend' ? (
+                      <Zap className="w-5 h-5" />
+                    ) : (
+                      <Headphones className="w-5 h-5" />
+                    )
+                  }
+                  variant="card"
+                  defaultOpen={category === 'frontend'}
+                >
+                  <MinimalSkillGrid skills={skillList} showLevels />
+                </CollapsibleSection>
               ))}
             </div>
 
-            {/* About Content */}
-            <SpaceCard gradient="accent">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-2xl font-bold text-purple-400 mb-4 glow-text">
-                    My Journey
-                  </h3>
-                  <p className="text-gray-300 mb-4">
+            {/* Professional Background */}
+            <div className="space-y-6">
+              <CollapsibleSection
+                title="My Journey"
+                subtitle="From audio engineering to full-stack development"
+                icon={<MapPin className="w-5 h-5" />}
+                variant="card"
+                defaultOpen={true}
+              >
+                <div className="space-y-4 text-gray-300">
+                  <p>
                     I'm a passionate Full-Stack Developer with a deep love for
                     creating immersive digital experiences. My journey began
                     with audio engineering, which taught me the importance of
                     precision, creativity, and attention to detail.
                   </p>
-                  <p className="text-gray-300 mb-4">
+                  <p>
                     Over the past 5+ years, I've specialized in React,
                     TypeScript, and Three.js, building everything from
                     interactive 3D experiences to enterprise applications. I
                     believe in the power of technology to create meaningful
                     connections and solve real-world problems.
                   </p>
-                  <p className="text-gray-300">
+                  <p>
                     When I'm not coding, you'll find me producing music,
                     exploring new technologies, or working on creative projects
                     that blend art and technology.
                   </p>
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-purple-400 mb-4 glow-text">
-                    What I Do
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Code
-                        className="text-purple-400 mt-1 flex-shrink-0"
-                        size={20}
-                      />
-                      <div>
-                        <h4 className="text-white font-semibold">
-                          Full-Stack Development
-                        </h4>
-                        <p className="text-gray-400 text-sm">
-                          Building scalable web applications with modern
-                          technologies
-                        </p>
-                      </div>
+              </CollapsibleSection>
+
+              <CollapsibleSection
+                title="What I Do"
+                subtitle="Core services and expertise areas"
+                icon={<Code className="w-5 h-5" />}
+                variant="card"
+                defaultOpen={false}
+              >
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Code
+                      className="text-purple-400 mt-1 flex-shrink-0"
+                      size={20}
+                    />
+                    <div>
+                      <h4 className="text-white font-semibold">
+                        Full-Stack Development
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        Building scalable web applications with modern
+                        technologies
+                      </p>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <Globe
-                        className="text-purple-400 mt-1 flex-shrink-0"
-                        size={20}
-                      />
-                      <div>
-                        <h4 className="text-white font-semibold">
-                          3D Web Experiences
-                        </h4>
-                        <p className="text-gray-400 text-sm">
-                          Creating immersive interactive experiences with
-                          Three.js
-                        </p>
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Globe
+                      className="text-purple-400 mt-1 flex-shrink-0"
+                      size={20}
+                    />
+                    <div>
+                      <h4 className="text-white font-semibold">
+                        3D Web Experiences
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        Creating immersive interactive experiences with Three.js
+                      </p>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <Headphones
-                        className="text-purple-400 mt-1 flex-shrink-0"
-                        size={20}
-                      />
-                      <div>
-                        <h4 className="text-white font-semibold">
-                          Audio Engineering
-                        </h4>
-                        <p className="text-gray-400 text-sm">
-                          Professional audio production and web audio
-                          development
-                        </p>
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Headphones
+                      className="text-purple-400 mt-1 flex-shrink-0"
+                      size={20}
+                    />
+                    <div>
+                      <h4 className="text-white font-semibold">
+                        Audio Engineering
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        Professional audio production and web audio development
+                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
-            </SpaceCard>
+              </CollapsibleSection>
+            </div>
           </div>
         )}
 
         {activeTab === 'resume' && (
-          <SpaceCard className="text-center">
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-purple-400 mb-4 glow-text">
-                Download Resume
-              </h3>
-              <p className="text-gray-300 mb-6">
-                Get a comprehensive overview of my experience, skills, and
-                achievements.
-              </p>
-              <button
-                onClick={downloadResume}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl hover:from-purple-500 hover:to-purple-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30"
-              >
-                <Download size={20} className="mr-2" />
-                Download Resume
-              </button>
-            </div>
+          <div className="space-y-6">
+            <CollapsibleSection
+              title="Resume Download"
+              subtitle="Comprehensive overview of experience and skills"
+              icon={<Download className="w-5 h-5" />}
+              variant="card"
+              defaultOpen={true}
+            >
+              <div className="text-center space-y-4">
+                <p className="text-gray-300">
+                  Get a comprehensive overview of my experience, skills, and
+                  achievements.
+                </p>
+                <button
+                  onClick={downloadResume}
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl hover:from-purple-500 hover:to-purple-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30"
+                >
+                  <Download size={20} className="mr-2" />
+                  Download Resume
+                </button>
+              </div>
+            </CollapsibleSection>
 
-            <div className="text-left space-y-6">
-              <div>
-                <h4 className="text-xl font-bold text-purple-400 mb-2">
-                  Experience Highlights
-                </h4>
-                <div className="space-y-3 text-gray-300">
-                  <p>• 5+ years of full-stack development experience</p>
-                  <p>
-                    • Led development of immersive 3D web experiences serving
-                    10,000+ users
+            <CollapsibleSection
+              title="Experience Highlights"
+              subtitle="Key achievements and professional milestones"
+              icon={<Zap className="w-5 h-5" />}
+              variant="card"
+              defaultOpen={false}
+            >
+              <div className="space-y-3 text-gray-300">
+                <p>• 5+ years of full-stack development experience</p>
+                <p>
+                  • Led development of immersive 3D web experiences serving
+                  10,000+ users
+                </p>
+                <p>
+                  • Specialized in React, TypeScript, Three.js, and modern web
+                  technologies
+                </p>
+                <p>
+                  • Professional audio engineering and web audio development
+                </p>
+                <p>• Strong focus on accessibility and user experience</p>
+              </div>
+            </CollapsibleSection>
+
+            <CollapsibleSection
+              title="Technical Expertise"
+              subtitle="Core technologies and development tools"
+              icon={<Code className="w-5 h-5" />}
+              variant="card"
+              defaultOpen={false}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+                <div>
+                  <p className="font-semibold text-purple-300">Frontend</p>
+                  <p className="text-sm">
+                    React, TypeScript, Three.js, Next.js, Tailwind CSS
                   </p>
-                  <p>
-                    • Specialized in React, TypeScript, Three.js, and modern web
-                    technologies
+                </div>
+                <div>
+                  <p className="font-semibold text-purple-300">Backend</p>
+                  <p className="text-sm">
+                    Node.js, Express, PostgreSQL, GraphQL, MongoDB
                   </p>
-                  <p>
-                    • Professional audio engineering and web audio development
+                </div>
+                <div>
+                  <p className="font-semibold text-purple-300">Tools & Cloud</p>
+                  <p className="text-sm">AWS, Docker, Git, Figma, VS Code</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-purple-300">Creative</p>
+                  <p className="text-sm">
+                    Audio Engineering, UI/UX Design, Motion Graphics
                   </p>
-                  <p>• Strong focus on accessibility and user experience</p>
                 </div>
               </div>
-
-              <div>
-                <h4 className="text-xl font-bold text-purple-400 mb-2">
-                  Technical Expertise
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
-                  <div>
-                    <p className="font-semibold text-purple-300">Frontend</p>
-                    <p className="text-sm">
-                      React, TypeScript, Three.js, Next.js, Tailwind CSS
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-purple-300">Backend</p>
-                    <p className="text-sm">
-                      Node.js, Express, PostgreSQL, GraphQL, MongoDB
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-purple-300">
-                      Tools & Cloud
-                    </p>
-                    <p className="text-sm">AWS, Docker, Git, Figma, VS Code</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-purple-300">Creative</p>
-                    <p className="text-sm">
-                      Audio Engineering, UI/UX Design, Motion Graphics
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </SpaceCard>
+            </CollapsibleSection>
+          </div>
         )}
       </div>
     </SpacePageLayout>

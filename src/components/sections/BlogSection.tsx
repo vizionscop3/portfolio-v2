@@ -1,5 +1,5 @@
+import { motion } from 'framer-motion';
 import {
-  BookOpen,
   Calendar,
   Clock,
   Eye,
@@ -14,6 +14,8 @@ import {
   Zap,
 } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { fadeIn, textVariant } from '../../utils/motion';
+import { CollapsibleSection, ExpandableCard } from '../ui/CollapsibleSection';
 
 interface VizionPost {
   id: string;
@@ -131,11 +133,21 @@ The philosophical implications are fascinating: what does it mean for a computer
   ];
 
   const categories = [
-    { id: 'all', label: 'ALL.POSTS', icon: '📝', color: 'cyber-primary' },
-    { id: 'personal', label: 'PERSONAL', icon: '💭', color: 'cyber-secondary' },
-    { id: 'tech', label: 'TECHNICAL', icon: '⚡', color: 'cyber-accent' },
-    { id: 'creative', label: 'CREATIVE', icon: '🎨', color: 'neon-pink' },
-    { id: 'inspiration', label: 'INSPIRATION', icon: '✨', color: 'neon-gold' },
+    { id: 'all', label: 'ALL TRANSMISSIONS', icon: '🌌', color: 'purple-400' },
+    { id: 'personal', label: 'PERSONAL LOGS', icon: '�', color: 'purple-300' },
+    { id: 'tech', label: 'TECH INSIGHTS', icon: '⚡', color: 'purple-500' },
+    {
+      id: 'creative',
+      label: 'CREATIVE VISIONS',
+      icon: '✨',
+      color: 'purple-200',
+    },
+    {
+      id: 'inspiration',
+      label: 'COSMIC INSPIRATION',
+      icon: '🌟',
+      color: 'purple-600',
+    },
   ];
 
   const filteredPosts =
@@ -175,170 +187,145 @@ The philosophical implications are fascinating: what does it mean for a computer
     return cat?.icon || '📝';
   };
 
-  const getCategoryColor = (category: string) => {
-    const cat = categories.find(c => c.id === category);
-    return cat?.color || 'cyber-primary';
-  };
-
   return (
-    <div className="page-revolutionary revolutionary-gpu-accelerated">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Revolutionary Hero Section */}
-        <div className="text-center mb-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyber-primary/10 to-cyber-secondary/10 rounded-3xl blur-3xl"></div>
-          <div className="relative">
-            <div className="mb-8 relative inline-block">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyber-primary via-cyber-secondary to-cyber-accent rounded-full blur-xl opacity-75 animate-revolutionary"></div>
-              <div className="relative w-32 h-32 bg-gradient-to-br from-cyber-primary via-cyber-secondary to-cyber-accent rounded-full flex items-center justify-center shadow-revolutionary">
-                <BookOpen className="w-16 h-16 text-black" />
-              </div>
-            </div>
+    <section className="relative w-full min-h-screen py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <motion.div
+          variants={textVariant(0.1)}
+          initial="hidden"
+          animate="show"
+          className="text-center mb-16"
+        >
+          <p className="sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider">
+            Digital Thoughts
+          </p>
+          <h2 className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]">
+            Blog.
+          </h2>
+        </motion.div>
 
-            <h1 className="text-6xl font-cyber font-bold text-revolutionary mb-4 tracking-wider animate-cyber-pulse">
-              LIFE.OF.VIZION
-            </h1>
-            <div className="text-xl font-mono text-cyber-glow mb-6 tracking-wide">
-              &lt;Stories | Insights | Audio Experiences /&gt;
+        <CollapsibleSection
+          title="Digital Thoughts & Insights"
+          subtitle={`${vizionPosts.length} posts exploring technology, creativity, and human experience`}
+          icon={<Headphones className="w-5 h-5" />}
+          variant="minimal"
+          defaultOpen={true}
+          className="mb-12"
+        >
+          <div className="flex justify-center items-center gap-6 text-gray-300 text-sm flex-wrap py-4">
+            <div className="flex items-center gap-2 group hover:text-purple-300 transition-colors duration-300">
+              <Headphones className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+              <span>Audio Experiences</span>
             </div>
-
-            <div className="flex justify-center items-center gap-6 text-secondary text-sm font-mono flex-wrap">
-              <div className="flex items-center gap-2 animate-micro-bounce">
-                <Headphones className="w-4 h-4 text-cyber-primary" />
-                <span>Audio-First Content</span>
-              </div>
-              <div className="flex items-center gap-2 animate-micro-bounce delay-100">
-                <Eye className="w-4 h-4 text-cyber-secondary" />
-                <span>Accessible Design</span>
-              </div>
-              <div className="flex items-center gap-2 animate-micro-bounce delay-200">
-                <Zap className="w-4 h-4 text-cyber-accent" />
-                <span>{vizionPosts.length} Posts Published</span>
-              </div>
+            <div className="flex items-center gap-2 group hover:text-purple-300 transition-colors duration-300">
+              <Eye className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+              <span>Deep Insights</span>
+            </div>
+            <div className="flex items-center gap-2 group hover:text-purple-300 transition-colors duration-300">
+              <Zap className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+              <span>Professional Narration</span>
             </div>
           </div>
-        </div>
+        </CollapsibleSection>
 
-        {/* Revolutionary Category Filter */}
-        <div className="flex justify-center mb-12 overflow-x-auto">
-          <div className="card-revolutionary p-2 inline-flex rounded-2xl min-w-max">
+        {/* Category Filter */}
+        <div className="flex justify-center mb-8 overflow-x-auto">
+          <div className="bg-tertiary border border-white/10 p-1 rounded-xl inline-flex">
             {categories.map(category => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`relative px-6 py-4 font-mono font-bold tracking-wider transition-all duration-300 rounded-xl mx-1 ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 mx-1 ${
                   selectedCategory === category.id
-                    ? `text-${category.color} bg-gradient-to-r from-${category.color}/20 to-cyber-secondary/20 shadow-cyber-glow animate-cyber-pulse`
-                    : 'text-secondary hover:text-white hover:bg-cyber-primary/10 interactive-revolutionary'
+                    ? 'bg-[#915EFF] text-white shadow-lg'
+                    : 'text-secondary hover:text-white hover:bg-white/5'
                 }`}
               >
-                {selectedCategory === category.id && (
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-r from-${category.color}/10 to-cyber-secondary/10 rounded-xl animate-energy-wave`}
-                  ></div>
-                )}
-                <span className="relative z-10 flex items-center gap-2">
-                  <span className="text-lg">{category.icon}</span>
-                  {category.label}
+                <span className="flex items-center gap-2">
+                  <span className="text-sm">{category.icon}</span>
+                  <span className="text-xs font-medium">{category.label}</span>
                 </span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Blog Post Grid */}
+        {/* Minimalistic Blog Posts */}
         {!selectedPost ? (
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="space-y-4">
             {filteredPosts.map(post => (
-              <article
+              <ExpandableCard
                 key={post.id}
-                className={`card-revolutionary hover-glow group cursor-pointer ${
-                  post.featured ? 'ring-2 ring-cyber-primary/30' : ''
-                }`}
-                onClick={() => setSelectedPost(post)}
-              >
-                <div className="p-8">
-                  {/* Post Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <span className={`text-2xl animate-micro-bounce`}>
-                        {getCategoryIcon(post.category)}
-                      </span>
-                      <div>
-                        <span
-                          className={`text-${getCategoryColor(post.category)} font-cyber text-sm uppercase tracking-wider`}
-                        >
-                          {post.category}
-                        </span>
-                        {post.featured && (
-                          <Star className="inline-block w-4 h-4 text-neon-gold ml-2" />
+                title={post.title}
+                summary={`${formatDate(post.publishedAt)} • ${post.readingTime} min read • ${post.category}`}
+                icon={
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">
+                      {getCategoryIcon(post.category)}
+                    </span>
+                    {post.featured && (
+                      <Star className="w-4 h-4 text-yellow-400" />
+                    )}
+                    {post.audioUrl && (
+                      <button
+                        onClick={e => {
+                          e.stopPropagation();
+                          handlePlayAudio(post.audioUrl!);
+                        }}
+                        className="p-2 rounded-lg bg-[#915EFF]/20 hover:bg-[#915EFF]/30 transition-colors"
+                      >
+                        {currentAudio === post.audioUrl && isPlaying ? (
+                          <Pause className="w-4 h-4 text-[#915EFF]" />
+                        ) : (
+                          <Play className="w-4 h-4 text-[#915EFF]" />
                         )}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {post.audioUrl && (
-                        <button
-                          onClick={e => {
-                            e.stopPropagation();
-                            handlePlayAudio(post.audioUrl!);
-                          }}
-                          className="p-2 rounded-lg bg-cyber-primary/20 hover:bg-cyber-primary/30 transition-colors group-hover:scale-110 transform duration-300"
-                        >
-                          {currentAudio === post.audioUrl && isPlaying ? (
-                            <Pause className="w-4 h-4 text-cyber-primary" />
-                          ) : (
-                            <Play className="w-4 h-4 text-cyber-primary" />
-                          )}
-                        </button>
-                      )}
-                    </div>
+                      </button>
+                    )}
                   </div>
-
-                  {/* Post Title */}
-                  <h2 className="text-2xl font-cyber text-white mb-4 group-hover:text-cyber-glow transition-colors duration-300">
-                    {post.title}
-                  </h2>
-
+                }
+              >
+                <div className="space-y-4">
                   {/* Post Excerpt */}
-                  <p className="text-secondary text-base leading-relaxed mb-6 line-clamp-3">
+                  <p className="text-secondary leading-relaxed">
                     {post.excerpt}
                   </p>
 
                   {/* Post Meta */}
-                  <div className="flex items-center justify-between text-sm text-secondary font-mono">
+                  <div className="flex items-center justify-between text-xs text-secondary border-t border-white/10 pt-3">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>{formatDate(post.publishedAt)}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{post.readingTime} min read</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
-                        <Heart className="w-4 h-4 text-neon-pink" />
+                        <Heart className="w-3 h-3" />
                         <span>{post.likes}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <MessageCircle className="w-4 h-4 text-cyber-secondary" />
+                        <MessageCircle className="w-3 h-3" />
                         <span>{post.comments}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {post.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="pill-revolutionary text-xs">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.tags.slice(0, 4).map(tag => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-[#915EFF]/20 text-[#915EFF] rounded text-xs"
+                      >
                         #{tag}
                       </span>
                     ))}
                   </div>
+
+                  {/* Read Full Post Button */}
+                  <button
+                    onClick={() => setSelectedPost(post)}
+                    className="w-full px-4 py-2 bg-[#915EFF] hover:bg-[#915EFF]/80 text-white rounded-lg text-sm font-medium transition-colors duration-300"
+                  >
+                    Read Full Post
+                  </button>
                 </div>
-              </article>
+              </ExpandableCard>
             ))}
           </div>
         ) : (
@@ -347,35 +334,33 @@ The philosophical implications are fascinating: what does it mean for a computer
             {/* Back Navigation */}
             <button
               onClick={() => setSelectedPost(null)}
-              className="button-revolutionary button-secondary flex items-center gap-2"
+              className="flex items-center gap-2 text-secondary hover:text-white transition-colors duration-300 mb-8"
             >
-              ← BACK.TO.POSTS
+              ← Back to Posts
             </button>
 
             {/* Post Content */}
-            <article className="card-revolutionary">
-              <div className="p-8">
+            <article className="green-pink-gradient p-[1px] rounded-[20px] shadow-card">
+              <div className="bg-tertiary rounded-[20px] p-8">
                 {/* Post Header */}
                 <div className="text-center mb-8">
                   <div className="flex items-center justify-center gap-3 mb-4">
-                    <span className="text-4xl">
+                    <span className="text-3xl">
                       {getCategoryIcon(selectedPost.category)}
                     </span>
-                    <span
-                      className={`text-${getCategoryColor(selectedPost.category)} font-cyber text-lg uppercase tracking-wider`}
-                    >
+                    <span className="text-[#915EFF] text-lg font-semibold uppercase tracking-wider">
                       {selectedPost.category}
                     </span>
                     {selectedPost.featured && (
-                      <Star className="w-6 h-6 text-neon-gold" />
+                      <Star className="w-6 h-6 text-yellow-400" />
                     )}
                   </div>
 
-                  <h1 className="text-4xl font-cyber text-revolutionary mb-4">
+                  <h1 className="text-white font-black md:text-[40px] sm:text-[30px] xs:text-[25px] text-[20px] mb-4">
                     {selectedPost.title}
                   </h1>
 
-                  <div className="flex items-center justify-center gap-6 text-secondary font-mono text-sm">
+                  <div className="flex items-center justify-center gap-6 text-secondary text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
                       <span>{formatDate(selectedPost.publishedAt)}</span>
@@ -385,7 +370,7 @@ The philosophical implications are fascinating: what does it mean for a computer
                       <span>{selectedPost.readingTime} min read</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Heart className="w-4 h-4 text-neon-pink" />
+                      <Heart className="w-4 h-4 text-pink-400" />
                       <span>{selectedPost.likes} likes</span>
                     </div>
                   </div>
@@ -393,46 +378,44 @@ The philosophical implications are fascinating: what does it mean for a computer
 
                 {/* Audio Player */}
                 {selectedPost.audioUrl && (
-                  <div className="card-revolutionary mb-8 bg-gradient-to-r from-cyber-primary/10 to-cyber-secondary/10">
-                    <div className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <button
-                            onClick={() =>
-                              handlePlayAudio(selectedPost.audioUrl!)
-                            }
-                            className="p-3 rounded-full bg-cyber-primary hover:bg-cyber-secondary transition-colors"
-                          >
-                            {currentAudio === selectedPost.audioUrl &&
-                            isPlaying ? (
-                              <Pause className="w-6 h-6 text-white" />
-                            ) : (
-                              <Play className="w-6 h-6 text-white" />
-                            )}
-                          </button>
-                          <div>
-                            <h3 className="font-cyber text-white">
-                              Audio Version
-                            </h3>
-                            <p className="text-secondary text-sm">
-                              Listen while you browse
-                            </p>
-                          </div>
+                  <div className="bg-tertiary border border-white/10 rounded-[20px] p-6 mb-8">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <button
+                          onClick={() =>
+                            handlePlayAudio(selectedPost.audioUrl!)
+                          }
+                          className="p-3 rounded-full bg-[#915EFF] hover:bg-[#915EFF]/80 transition-colors"
+                        >
+                          {currentAudio === selectedPost.audioUrl &&
+                          isPlaying ? (
+                            <Pause className="w-6 h-6 text-white" />
+                          ) : (
+                            <Play className="w-6 h-6 text-white" />
+                          )}
+                        </button>
+                        <div>
+                          <h3 className="text-white font-semibold">
+                            Audio Version
+                          </h3>
+                          <p className="text-secondary text-sm">
+                            Listen while you browse
+                          </p>
                         </div>
+                      </div>
 
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={toggleMute}
-                            className="p-2 rounded-lg hover:bg-cyber-primary/20 transition-colors"
-                          >
-                            {isMuted ? (
-                              <VolumeX className="w-5 h-5 text-secondary" />
-                            ) : (
-                              <Volume2 className="w-5 h-5 text-secondary" />
-                            )}
-                          </button>
-                          <Headphones className="w-5 h-5 text-cyber-primary" />
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={toggleMute}
+                          className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+                        >
+                          {isMuted ? (
+                            <VolumeX className="w-5 h-5 text-secondary" />
+                          ) : (
+                            <Volume2 className="w-5 h-5 text-secondary" />
+                          )}
+                        </button>
+                        <Headphones className="w-5 h-5 text-[#915EFF]" />
                       </div>
                     </div>
                   </div>
@@ -453,39 +436,40 @@ The philosophical implications are fascinating: what does it mean for a computer
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-cyber-primary/30">
+                <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-white/10">
                   {selectedPost.tags.map(tag => (
-                    <span key={tag} className="pill-revolutionary">
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-[#915EFF]/20 text-[#915EFF] rounded-full text-sm"
+                    >
                       #{tag}
                     </span>
                   ))}
                 </div>
 
                 {/* Social Actions */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-cyber-primary/30">
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
                   <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-2 text-neon-pink hover:text-white transition-colors">
+                    <button className="flex items-center gap-2 text-pink-400 hover:text-white transition-colors">
                       <Heart className="w-5 h-5" />
-                      <span className="font-mono">
+                      <span className="text-sm">
                         {selectedPost.likes} likes
                       </span>
                     </button>
-                    <button className="flex items-center gap-2 text-cyber-secondary hover:text-white transition-colors">
+                    <button className="flex items-center gap-2 text-[#915EFF] hover:text-white transition-colors">
                       <MessageCircle className="w-5 h-5" />
-                      <span className="font-mono">
+                      <span className="text-sm">
                         {selectedPost.comments} comments
                       </span>
                     </button>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-secondary font-mono text-sm">
-                      Share:
-                    </span>
-                    <button className="pill-revolutionary text-xs">
+                    <span className="text-secondary text-sm">Share:</span>
+                    <button className="px-3 py-1 bg-white/10 text-white rounded-lg text-xs hover:bg-white/20 transition-colors">
                       Twitter
                     </button>
-                    <button className="pill-revolutionary text-xs">
+                    <button className="px-3 py-1 bg-white/10 text-white rounded-lg text-xs hover:bg-white/20 transition-colors">
                       LinkedIn
                     </button>
                   </div>
@@ -495,32 +479,50 @@ The philosophical implications are fascinating: what does it mean for a computer
           </div>
         )}
 
-        {/* Revolutionary Blog Philosophy */}
+        {/* Audio-First Philosophy */}
         {!selectedPost && (
-          <div className="mt-16 card-revolutionary text-center revolutionary-shimmer">
-            <div className="p-8">
-              <h3 className="text-3xl font-cyber text-revolutionary mb-4 flex items-center justify-center gap-3">
-                <span className="text-4xl animate-revolutionary">🎧</span>
-                AUDIO.FIRST.PHILOSOPHY
-              </h3>
-              <p className="text-white mb-6 text-lg max-w-4xl mx-auto leading-relaxed">
-                Every post is designed to be experienced through multiple
-                senses. Audio versions ensure accessibility for all users, while
-                creating intimate connections between creator and audience. This
-                is storytelling for the digital age—where technology serves
-                humanity.
-              </p>
-              <div className="flex justify-center gap-4 flex-wrap">
-                <div className="pill-revolutionary">Accessible Content</div>
-                <div className="pill-revolutionary">Multi-Modal Experience</div>
-                <div className="pill-revolutionary">Professional Narration</div>
-                <div className="pill-revolutionary">Mobile-Optimized</div>
+          <motion.div
+            variants={fadeIn('up', 'spring', 0.2, 0.75)}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="mt-12"
+          >
+            <CollapsibleSection
+              title="Audio-First Philosophy"
+              subtitle="Experience storytelling through multiple senses"
+              icon={<span className="text-2xl">🎧</span>}
+              variant="card"
+              defaultOpen={false}
+            >
+              <div className="text-center space-y-6">
+                <p className="text-secondary text-base leading-relaxed">
+                  Every post is designed to be experienced through multiple
+                  senses. Audio versions ensure accessibility for all users,
+                  while creating intimate connections between creator and
+                  audience. This is storytelling for the digital age—where
+                  technology serves humanity.
+                </p>
+                <div className="flex justify-center gap-3 flex-wrap">
+                  <span className="px-3 py-1 bg-[#915EFF]/20 text-[#915EFF] rounded-full text-sm">
+                    Accessible Content
+                  </span>
+                  <span className="px-3 py-1 bg-[#915EFF]/20 text-[#915EFF] rounded-full text-sm">
+                    Multi-Modal Experience
+                  </span>
+                  <span className="px-3 py-1 bg-[#915EFF]/20 text-[#915EFF] rounded-full text-sm">
+                    Professional Narration
+                  </span>
+                  <span className="px-3 py-1 bg-[#915EFF]/20 text-[#915EFF] rounded-full text-sm">
+                    Mobile-Optimized
+                  </span>
+                </div>
               </div>
-            </div>
-          </div>
+            </CollapsibleSection>
+          </motion.div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

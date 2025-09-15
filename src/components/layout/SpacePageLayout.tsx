@@ -15,12 +15,12 @@ export const SpacePageLayout: React.FC<SpacePageLayoutProps> = ({
 }) => {
   return (
     <div
-      className={`min-h-screen bg-black relative overflow-hidden ${className}`}
+      className={`min-h-screen bg-brand-black relative overflow-hidden ${className}`}
     >
       {/* Animated Background with Diagonal Patterns */}
       <div className="absolute inset-0">
         {/* Base diagonal pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-purple-900/20 to-purple-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-black via-purple-900/20 to-purple-600/10"></div>
 
         {/* Animated diagonal stripes */}
         <div className="absolute inset-0 opacity-30">

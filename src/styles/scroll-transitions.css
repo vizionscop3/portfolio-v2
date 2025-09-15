@@ -1,0 +1,190 @@
+/* Scroll-based section covering transitions */
+
+/* Base styles for scrolling sections */
+.scroll-section {
+  position: relative;
+  min-height: 100vh;
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Initial positioning for sections */
+.scroll-section:not(.hero-section) {
+  transform: translateY(100px);
+}
+
+/* Active section styles */
+.scroll-section.section-active {
+  transform: translateY(0);
+  z-index: 10;
+}
+
+/* Section covering effect - each section slides up over the previous */
+.scroll-section.section-covering {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  transform: translateY(0);
+  background: linear-gradient(135deg, #1a0b2e, #16213e, #0f3460);
+  border-radius: 0;
+}
+
+/* Enhanced covering effect for main content sections */
+.scroll-section-content {
+  background: #0d0d0d;
+  border-radius: 24px 24px 0 0;
+  box-shadow:
+    0 -20px 40px rgba(139, 69, 255, 0.2),
+    0 -10px 20px rgba(139, 69, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Matte finish effect */
+  position: relative;
+}
+
+.scroll-section-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.01) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Parallax effect for background elements */
+.scroll-bg-parallax {
+  transform: translateY(var(--scroll-offset, 0));
+  transition: transform 0.1s linear;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fade transition for section content */
+.scroll-section .section-content {
+  opacity: 0.7;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-section.section-active .section-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation for section elements */
+.scroll-section.section-active .section-content > * {
+  animation: slideUpFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.scroll-section.section-active .section-content > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.scroll-section.section-active .section-content > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.scroll-section.section-active .section-content > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Progressive section reveal effect */
+.scroll-section {
+  --section-progress: 0;
+}
+
+.scroll-section.section-revealing {
+  transform: translateY(calc(100vh * (1 - var(--section-progress))));
+  opacity: var(--section-progress);
+}
+
+/* Enhanced shadow effects for covering sections */
+.scroll-section.section-covering::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    rgba(139, 69, 255, 0.4),
+    rgba(139, 69, 255, 0.2),
+    transparent
+  );
+  border-radius: 24px 24px 0 0;
+}
+
+/* Glow effect on active sections */
+.scroll-section.section-active {
+  box-shadow:
+    0 0 60px rgba(139, 69, 255, 0.3),
+    0 0 120px rgba(139, 69, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .scroll-section {
+    min-height: 100vh;
+  }
+
+  .scroll-section-content {
+    border-radius: 16px 16px 0 0;
+    margin: 0 8px;
+  }
+}
+
+/* Performance optimizations */
+.scroll-section * {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Hero section special treatment */
+.hero-section.scroll-section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section transition overlay */
+.section-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(139, 69, 255, 0.1),
+    rgba(16, 31, 94, 0.2),
+    rgba(139, 69, 255, 0.1)
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 5;
+}
+
+.section-transition-overlay.active {
+  opacity: 1;
+}

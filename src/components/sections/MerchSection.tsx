@@ -202,39 +202,39 @@ export const MerchSection: React.FC = () => {
   const categories = [
     {
       id: 'all',
-      label: 'ALL.MERCH',
+      label: 'All Items',
       icon: <Sparkles className="w-5 h-5" />,
-      color: 'cyber-primary',
+      color: 'purple-400',
     },
     {
       id: 'Apparel',
-      label: 'APPAREL',
+      label: 'Apparel',
       icon: <Users className="w-5 h-5" />,
-      color: 'cyber-secondary',
+      color: 'purple-500',
     },
     {
       id: 'Accessories',
-      label: 'ACCESSORIES',
+      label: 'Accessories',
       icon: <Gift className="w-5 h-5" />,
-      color: 'cyber-accent',
+      color: 'purple-600',
     },
     {
       id: 'Art Prints',
-      label: 'ART.PRINTS',
+      label: 'Art Prints',
       icon: <Palette className="w-5 h-5" />,
-      color: 'neon-pink',
+      color: 'purple-300',
     },
     {
       id: 'Digital',
-      label: 'DIGITAL',
+      label: 'Digital',
       icon: <Zap className="w-5 h-5" />,
-      color: 'neon-cyan',
+      color: 'purple-700',
     },
     {
       id: 'Collectibles',
-      label: 'COLLECTIBLES',
+      label: 'Collectibles',
       icon: <Star className="w-5 h-5" />,
-      color: 'neon-gold',
+      color: 'purple-200',
     },
   ];
 
@@ -242,11 +242,6 @@ export const MerchSection: React.FC = () => {
     selectedCategory === 'all'
       ? merchItems
       : merchItems.filter(item => item.category === selectedCategory);
-
-  const getCategoryColor = (category: string) => {
-    const cat = categories.find(c => c.id === category);
-    return cat?.color || 'cyber-primary';
-  };
 
   const addToCart = (item: MerchItem, quantity: number = 1) => {
     setCart(prev => {
@@ -321,39 +316,38 @@ export const MerchSection: React.FC = () => {
   };
 
   return (
-    <div className="page-revolutionary revolutionary-gpu-accelerated">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Revolutionary Hero Section */}
+    <div className="min-h-screen bg-[#0D0D0D] relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-purple-900/20 to-black"></div>
+      <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
+        {/* Space-themed Hero Section */}
         <div className="text-center mb-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyber-primary/10 to-cyber-secondary/10 rounded-3xl blur-3xl"></div>
-          <div className="relative">
-            <div className="mb-8 relative inline-block">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyber-primary via-cyber-secondary to-cyber-accent rounded-full blur-xl opacity-75 animate-revolutionary"></div>
-              <div className="relative w-32 h-32 bg-gradient-to-br from-cyber-primary via-cyber-secondary to-cyber-accent rounded-full flex items-center justify-center shadow-revolutionary">
-                <ShoppingBag className="w-16 h-16 text-black" />
-              </div>
+          <div className="mb-8 relative inline-block">
+            <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center mb-6 hover:scale-110 transition-all duration-500 shadow-lg mx-auto">
+              <ShoppingBag className="w-16 h-16 text-white" />
             </div>
+          </div>
 
-            <h1 className="text-6xl font-cyber font-bold text-revolutionary mb-4 tracking-wider animate-cyber-pulse">
-              MERCH.STORE
-            </h1>
-            <div className="text-xl font-mono text-cyber-glow mb-6 tracking-wide">
-              &lt;Limited Editions | Digital Assets | Premium Quality /&gt;
+          <h1 className="text-9xl md:text-[12rem] lg:text-[16rem] font-black mb-8 leading-tight">
+            <span className="block bg-gradient-to-r from-purple-400 via-purple-300 to-purple-500 bg-clip-text text-transparent font-black tracking-wider glow-text">
+              Merch Store
+            </span>
+          </h1>
+          <p className="text-4xl md:text-6xl lg:text-7xl text-purple-200 mb-8 font-bold tracking-wide">
+            Digital Universe Collection
+          </p>
+
+          <div className="flex justify-center items-center gap-6 text-gray-300 text-lg font-bold flex-wrap">
+            <div className="flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 text-purple-400" />
+              <span>Premium Merchandise</span>
             </div>
-
-            <div className="flex justify-center items-center gap-6 text-secondary text-sm font-mono flex-wrap">
-              <div className="flex items-center gap-2 animate-micro-bounce">
-                <ShoppingBag className="w-4 h-4 text-cyber-primary" />
-                <span>Premium Merchandise</span>
-              </div>
-              <div className="flex items-center gap-2 animate-micro-bounce delay-100">
-                <Shield className="w-4 h-4 text-cyber-secondary" />
-                <span>Secure Checkout</span>
-              </div>
-              <div className="flex items-center gap-2 animate-micro-bounce delay-200">
-                <Truck className="w-4 h-4 text-cyber-accent" />
-                <span>Worldwide Shipping</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-purple-400" />
+              <span>Secure Checkout</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Truck className="w-4 h-4 text-purple-400" />
+              <span>Worldwide Shipping</span>
             </div>
           </div>
         </div>
@@ -362,11 +356,12 @@ export const MerchSection: React.FC = () => {
         <div className="fixed top-20 right-6 z-50">
           <button
             onClick={() => setCartOpen(!cartOpen)}
-            className="button-revolutionary button-primary relative p-4"
+            className="group relative p-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl overflow-hidden transition-all duration-700 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
           >
-            <ShoppingCart className="w-6 h-6" />
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+            <ShoppingCart className="w-6 h-6 relative z-10" />
             {cart.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-neon-pink text-black text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-cyber-pulse">
+              <span className="absolute -top-2 -right-2 bg-purple-400 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
                 {cart.reduce((total, item) => total + item.quantity, 0)}
               </span>
             )}
@@ -380,13 +375,15 @@ export const MerchSection: React.FC = () => {
               className="absolute inset-0 bg-black/50 pointer-events-auto"
               onClick={() => setCartOpen(false)}
             ></div>
-            <div className="absolute right-0 top-0 h-full w-96 card-revolutionary pointer-events-auto overflow-y-auto">
+            <div className="absolute right-0 top-0 h-full w-96 bg-[#0D0D0D] border border-purple-500/20 pointer-events-auto overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-cyber text-white">CART.CYBER</h3>
+                  <h3 className="text-3xl font-black text-white">
+                    Shopping Cart
+                  </h3>
                   <button
                     onClick={() => setCartOpen(false)}
-                    className="p-2 text-secondary hover:text-white transition-colors"
+                    className="p-2 text-gray-400 hover:text-white transition-colors"
                     aria-label="Close cart"
                   >
                     <X className="w-6 h-6" />
@@ -395,81 +392,89 @@ export const MerchSection: React.FC = () => {
 
                 {cart.length === 0 ? (
                   <div className="text-center py-12">
-                    <ShoppingCart className="w-16 h-16 text-secondary mx-auto mb-4" />
-                    <p className="text-secondary">Your cart is empty</p>
-                    <p className="text-sm text-secondary mt-2">
-                      Add some cyberpunk merch to get started!
+                    <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-300 font-bold">
+                      Your cart is empty
+                    </p>
+                    <p className="text-sm text-gray-400 mt-2 font-bold">
+                      Add some items to get started!
                     </p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {cart.map(item => (
-                      <div key={item.id} className="card-revolutionary">
-                        <div className="p-4">
-                          <div className="flex items-start gap-3">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-16 h-16 object-cover rounded"
-                            />
-                            <div className="flex-1">
-                              <h4 className="font-cyber text-white text-sm mb-1">
-                                {item.name}
-                              </h4>
-                              <p className="text-cyber-primary font-mono text-sm">
-                                {formatPrice(item.price)}
-                              </p>
+                      <div
+                        key={item.id}
+                        className="bg-[#0D0D0D] border border-purple-500/20 rounded-xl p-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <img
+                            src={item.imageUrl}
+                            alt={item.name}
+                            className="w-16 h-16 object-cover rounded-xl"
+                          />
+                          <div className="flex-1">
+                            <h4 className="font-black text-white text-sm mb-1">
+                              {item.name}
+                            </h4>
+                            <p className="text-purple-400 font-bold text-sm">
+                              {formatPrice(item.price)}
+                            </p>
 
-                              <div className="flex items-center gap-2 mt-2">
-                                <button
-                                  onClick={() =>
-                                    updateQuantity(item.id, item.quantity - 1)
-                                  }
-                                  className="w-6 h-6 rounded bg-cyber-primary/20 hover:bg-cyber-primary/40 flex items-center justify-center transition-colors"
-                                  aria-label="Decrease quantity"
-                                >
-                                  <Minus className="w-3 h-3" />
-                                </button>
-                                <span className="text-white font-mono text-sm w-8 text-center">
-                                  {item.quantity}
-                                </span>
-                                <button
-                                  onClick={() =>
-                                    updateQuantity(item.id, item.quantity + 1)
-                                  }
-                                  className="w-6 h-6 rounded bg-cyber-primary/20 hover:bg-cyber-primary/40 flex items-center justify-center transition-colors"
-                                  aria-label="Increase quantity"
-                                >
-                                  <Plus className="w-3 h-3" />
-                                </button>
-                                <button
-                                  onClick={() => removeFromCart(item.id)}
-                                  className="ml-auto text-secondary hover:text-neon-pink transition-colors"
-                                  aria-label="Remove item"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
+                            <div className="flex items-center gap-2 mt-2">
+                              <button
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity - 1)
+                                }
+                                className="w-6 h-6 rounded bg-purple-500/20 hover:bg-purple-500/40 flex items-center justify-center transition-colors"
+                                aria-label="Decrease quantity"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="text-white font-bold text-sm w-8 text-center">
+                                {item.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
+                                className="w-6 h-6 rounded bg-purple-500/20 hover:bg-purple-500/40 flex items-center justify-center transition-colors"
+                                aria-label="Increase quantity"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => removeFromCart(item.id)}
+                                className="ml-auto text-gray-400 hover:text-purple-300 transition-colors"
+                                aria-label="Remove item"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
 
-                    <div className="border-t border-cyber-primary/20 pt-4 mt-6">
+                    <div className="border-t border-purple-500/20 pt-4 mt-6">
                       <div className="flex justify-between items-center mb-4">
-                        <span className="text-white font-cyber">TOTAL:</span>
-                        <span className="text-2xl font-cyber text-cyber-primary">
+                        <span className="text-white font-black text-lg">
+                          TOTAL:
+                        </span>
+                        <span className="text-2xl font-black text-purple-400">
                           {formatPrice(getCartTotal())}
                         </span>
                       </div>
 
-                      <button className="button-revolutionary button-primary w-full flex items-center justify-center gap-2">
-                        <CreditCard className="w-5 h-5" />
-                        SECURE.CHECKOUT
+                      <button className="group relative w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl overflow-hidden transition-all duration-700 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 gap-2">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                        <span className="relative z-10 flex items-center gap-2 font-black">
+                          <CreditCard className="w-5 h-5" />
+                          SECURE CHECKOUT
+                        </span>
                       </button>
 
-                      <p className="text-xs text-secondary text-center mt-3">
+                      <p className="text-xs text-gray-400 text-center mt-3 font-bold">
                         Secure payment powered by Stripe
                       </p>
                     </div>
@@ -484,22 +489,17 @@ export const MerchSection: React.FC = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between mb-12 gap-6">
           {/* Category Filter */}
           <div className="flex justify-center overflow-x-auto">
-            <div className="card-revolutionary p-2 inline-flex rounded-2xl min-w-max">
+            <div className="bg-[#0D0D0D] border border-purple-500/20 p-2 inline-flex rounded-2xl min-w-max">
               {categories.map(category => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`relative px-4 py-3 font-mono font-bold tracking-wider transition-all duration-300 rounded-xl mx-1 ${
+                  className={`relative px-4 py-3 font-bold tracking-wider transition-all duration-300 rounded-xl mx-1 ${
                     selectedCategory === category.id
-                      ? `text-${category.color} bg-gradient-to-r from-${category.color}/20 to-cyber-secondary/20 shadow-cyber-glow animate-cyber-pulse`
-                      : 'text-secondary hover:text-white hover:bg-cyber-primary/10 interactive-revolutionary'
+                      ? `text-white bg-gradient-to-r from-purple-500/20 to-purple-400/20 border border-purple-400/40`
+                      : 'text-gray-300 hover:text-white hover:bg-purple-500/10'
                   }`}
                 >
-                  {selectedCategory === category.id && (
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-r from-${category.color}/10 to-cyber-secondary/10 rounded-xl animate-energy-wave`}
-                    ></div>
-                  )}
                   <span className="relative z-10 flex items-center gap-2 text-sm">
                     {category.icon}
                     {category.label}
@@ -510,13 +510,13 @@ export const MerchSection: React.FC = () => {
           </div>
 
           {/* View Mode Toggle */}
-          <div className="card-revolutionary p-2 inline-flex rounded-xl">
+          <div className="bg-[#0D0D0D] border border-purple-500/20 p-2 inline-flex rounded-xl">
             <button
               onClick={() => setViewMode('featured')}
-              className={`relative px-4 py-2 font-mono transition-all duration-300 rounded-lg ${
+              className={`relative px-4 py-2 font-bold transition-all duration-300 rounded-lg ${
                 viewMode === 'featured'
-                  ? 'text-cyber-primary bg-cyber-primary/20 shadow-cyber-glow'
-                  : 'text-secondary hover:text-white'
+                  ? 'text-white bg-purple-500/20 border border-purple-400/40'
+                  : 'text-gray-300 hover:text-white'
               }`}
               aria-label="Featured view"
             >
@@ -524,10 +524,10 @@ export const MerchSection: React.FC = () => {
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`relative px-4 py-2 font-mono transition-all duration-300 rounded-lg ${
+              className={`relative px-4 py-2 font-bold transition-all duration-300 rounded-lg ${
                 viewMode === 'grid'
-                  ? 'text-cyber-primary bg-cyber-primary/20 shadow-cyber-glow'
-                  : 'text-secondary hover:text-white'
+                  ? 'text-white bg-purple-500/20 border border-purple-400/40'
+                  : 'text-gray-300 hover:text-white'
               }`}
               aria-label="Grid view"
             >
@@ -549,54 +549,62 @@ export const MerchSection: React.FC = () => {
                     return (
                       <div
                         key={item.id}
-                        className="card-revolutionary hover-glow group cursor-pointer"
+                        className="group relative overflow-hidden rounded-2xl bg-[#0D0D0D] border border-purple-500/20 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/30 hover:border-purple-400/40 cursor-pointer"
                         onClick={() => setSelectedItem(item)}
                       >
-                        <div className="relative overflow-hidden">
-                          <img
-                            src={item.imageUrl}
-                            alt={item.name}
-                            className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-400/10 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
 
-                          {/* Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div className="absolute bottom-0 left-0 right-0 p-6">
-                              <button
-                                onClick={e => {
-                                  e.stopPropagation();
-                                  if (item.availability !== 'sold-out') {
-                                    addToCart(item);
-                                  }
-                                }}
-                                disabled={item.availability === 'sold-out'}
-                                className="button-revolutionary button-primary w-full"
-                              >
-                                {item.availability === 'sold-out'
-                                  ? 'SOLD.OUT'
-                                  : 'ADD.TO.CART'}
-                              </button>
+                        <div className="relative z-10 p-6">
+                          <div className="relative">
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="w-full h-64 object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
+                            />
+
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl">
+                              <div className="absolute bottom-0 left-0 right-0 p-6">
+                                <button
+                                  onClick={e => {
+                                    e.stopPropagation();
+                                    if (item.availability !== 'sold-out') {
+                                      addToCart(item);
+                                    }
+                                  }}
+                                  disabled={item.availability === 'sold-out'}
+                                  className="group w-full relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl overflow-hidden transition-all duration-700 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
+                                >
+                                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                                  <span className="relative z-10 font-black">
+                                    {item.availability === 'sold-out'
+                                      ? 'SOLD OUT'
+                                      : 'ADD TO CART'}
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Badges */}
+                            <div className="absolute top-4 left-4 flex flex-col gap-2">
+                              {item.featured && (
+                                <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                                  <Star className="w-3 h-3" />
+                                  FEATURED
+                                </span>
+                              )}
+                              {item.discount && (
+                                <span className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                  -{item.discount}% OFF
+                                </span>
+                              )}
                             </div>
                           </div>
 
-                          {/* Badges */}
-                          <div className="absolute top-4 left-4 flex flex-col gap-2">
-                            {item.featured && (
-                              <span className="pill-revolutionary bg-neon-gold text-black">
-                                <Star className="w-3 h-3" />
-                                FEATURED
-                              </span>
-                            )}
-                            {item.discount && (
-                              <span className="pill-revolutionary bg-neon-pink text-black">
-                                -{item.discount}% OFF
-                              </span>
-                            )}
-                          </div>
-
+                          {/* Availability Badge */}
                           <div className="absolute top-4 right-4">
                             <span
-                              className={`pill-revolutionary bg-${availability.color} text-black flex items-center gap-1`}
+                              className={`bg-${availability.color === 'cyber-primary' ? 'purple-500' : availability.color === 'cyber-secondary' ? 'purple-600' : 'gray-500'} text-white px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1`}
                             >
                               {availability.icon}
                               {availability.text}
@@ -607,17 +615,17 @@ export const MerchSection: React.FC = () => {
                         <div className="p-6">
                           <div className="flex items-center gap-2 mb-2">
                             <span
-                              className={`text-${getCategoryColor(item.category)} font-cyber text-xs uppercase tracking-wider`}
+                              className={`text-purple-400 font-bold text-xs uppercase tracking-wider`}
                             >
                               {item.category}
                             </span>
                           </div>
 
-                          <h3 className="text-xl font-cyber text-white mb-3 group-hover:text-cyber-primary transition-colors">
+                          <h3 className="text-2xl font-black text-white mb-3 group-hover:text-purple-300 transition-colors">
                             {item.name}
                           </h3>
 
-                          <p className="text-secondary text-sm mb-4 line-clamp-2">
+                          <p className="text-gray-300 text-sm mb-4 line-clamp-2">
                             {item.description}
                           </p>
 
@@ -625,23 +633,23 @@ export const MerchSection: React.FC = () => {
                             <div className="flex items-center gap-2">
                               {item.originalPrice ? (
                                 <>
-                                  <span className="text-2xl font-cyber text-cyber-primary">
+                                  <span className="text-2xl font-black text-purple-400">
                                     {formatPrice(item.price)}
                                   </span>
-                                  <span className="text-sm text-secondary line-through">
+                                  <span className="text-sm text-gray-400 line-through">
                                     {formatPrice(item.originalPrice)}
                                   </span>
                                 </>
                               ) : (
-                                <span className="text-2xl font-cyber text-cyber-primary">
+                                <span className="text-2xl font-black text-purple-400">
                                   {formatPrice(item.price)}
                                 </span>
                               )}
                             </div>
 
-                            <div className="flex items-center gap-4 text-xs text-secondary font-mono">
+                            <div className="flex items-center gap-4 text-xs text-gray-400 font-bold">
                               <div className="flex items-center gap-1">
-                                <Heart className="w-3 h-3 text-neon-pink" />
+                                <Heart className="w-3 h-3 text-purple-300" />
                                 <span>{formatNumber(item.likes)}</span>
                               </div>
                               <div className="flex items-center gap-1">
@@ -652,7 +660,7 @@ export const MerchSection: React.FC = () => {
                           </div>
 
                           {item.estimatedRelease && (
-                            <div className="mt-4 text-xs text-secondary font-mono">
+                            <div className="mt-4 text-xs text-gray-400 font-bold">
                               <Calendar className="w-3 h-3 inline mr-1" />
                               Release: {item.estimatedRelease}
                             </div>
@@ -676,81 +684,89 @@ export const MerchSection: React.FC = () => {
                 return (
                   <div
                     key={item.id}
-                    className="card-revolutionary hover-glow group cursor-pointer"
+                    className="group relative overflow-hidden rounded-2xl bg-[#0D0D0D] border border-purple-500/20 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/30 hover:border-purple-400/40 cursor-pointer"
                     onClick={() => setSelectedItem(item)}
                   >
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-400/10 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
 
-                      {/* Quick Add Button */}
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <button
-                          onClick={e => {
-                            e.stopPropagation();
-                            if (item.availability !== 'sold-out') {
-                              addToCart(item);
-                            }
-                          }}
-                          disabled={item.availability === 'sold-out'}
-                          className="button-revolutionary button-primary"
-                        >
-                          {item.availability === 'sold-out'
-                            ? 'SOLD.OUT'
-                            : 'QUICK.ADD'}
-                        </button>
-                      </div>
+                    <div className="relative z-10 p-4">
+                      <div className="relative">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          className="w-full h-48 object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
+                        />
 
-                      {/* Badges */}
-                      <div className="absolute top-2 left-2 flex flex-col gap-1">
-                        {item.featured && (
-                          <span className="pill-revolutionary bg-neon-gold text-black text-xs">
-                            <Star className="w-2 h-2" />
+                        {/* Quick Add Button */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
+                          <button
+                            onClick={e => {
+                              e.stopPropagation();
+                              if (item.availability !== 'sold-out') {
+                                addToCart(item);
+                              }
+                            }}
+                            disabled={item.availability === 'sold-out'}
+                            className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl overflow-hidden transition-all duration-700 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                            <span className="relative z-10 font-black">
+                              {item.availability === 'sold-out'
+                                ? 'SOLD OUT'
+                                : 'QUICK ADD'}
+                            </span>
+                          </button>
+                        </div>
+
+                        {/* Badges */}
+                        <div className="absolute top-2 left-2 flex flex-col gap-1">
+                          {item.featured && (
+                            <span className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                              <Star className="w-2 h-2" />
+                            </span>
+                          )}
+                          {item.discount && (
+                            <span className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-2 py-1 rounded-full text-xs font-bold">
+                              -{item.discount}%
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Availability Badge */}
+                        <div className="absolute top-2 right-2">
+                          <span
+                            className={`bg-${availability.color === 'cyber-primary' ? 'purple-500' : availability.color === 'cyber-secondary' ? 'purple-600' : 'gray-500'} text-white px-2 py-1 rounded-full text-xs font-bold`}
+                          >
+                            {availability.icon}
                           </span>
-                        )}
-                        {item.discount && (
-                          <span className="pill-revolutionary bg-neon-pink text-black text-xs">
-                            -{item.discount}%
-                          </span>
-                        )}
+                        </div>
                       </div>
 
-                      <div className="absolute top-2 right-2">
-                        <span
-                          className={`pill-revolutionary bg-${availability.color} text-black text-xs`}
-                        >
-                          {availability.icon}
-                        </span>
-                      </div>
-                    </div>
+                      <div className="p-4">
+                        <h3 className="font-black text-white text-lg mb-2 group-hover:text-purple-300 transition-colors">
+                          {item.name}
+                        </h3>
 
-                    <div className="p-4">
-                      <h3 className="font-cyber text-white text-sm mb-2 group-hover:text-cyber-primary transition-colors">
-                        {item.name}
-                      </h3>
-
-                      <div className="flex items-center justify-between">
-                        {item.originalPrice ? (
-                          <div className="flex items-center gap-1">
-                            <span className="text-lg font-cyber text-cyber-primary">
+                        <div className="flex items-center justify-between">
+                          {item.originalPrice ? (
+                            <div className="flex items-center gap-1">
+                              <span className="text-xl font-black text-purple-400">
+                                {formatPrice(item.price)}
+                              </span>
+                              <span className="text-xs text-gray-400 line-through">
+                                {formatPrice(item.originalPrice)}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-xl font-black text-purple-400">
                               {formatPrice(item.price)}
                             </span>
-                            <span className="text-xs text-secondary line-through">
-                              {formatPrice(item.originalPrice)}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-lg font-cyber text-cyber-primary">
-                            {formatPrice(item.price)}
-                          </span>
-                        )}
+                          )}
 
-                        <div className="flex items-center gap-2 text-xs text-secondary">
-                          <Heart className="w-3 h-3 text-neon-pink" />
-                          <span>{formatNumber(item.likes)}</span>
+                          <div className="flex items-center gap-2 text-xs text-gray-400 font-bold">
+                            <Heart className="w-3 h-3 text-purple-300" />
+                            <span>{formatNumber(item.likes)}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -773,7 +789,7 @@ export const MerchSection: React.FC = () => {
             {/* Item Details */}
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Image */}
-              <div className="card-revolutionary overflow-hidden">
+              <div className="bg-[#0D0D0D] border border-purple-500/20 rounded-2xl overflow-hidden">
                 <img
                   src={selectedItem.imageUrl}
                   alt={selectedItem.name}
@@ -786,20 +802,18 @@ export const MerchSection: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-3 mb-4">
                     {selectedItem.featured && (
-                      <Star className="w-6 h-6 text-neon-gold" />
+                      <Star className="w-6 h-6 text-purple-400" />
                     )}
-                    <span
-                      className={`text-${getCategoryColor(selectedItem.category)} font-cyber text-lg uppercase tracking-wider`}
-                    >
+                    <span className="text-purple-400 font-bold text-lg uppercase tracking-wider">
                       {selectedItem.category}
                     </span>
                   </div>
 
-                  <h1 className="text-4xl font-cyber text-revolutionary mb-4">
+                  <h1 className="text-5xl font-black text-white mb-4">
                     {selectedItem.name}
                   </h1>
 
-                  <p className="text-white text-lg leading-relaxed mb-6">
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6 font-bold">
                     {selectedItem.description}
                   </p>
 
@@ -807,13 +821,13 @@ export const MerchSection: React.FC = () => {
                   <div className="flex items-center gap-4 mb-6">
                     {selectedItem.originalPrice ? (
                       <>
-                        <span className="text-4xl font-cyber text-cyber-primary">
+                        <span className="text-4xl font-black text-purple-400">
                           {formatPrice(selectedItem.price)}
                         </span>
-                        <span className="text-xl text-secondary line-through">
+                        <span className="text-xl text-gray-400 line-through">
                           {formatPrice(selectedItem.originalPrice)}
                         </span>
-                        <span className="pill-revolutionary bg-neon-pink text-black">
+                        <span className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-4 py-2 rounded-full text-sm font-bold">
                           SAVE{' '}
                           {formatPrice(
                             selectedItem.originalPrice - selectedItem.price
@@ -821,22 +835,22 @@ export const MerchSection: React.FC = () => {
                         </span>
                       </>
                     ) : (
-                      <span className="text-4xl font-cyber text-cyber-primary">
+                      <span className="text-4xl font-black text-purple-400">
                         {formatPrice(selectedItem.price)}
                       </span>
                     )}
                   </div>
 
                   {/* Availability */}
-                  <div className="card-revolutionary bg-gradient-to-r from-cyber-primary/10 to-cyber-secondary/10 mb-6">
+                  <div className="bg-[#0D0D0D] border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-purple-400/10 rounded-xl mb-6">
                     <div className="p-4">
                       <div className="flex items-center gap-3">
                         {getAvailabilityInfo(selectedItem).icon}
-                        <span className="font-cyber text-white">
+                        <span className="font-bold text-white">
                           {getAvailabilityInfo(selectedItem).text}
                         </span>
                         {selectedItem.estimatedRelease && (
-                          <span className="text-secondary font-mono text-sm">
+                          <span className="text-gray-400 font-bold text-sm">
                             • {selectedItem.estimatedRelease}
                           </span>
                         )}
@@ -848,47 +862,57 @@ export const MerchSection: React.FC = () => {
                   <button
                     onClick={() => addToCart(selectedItem)}
                     disabled={selectedItem.availability === 'sold-out'}
-                    className="button-revolutionary button-primary w-full text-lg py-4 mb-6"
+                    className="group relative w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold rounded-xl overflow-hidden transition-all duration-700 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 text-xl mb-6"
                   >
-                    {selectedItem.availability === 'sold-out'
-                      ? 'SOLD.OUT'
-                      : selectedItem.availability === 'pre-order'
-                        ? 'PRE-ORDER.NOW'
-                        : 'ADD.TO.CART'}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                    <span className="relative z-10 font-black">
+                      {selectedItem.availability === 'sold-out'
+                        ? 'SOLD OUT'
+                        : selectedItem.availability === 'pre-order'
+                          ? 'PRE-ORDER NOW'
+                          : 'ADD TO CART'}
+                    </span>
                   </button>
 
                   {/* Stats */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="card-revolutionary text-center">
+                    <div className="bg-[#0D0D0D] border border-purple-500/20 rounded-xl text-center">
                       <div className="p-4">
-                        <div className="flex items-center justify-center gap-2 text-neon-pink mb-2">
+                        <div className="flex items-center justify-center gap-2 text-purple-300 mb-2">
                           <Heart className="w-5 h-5" />
-                          <span className="text-2xl font-cyber">
+                          <span className="text-2xl font-black">
                             {formatNumber(selectedItem.likes)}
                           </span>
                         </div>
-                        <span className="text-secondary text-sm">Likes</span>
+                        <span className="text-gray-400 text-sm font-bold">
+                          Likes
+                        </span>
                       </div>
                     </div>
-                    <div className="card-revolutionary text-center">
+                    <div className="bg-[#0D0D0D] border border-purple-500/20 rounded-xl text-center">
                       <div className="p-4">
-                        <div className="flex items-center justify-center gap-2 text-cyber-secondary mb-2">
+                        <div className="flex items-center justify-center gap-2 text-purple-400 mb-2">
                           <Eye className="w-5 h-5" />
-                          <span className="text-2xl font-cyber">
+                          <span className="text-2xl font-black">
                             {formatNumber(selectedItem.views)}
                           </span>
                         </div>
-                        <span className="text-secondary text-sm">Views</span>
+                        <span className="text-gray-400 text-sm font-bold">
+                          Views
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Tags */}
                   <div>
-                    <h3 className="font-cyber text-white mb-4">TAGS</h3>
+                    <h3 className="font-black text-white mb-4 text-xl">TAGS</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedItem.tags.map(tag => (
-                        <span key={tag} className="pill-revolutionary text-sm">
+                        <span
+                          key={tag}
+                          className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-bold border border-purple-500/30"
+                        >
                           #{tag}
                         </span>
                       ))}
@@ -900,15 +924,16 @@ export const MerchSection: React.FC = () => {
           </div>
         )}
 
-        {/* Revolutionary Store Philosophy */}
+        {/* Store Philosophy */}
         {!selectedItem && (
-          <div className="mt-16 card-revolutionary text-center revolutionary-shimmer">
-            <div className="p-8">
-              <h3 className="text-3xl font-cyber text-revolutionary mb-4 flex items-center justify-center gap-3">
-                <span className="text-4xl animate-revolutionary">🛍️</span>
-                STORE.PHILOSOPHY
+          <div className="mt-16 bg-[#0D0D0D] border border-purple-500/20 rounded-2xl text-center transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/30 hover:border-purple-400/40">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-400/10 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+            <div className="p-8 relative z-10">
+              <h3 className="text-4xl font-black text-white mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">🛍️</span>
+                Store Philosophy
               </h3>
-              <p className="text-white mb-6 text-lg max-w-4xl mx-auto leading-relaxed">
+              <p className="text-gray-300 mb-6 text-xl max-w-4xl mx-auto leading-relaxed font-bold">
                 Every piece in our collection represents the intersection of
                 art, technology, and personal expression. From sustainable
                 materials to cutting-edge design, we create merchandise that
@@ -916,11 +941,21 @@ export const MerchSection: React.FC = () => {
                 tech can become.
               </p>
               <div className="flex justify-center gap-4 flex-wrap">
-                <div className="pill-revolutionary">Premium Quality</div>
-                <div className="pill-revolutionary">Limited Editions</div>
-                <div className="pill-revolutionary">Sustainable Materials</div>
-                <div className="pill-revolutionary">Global Shipping</div>
-                <div className="pill-revolutionary">Secure Payments</div>
+                <div className="bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-bold border border-purple-500/30">
+                  Premium Quality
+                </div>
+                <div className="bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-bold border border-purple-500/30">
+                  Limited Editions
+                </div>
+                <div className="bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-bold border border-purple-500/30">
+                  Sustainable Materials
+                </div>
+                <div className="bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-bold border border-purple-500/30">
+                  Global Shipping
+                </div>
+                <div className="bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-bold border border-purple-500/30">
+                  Secure Payments
+                </div>
               </div>
             </div>
           </div>

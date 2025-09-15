@@ -7,9 +7,10 @@ body {
   font-weight: 700;
 }
 
-/* Header title styling */
+/* Header title styling with Quirkwood */
 .header-title {
-  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-family:
+    'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-style: normal;
   font-weight: 700;
   background-color: #00f7ed;
@@ -18,9 +19,187 @@ body {
 
 /* Quirkwood Chunky for special elements */
 .font-quirkwood {
-  font-family: 'quirkwood-chunky', 'Inter', sans-serif;
+  font-family:
+    'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif !important;
   font-style: normal;
+  font-weight: 700 !important;
+}
+
+/* Three-layer Quirkwood text effect for LEE AULDER */
+/* Bottom layer - #8A038C Quirkwood Shadow */
+.quirkwood-layered {
+  position: relative;
+  display: inline-block;
+  font-family:
+    'quirkwood-shadow', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
+    sans-serif;
+  color: #8a038c;
   font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    2px 2px 0px rgba(138, 3, 140, 0.8),
+    3px 3px 0px rgba(138, 3, 140, 0.6),
+    4px 4px 6px rgba(138, 3, 140, 0.4);
+}
+
+/* Middle layer - #580259 Quirkwood Highlight */
+.quirkwood-layered::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family:
+    'quirkwood-highlight', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani',
+    'Inter', sans-serif;
+  color: #580259;
+  z-index: 1;
+  transform: translate(1px, 1px);
+  opacity: 0.9;
+  font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    1px 1px 0px rgba(88, 2, 89, 0.8),
+    2px 2px 0px rgba(88, 2, 89, 0.6);
+}
+
+/* Top layer - #00F7ED Quirkwood Bright */
+.quirkwood-layered::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family:
+    'quirkwood-bright', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
+    sans-serif;
+  color: #00f7ed;
+  z-index: 2;
+  transform: translate(-1px, -1px);
+  opacity: 0.95;
+  font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    0px 0px 3px rgba(0, 247, 237, 0.9),
+    0px 0px 6px rgba(0, 247, 237, 0.7),
+    0px 0px 12px rgba(0, 247, 237, 0.5);
+}
+
+/* Fallback for Quirkwood variants */
+.font-quirkwood-highlight {
+  font-family:
+    'quirkwood-highlight', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani',
+    'Inter', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.font-quirkwood-shadow {
+  font-family:
+    'quirkwood-shadow', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
+    sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.font-quirkwood-bright {
+  font-family:
+    'quirkwood-bright', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
+    sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Three-layer Quirkwood text effect for Menu Items */
+/* Bottom layer - #8A038C Quirkwood Shadow */
+.quirkwood-menu-item {
+  position: relative;
+  display: inline-block;
+  font-family:
+    'quirkwood-shadow', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
+    sans-serif;
+  color: #8a038c;
+  font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    1px 1px 0px rgba(138, 3, 140, 0.8),
+    2px 2px 0px rgba(138, 3, 140, 0.6),
+    2px 2px 4px rgba(138, 3, 140, 0.4);
+}
+
+/* Middle layer - #580259 Quirkwood Highlight */
+.quirkwood-menu-item::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family:
+    'quirkwood-highlight', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani',
+    'Inter', sans-serif;
+  color: #580259;
+  z-index: 1;
+  transform: translate(0.5px, 0.5px);
+  opacity: 0.9;
+  font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    0.5px 0.5px 0px rgba(88, 2, 89, 0.8),
+    1px 1px 0px rgba(88, 2, 89, 0.6);
+}
+
+/* Top layer - #00F7ED Quirkwood Bright */
+.quirkwood-menu-item::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family:
+    'quirkwood-bright', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
+    sans-serif;
+  color: #00f7ed;
+  z-index: 2;
+  transform: translate(-0.5px, -0.5px);
+  opacity: 0.95;
+  font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    0px 0px 2px rgba(0, 247, 237, 0.9),
+    0px 0px 4px rgba(0, 247, 237, 0.7),
+    0px 0px 8px rgba(0, 247, 237, 0.5);
+}
+
+/* Matte dark background */
+.matte-dark-bg {
+  background-color: #0d0d0d;
+  background-image: none;
+  filter: contrast(1.05) brightness(0.98);
+  position: relative;
+}
+
+/* Glossy modern card finish */
+.glossy-card {
+  background: linear-gradient(135deg, #404040 0%, #424242 50%, #404040 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glossy-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
 }
 
 /* Lee Aulder brand colors */
@@ -63,6 +242,292 @@ body {
 
   .desktop-menu {
     display: none;
+  }
+}
+
+/* TT Frantz welcome text styling */
+.tt-frantz-welcome {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #00f7ed;
+  text-shadow:
+    2px 2px 0px rgba(138, 3, 140, 0.6),
+    4px 4px 0px rgba(88, 2, 89, 0.4),
+    6px 6px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* TT Frantz menu items styling - matching VIZIONSCOPE design */
+.tt-frantz-menu {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #00f7ed;
+  text-shadow:
+    2px 2px 0px rgba(138, 3, 140, 0.6),
+    4px 4px 0px rgba(88, 2, 89, 0.4),
+    6px 6px 8px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
+}
+
+.tt-frantz-menu:hover {
+  color: #ffffff;
+  text-shadow:
+    0px 0px 6px rgba(0, 247, 237, 0.9),
+    2px 2px 0px rgba(138, 3, 140, 0.7),
+    4px 4px 0px rgba(88, 2, 89, 0.5),
+    6px 6px 12px rgba(0, 0, 0, 0.8);
+}
+
+/* Header specific styling */
+.tt-frantz-header-logo {
+  font-size: 56px;
+}
+
+.tt-frantz-header-menu {
+  font-size: 36px;
+}
+
+.tt-frantz-header-subtitle {
+  font-size: 24px;
+}
+
+/* Glowing card with #580259 highlight */
+.glowing-card {
+  border: 2px solid #580259;
+  box-shadow:
+    0 0 20px rgba(88, 2, 89, 0.6),
+    0 0 40px rgba(88, 2, 89, 0.4),
+    inset 0 0 20px rgba(88, 2, 89, 0.1);
+  transition: all 0.4s ease;
+}
+
+.glowing-card:hover {
+  box-shadow:
+    0 0 30px rgba(88, 2, 89, 0.8),
+    0 0 60px rgba(88, 2, 89, 0.6),
+    0 0 90px rgba(88, 2, 89, 0.3),
+    inset 0 0 30px rgba(88, 2, 89, 0.2);
+  border-color: rgba(88, 2, 89, 0.9);
+}
+
+/* Door design for merch store */
+.merch-door {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 180px;
+  background: linear-gradient(145deg, #404040, #2a2a2a);
+  border: 3px solid #580259;
+  border-bottom: none;
+  border-radius: 60px 60px 0 0;
+  box-shadow:
+    0 -5px 20px rgba(88, 2, 89, 0.6),
+    0 -10px 40px rgba(88, 2, 89, 0.3),
+    inset 0 5px 10px rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.merch-door:hover {
+  transform: translateX(-50%) translateY(-10px);
+  box-shadow:
+    0 -10px 30px rgba(88, 2, 89, 0.8),
+    0 -20px 60px rgba(88, 2, 89, 0.5),
+    inset 0 5px 15px rgba(255, 255, 255, 0.2);
+  border-color: rgba(88, 2, 89, 1);
+}
+
+.merch-door-text {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #00f7ed;
+  text-shadow:
+    1px 1px 0px rgba(138, 3, 140, 0.6),
+    2px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-top: 8px;
+}
+
+.merch-door-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+/* Tab-like card design - Puffy button style */
+.tab-card {
+  background: linear-gradient(145deg, #555555, #353535);
+  border: 3px solid #580259;
+  border-radius: 25px;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(88, 2, 89, 0.5),
+    0 0 50px rgba(88, 2, 89, 0.3),
+    inset 0 4px 15px rgba(255, 255, 255, 0.15),
+    inset 0 -4px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  padding: 20px 32px;
+  min-width: 180px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.tab-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  background: linear-gradient(145deg, #606060, #404040);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(88, 2, 89, 0.7),
+    0 0 70px rgba(88, 2, 89, 0.5),
+    0 0 100px rgba(88, 2, 89, 0.3),
+    inset 0 6px 20px rgba(255, 255, 255, 0.25),
+    inset 0 -6px 20px rgba(0, 0, 0, 0.4);
+  border-color: rgba(88, 2, 89, 1);
+}
+
+.tab-card:active {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(88, 2, 89, 0.6),
+    0 0 40px rgba(88, 2, 89, 0.4),
+    inset 0 2px 10px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.tab-card.active {
+  border-bottom: 3px solid #00f7ed;
+  box-shadow:
+    0 5px 25px rgba(0, 247, 237, 0.5),
+    0 10px 50px rgba(88, 2, 89, 0.4),
+    inset 0 2px 12px rgba(255, 255, 255, 0.2);
+}
+
+/* PIP Window styling */
+.pip-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 3px solid #580259;
+  border-radius: 15px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(88, 2, 89, 0.6),
+    inset 0 2px 15px rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  animation: pipFadeIn 0.3s ease-out;
+}
+
+@keyframes pipFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.pip-header {
+  background: linear-gradient(90deg, #580259, #8a038c);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  border-bottom: 2px solid rgba(88, 2, 89, 0.5);
+}
+
+.pip-title {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  color: #00f7ed;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.pip-close {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.pip-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ff4444;
+}
+
+.pip-content {
+  padding: 20px;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  color: #ffffff;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+}
+
+.pip-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments for tabs and pip windows */
+@media (max-width: 768px) {
+  .tab-card {
+    min-width: 100px;
+    height: 50px;
+    padding: 12px 18px;
+  }
+
+  .pip-window {
+    width: 90vw;
+    height: 70vh;
+    max-width: 500px;
+  }
+
+  .pip-content {
+    padding: 15px;
+    font-size: 14px;
   }
 }
 
