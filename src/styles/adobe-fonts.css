@@ -421,11 +421,13 @@ body {
 /* PIP Window styling */
 .pip-window {
   position: fixed;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 400px;
+  width: 85vw;
+  height: 70vh;
+  max-width: 1200px;
+  max-height: 500px;
   background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
   border: 3px solid #580259;
   border-radius: 15px;
@@ -462,7 +464,7 @@ body {
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-weight: 700;
   color: #00f7ed;
-  font-size: 18px;
+  font-size: 24px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
@@ -484,11 +486,42 @@ body {
 }
 
 .pip-content {
-  padding: 20px;
-  height: calc(100% - 60px);
+  padding: 25px 30px;
+  height: calc(100% - 65px);
   overflow-y: auto;
   color: #ffffff;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-size: 20px !important;
+  line-height: 1.6;
+}
+
+/* Override all Tailwind text size classes within PIP content */
+.pip-content * {
+  font-size: inherit !important;
+}
+
+.pip-content h3 {
+  font-size: 28px !important;
+  margin-bottom: 16px !important;
+}
+
+.pip-content h4 {
+  font-size: 22px !important;
+  margin-bottom: 12px !important;
+}
+
+.pip-content p {
+  font-size: 18px !important;
+  margin-bottom: 12px !important;
+}
+
+.pip-content ul li {
+  font-size: 16px !important;
+  margin-bottom: 8px !important;
+}
+
+.pip-content div {
+  font-size: inherit !important;
 }
 
 .pip-overlay {
@@ -520,14 +553,35 @@ body {
   }
 
   .pip-window {
-    width: 90vw;
-    height: 70vh;
-    max-width: 500px;
+    width: 95vw;
+    height: 60vh;
+    max-width: none;
+    max-height: 400px;
   }
 
   .pip-content {
-    padding: 15px;
-    font-size: 14px;
+    padding: 15px 20px;
+    font-size: 18px !important;
+  }
+
+  .pip-content * {
+    font-size: inherit !important;
+  }
+
+  .pip-content h3 {
+    font-size: 24px !important;
+  }
+
+  .pip-content h4 {
+    font-size: 20px !important;
+  }
+
+  .pip-content p {
+    font-size: 16px !important;
+  }
+
+  .pip-content ul li {
+    font-size: 14px !important;
   }
 }
 
