@@ -6,6 +6,7 @@ import { DeploymentInfo } from './components/DeploymentInfo';
 import { Layout } from './components/layout';
 import { PerformanceMonitor } from './components/performance';
 import { PortfolioRouter } from './components/routing';
+import { PipWindowProvider } from './contexts/PipWindowContext';
 import './styles/index.css';
 import {
   ErrorBoundary,
@@ -51,14 +52,16 @@ function App() {
               window.location.hash = `#${section}`;
             }}
           >
-            <Layout>
-              <PortfolioRouter />
-              <PerformanceMonitor
-                position="top-right"
-                showRecommendations={true}
-              />
-              <DeploymentInfo />
-            </Layout>
+            <PipWindowProvider>
+              <Layout>
+                <PortfolioRouter />
+                <PerformanceMonitor
+                  position="top-right"
+                  showRecommendations={true}
+                />
+                <DeploymentInfo />
+              </Layout>
+            </PipWindowProvider>
           </AccessibilityProvider>
         </AnalyticsProvider>
       </BrowserRouter>

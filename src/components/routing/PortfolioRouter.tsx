@@ -4,6 +4,7 @@ import CleanPortfolioHome from '../CleanPortfolioHome'; // Clean homepage withou
 import {
   AboutSection,
   BlogSection,
+  ContactSection,
   FashionSection,
   MerchSection,
   TechSection,
@@ -28,6 +29,7 @@ export const PortfolioRouter: React.FC<PortfolioRouterProps> = ({
         <Route path="/blog" element={<BlogSection />} />
         <Route path="/fashion" element={<FashionSection />} />
         <Route path="/merch" element={<MerchSection />} />
+        <Route path="/contact" element={<ContactSection />} />
 
         {/* Fallback to clean homepage */}
         <Route path="*" element={<CleanPortfolioHome />} />

@@ -2,6 +2,7 @@ import { SectionId } from '@/types';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
+import { usePipWindow } from '../../hooks/usePipWindow';
 import { useTransitionStore } from '../../hooks/useTransitionStore';
 
 export const Header: React.FC = () => {
@@ -10,6 +11,102 @@ export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { transitionState } = useTransitionStore();
   const { announceNavigation } = useNavigationAccessibility();
+  const { openPipWindow } = usePipWindow();
+
+  // Content for PIP windows
+  const getAboutContent = () => (
+    <div>
+      <h3 className="text-3xl mb-4 tt-frantz-menu">About VIZIONSCOPE</h3>
+      <div className="grid grid-cols-2 gap-8">
+        <div>
+          <p className="mb-4 text-lg leading-relaxed">
+            Welcome to VIZIONSCOPE - where innovation meets creativity. I'm Lee
+            Aulder, a passionate fullstack developer dedicated to crafting
+            exceptional digital experiences.
+          </p>
+          <p className="text-lg leading-relaxed">
+            Let's build something amazing together.
+          </p>
+        </div>
+        <div>
+          <p className="text-lg leading-relaxed">
+            With expertise in modern web technologies, I bring visions to life
+            through clean code, stunning design, and user-centered solutions.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const getTechContent = () => (
+    <div>
+      <h3 className="text-3xl mb-4 tt-frantz-menu">Tech Stack</h3>
+      <div className="grid grid-cols-4 gap-6">
+        <div>
+          <h4 className="text-xl mb-3 text-cyan-400">Frontend</h4>
+          <ul className="text-base space-y-2">
+            <li>• React</li>
+            <li>• TypeScript</li>
+            <li>• Next.js</li>
+            <li>• Tailwind CSS</li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-xl mb-3 text-cyan-400">Backend</h4>
+          <ul className="text-base space-y-2">
+            <li>• Node.js</li>
+            <li>• PostgreSQL</li>
+            <li>• AWS</li>
+            <li>• Docker</li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-xl mb-3 text-cyan-400">3D & Graphics</h4>
+          <ul className="text-base space-y-2">
+            <li>• Three.js</li>
+            <li>• WebGL</li>
+            <li>• Blender</li>
+            <li>• GSAP</li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-xl mb-3 text-cyan-400">Tools</h4>
+          <ul className="text-base space-y-2">
+            <li>• Git</li>
+            <li>• Vite</li>
+            <li>• VS Code</li>
+            <li>• Figma</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+
+  const getBlogContent = () => (
+    <div>
+      <h3 className="text-3xl mb-4 tt-frantz-menu">Latest Posts</h3>
+      <div className="grid grid-cols-3 gap-6">
+        <div className="border-l-4 border-cyan-400 pl-4">
+          <h4 className="text-lg mb-2">Building Modern Web Apps</h4>
+          <p className="text-base text-gray-300 leading-relaxed">
+            Exploring the latest in React and TypeScript development...
+          </p>
+        </div>
+        <div className="border-l-4 border-cyan-400 pl-4">
+          <h4 className="text-lg mb-2">The Future of UI/UX</h4>
+          <p className="text-base text-gray-300 leading-relaxed">
+            How design trends are shaping user experiences...
+          </p>
+        </div>
+        <div className="border-l-4 border-cyan-400 pl-4">
+          <h4 className="text-lg mb-2">Performance Optimization</h4>
+          <p className="text-base text-gray-300 leading-relaxed">
+            Best practices for lightning-fast web applications...
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 
   const navigationItems: Array<{
     id: SectionId;
@@ -20,7 +117,6 @@ export const Header: React.FC = () => {
     { id: 'about', label: 'About', route: '/about', icon: '👤' },
     { id: 'tech', label: 'Tech', route: '/tech', icon: '💻' },
     { id: 'blog', label: 'Blog', route: '/blog', icon: '📝' },
-    { id: 'merch', label: 'Merch', route: '/merch', icon: '🛍️' },
   ];
 
   const handleLogoClick = () => {
@@ -30,11 +126,17 @@ export const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleNavigation = (sectionId: SectionId, route: string) => {
+  const handleNavigation = (sectionId: SectionId) => {
     setIsMobileMenuOpen(false);
 
-    // Always navigate directly to the route for now to ensure links work
-    navigate(route);
+    // Handle PIP windows for About, Tech, Blog
+    if (sectionId === 'about') {
+      openPipWindow('about', 'About VIZIONSCOPE', getAboutContent());
+    } else if (sectionId === 'tech') {
+      openPipWindow('tech', 'Tech Stack', getTechContent());
+    } else if (sectionId === 'blog') {
+      openPipWindow('blog', 'Blog Posts', getBlogContent());
+    }
 
     // Announce for accessibility
     const currentSection =
@@ -75,7 +177,7 @@ export const Header: React.FC = () => {
               {navigationItems.map(item => (
                 <button
                   key={item.id}
-                  onClick={() => handleNavigation(item.id, item.route)}
+                  onClick={() => handleNavigation(item.id)}
                   className={`relative px-4 py-2 transition-all duration-300 rounded-lg border group ${
                     isActive(item.route)
                       ? 'border-brand-accent/50 bg-brand-accent/10'
@@ -96,7 +198,7 @@ export const Header: React.FC = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden relative p-2 rounded-lg border border-brand-accent/30 bg-brand-accent/5 hover:bg-brand-accent/10 transition-all duration-300 group"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMobileMenuOpen}
+              aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
             >
               <svg
                 className={`w-6 h-6 text-white transition-transform ${
@@ -156,7 +258,7 @@ export const Header: React.FC = () => {
               {navigationItems.map(item => (
                 <button
                   key={item.id}
-                  onClick={() => handleNavigation(item.id, item.route)}
+                  onClick={() => handleNavigation(item.id)}
                   className={`text-left p-4 transition-all duration-300 rounded-lg border ${
                     isActive(item.route)
                       ? 'border-brand-accent/50 bg-brand-accent/10'

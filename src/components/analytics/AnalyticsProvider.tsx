@@ -7,12 +7,12 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { analytics } from '../../utils/analytics';
 import {
   useAnalytics,
   usePerformanceAnalytics,
   useSessionAnalytics,
 } from '../../hooks/useAnalytics';
+import { analytics } from '../../utils/analytics';
 import { AnalyticsDashboard } from './AnalyticsDashboard';
 
 interface AnalyticsContextType {

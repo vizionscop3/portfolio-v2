@@ -362,6 +362,56 @@ body {
   margin-bottom: 8px;
 }
 
+/* Contact Door Styles */
+.contact-door {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 120px;
+  height: 180px;
+  background: linear-gradient(145deg, #404040, #2a2a2a);
+  border: 3px solid #00f7ed;
+  border-bottom: none;
+  border-radius: 60px 60px 0 0;
+  box-shadow:
+    0 -5px 20px rgba(0, 247, 237, 0.6),
+    0 -10px 40px rgba(0, 247, 237, 0.3),
+    inset 0 5px 10px rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.contact-door:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 -10px 30px rgba(0, 247, 237, 0.8),
+    0 -20px 60px rgba(0, 247, 237, 0.5),
+    inset 0 5px 15px rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 247, 237, 1);
+}
+
+.contact-door-text {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #00f7ed;
+  text-shadow:
+    1px 1px 0px rgba(0, 247, 237, 0.6),
+    2px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-top: 8px;
+}
+
+.contact-door-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
 /* Tab-like card design - Puffy button style */
 .tab-card {
   background: linear-gradient(145deg, #555555, #353535);
