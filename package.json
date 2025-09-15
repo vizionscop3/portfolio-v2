@@ -5,9 +5,9 @@
   "main": "src/index.tsx",
   "scripts": {
     "dev": "vite",
-    "build": "npm run seo:generate && tsc && vite build",
-    "build:prod": "npm run clean && npm run seo:generate && tsc && vite build --mode production",
-    "build:minified": "npm run clean && npm run seo:generate && tsc && vite build --mode production --minify",
+    "build": "tsc && vite build",
+    "build:prod": "npm run clean && tsc && vite build --mode production",
+    "build:minified": "npm run clean && tsc && vite build --mode production --minify",
     "build:analyze": "npm run build:prod && npx vite-bundle-analyzer dist/stats.html",
     "clean": "rimraf dist",
     "compress": "npm run build:minified && node scripts/compress-assets.js",
