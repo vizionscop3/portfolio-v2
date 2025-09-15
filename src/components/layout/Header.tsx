@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
 import { usePipWindow } from '../../hooks/usePipWindow';
 import { useTransitionStore } from '../../hooks/useTransitionStore';
-import ContactSection from '../sections/ContactSection';
+import MinimalContactForm from '../ui/MinimalContactForm';
 
 export const Header: React.FC = () => {
   const location = useLocation();
@@ -109,11 +109,7 @@ export const Header: React.FC = () => {
     </div>
   );
 
-  const getContactContent = () => (
-    <div className="w-full">
-      <ContactSection />
-    </div>
-  );
+  const getContactContent = () => <MinimalContactForm />;
 
   const navigationItems: Array<{
     id: SectionId;
