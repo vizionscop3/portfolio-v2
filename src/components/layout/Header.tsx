@@ -117,6 +117,7 @@ export const Header: React.FC = () => {
     { id: 'about', label: 'About', route: '/about', icon: '👤' },
     { id: 'tech', label: 'Tech', route: '/tech', icon: '💻' },
     { id: 'blog', label: 'Blog', route: '/blog', icon: '📝' },
+    { id: 'contact', label: 'Contact', route: '/contact', icon: '📧' },
   ];
 
   const handleLogoClick = () => {
@@ -136,6 +137,9 @@ export const Header: React.FC = () => {
       openPipWindow('tech', 'Tech Stack', getTechContent());
     } else if (sectionId === 'blog') {
       openPipWindow('blog', 'Blog Posts', getBlogContent());
+    } else if (sectionId === 'contact') {
+      // Navigate to full contact page
+      navigate('/contact');
     }
 
     // Announce for accessibility

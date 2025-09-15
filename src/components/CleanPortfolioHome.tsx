@@ -69,16 +69,6 @@ const CleanPortfolioHome: React.FC = () => {
         <div className="merch-door-text">MERCH</div>
         <div className="merch-door-text">STORE</div>
       </div>
-
-      {/* Contact Door */}
-      <div
-        className="contact-door"
-        onClick={() => handleSectionClick('/contact')}
-      >
-        <div className="contact-door-icon">📧</div>
-        <div className="contact-door-text">CONTACT</div>
-        <div className="contact-door-text">ME</div>
-      </div>
     </div>
   );
 };

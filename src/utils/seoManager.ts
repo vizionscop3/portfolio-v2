@@ -170,6 +170,27 @@ export const SECTION_SEO: Record<SectionId, SEOData> = {
     type: 'website',
     section: 'merch',
   },
+
+  contact: {
+    title: 'Contact Lee Aulder - Schedule a Meeting | VIZIONSCOPE',
+    description:
+      'Get in touch with Lee Aulder for project collaborations, consultations, or technical discussions. Schedule meetings via Calendly or send a direct message. Available for freelance projects and partnerships.',
+    keywords: [
+      'contact lee aulder',
+      'hire full stack developer',
+      'project consultation',
+      'calendly booking',
+      'freelance developer',
+      'web development services',
+      'tech consultation',
+      'schedule meeting',
+      'contact form',
+      'project inquiry',
+    ],
+    image: '/og-contact.jpg',
+    type: 'website',
+    section: 'contact',
+  },
 };
 
 // Site configuration

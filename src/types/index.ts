@@ -60,7 +60,13 @@ export interface PortfolioData {
   socialLinks: SocialLink[];
 }
 
-export type SectionId = 'about' | 'tech' | 'blog' | 'fashion' | 'merch';
+export type SectionId =
+  | 'about'
+  | 'tech'
+  | 'blog'
+  | 'contact'
+  | 'fashion'
+  | 'merch';
 
 export interface FashionItem {
   id: string;
