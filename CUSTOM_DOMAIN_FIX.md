@@ -2,7 +2,7 @@
 
 ## 🚨 Current Issue
 
-Your custom domain `lifeofvizion.com` shows a 404 error because:
+Your custom domain `vizionscope.com` shows a 404 error because:
 
 1. ✅ DNS is correctly pointing to Azure (you see the Azure 404 page)
 2. ❌ Custom domain is NOT configured in Azure Static Web Apps
@@ -18,24 +18,24 @@ Portal:
 1. **Go to Azure Portal**: https://portal.azure.com
 2. **Find your Static Web App**:
    - Search for "Static Web Apps"
-   - Look for a resource with hostname `happy-flower-01a5d2404.1.azurestaticapps.net`
+   - Look for a resource with hostname `nice-bush-09f3be20f.2.azurestaticapps.net`
 3. **Add Custom Domain**:
    - Click on your Static Web App
    - In the left menu, click "Custom domains"
    - Click "+ Add"
-   - Enter: `lifeofvizion.com`
+   - Enter: `vizionscope.com`
    - Follow the verification process
 
 ### Step 2: Verify DNS Configuration
 
-Make sure your DNS settings in Hostinger are correct:
+Make sure your DNS settings for `vizionscope.com` are correct:
 
 **Required DNS Records:**
 
 ```
 Type: CNAME
-Name: @  (or lifeofvizion.com)
-Value: happy-flower-01a5d2404.1.azurestaticapps.net
+Name: @  (or vizionscope.com)
+Value: nice-bush-09f3be20f.2.azurestaticapps.net
 TTL: 3600
 ```
 
@@ -52,7 +52,7 @@ TTL: 3600
 
 - DNS changes can take 24-48 hours to fully propagate
 - Azure domain verification may take a few minutes
-- Test with: https://www.whatsmydns.net/#CNAME/lifeofvizion.com
+- Test with: https://www.whatsmydns.net/#CNAME/vizionscope.com
 
 ### Step 4: Alternative CLI Method (if you can find the resource)
 
@@ -66,7 +66,7 @@ az staticwebapp list --output table
 az staticwebapp hostname set \
   --name "YOUR_STATIC_WEB_APP_NAME" \
   --resource-group "YOUR_RESOURCE_GROUP" \
-  --hostname "lifeofvizion.com"
+  --hostname "vizionscope.com"
 ```
 
 ## 🔍 Troubleshooting
@@ -74,7 +74,7 @@ az staticwebapp hostname set \
 ### Check if deployment is working:
 
 ```
-✅ Default URL: https://happy-flower-01a5d2404.1.azurestaticapps.net
+✅ Default URL: https://nice-bush-09f3be20f.2.azurestaticapps.net
 ```
 
 ### Common Issues:
@@ -94,11 +94,18 @@ az staticwebapp hostname set \
 
 Try these diagnostic steps:
 
-1. **Check current DNS**: `nslookup lifeofvizion.com`
+1. **Check current DNS**: `nslookup vizionscope.com`
 2. **Verify in browser**: Open incognito/private browsing
 3. **Clear DNS cache**: `ipconfig /flushdns` (Windows)
 4. **Check Azure deployment**: Look at GitHub Actions logs
 
 ---
+
+## ✅ **Current Status - Updated September 2025**
+
+- **Live Portfolio URL**: https://nice-bush-09f3be20f.2.azurestaticapps.net
+- **Target Custom Domain**: vizionscope.com
+- **Azure Resource**: Static Web App deployed via GitHub Actions
+- **Configuration File**: `staticwebapp.config.json` ✅ Already configured for proper routing
 
 The `staticwebapp.config.json` file has been added to handle routing correctly once the custom domain is configured.

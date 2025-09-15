@@ -76,7 +76,7 @@ export const TechSection: React.FC = () => {
       ],
       status: 'Live',
       github: 'https://github.com/vizionscop3/portfolio-v2',
-      demo: 'https://happy-flower-01a9d340f.azurestaticapps.net',
+      demo: 'https://nice-bush-09f3be20f.2.azurestaticapps.net',
       category: 'web',
       year: '2024',
       phase: 'Phase 8 - Accessibility & Mobile Support',

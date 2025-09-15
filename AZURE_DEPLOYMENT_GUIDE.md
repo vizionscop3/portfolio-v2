@@ -13,8 +13,8 @@ Your 3D portfolio is now configured for deployment to Azure Static Web Apps with
    - Proper caching headers for assets
    - Security headers (XSS protection, content-type sniffing protection)
 
-2. **GitHub Actions Workflow** (`.github/workflows/azure-static-web-apps-happy-flower-01a9d340f.yml`)
-   - Automated builds on push to main and phase-\* branches
+2. **GitHub Actions Workflow** (`.github/workflows/azure-minimal-deploy.yml`)
+   - Automated builds on push to phase-4-advanced-features branch
    - Quality checks: TypeScript compilation, linting (with warnings allowed), tests
    - Optimized build process with manual build control
    - Deploy to Azure Static Web Apps
@@ -29,8 +29,9 @@ Your 3D portfolio is now configured for deployment to Azure Static Web Apps with
 
 ### 1. Ensure Azure Static Web App is Created
 
-- Your workflow references `AZURE_STATIC_WEB_APPS_API_TOKEN_HAPPY_FLOWER_01A9D340F`
+- Your workflow references `AZURE_STATIC_WEB_APPS_API_TOKEN_PORTFOLIO_V2_PHASE_4_FEATURES`
 - Make sure this secret is configured in your GitHub repository settings
+- Current deployment URL: `https://nice-bush-09f3be20f.2.azurestaticapps.net`
 
 ### 2. Push to Deploy
 
