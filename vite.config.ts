@@ -24,8 +24,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false, // Disable source maps for production
-    minify: 'terser', // Use Terser for aggressive minification
+    sourcemap: true, // Enable source maps for debugging
+    minify: 'esbuild', // Use esbuild for faster, less aggressive minification
     target: 'es2020',
     chunkSizeWarningLimit: 2000, // Reduce chunk size warnings
     rollupOptions: {
@@ -48,43 +48,14 @@ export default defineConfig({
         },
       },
     },
-    terserOptions: {
-      // Advanced Terser minification settings
-      compress: {
-        drop_console: true, // Remove console.log statements for production
-        drop_debugger: true, // Remove debugger statements
-        pure_funcs: ['console.log', 'console.info', 'console.warn'], // Remove specific console methods
-        reduce_vars: true, // Optimize variable usage
-        reduce_funcs: true, // Optimize function calls
-        passes: 3, // Multiple optimization passes
-        unsafe: true, // Enable unsafe optimizations
-        unsafe_comps: true, // Unsafe comparisons
-        unsafe_math: true, // Unsafe math optimizations
-        hoist_funs: true, // Hoist function declarations
-        keep_fargs: false, // Remove unused function arguments
-        toplevel: true, // Optimize top-level scope
-      },
-      mangle: {
-        // Aggressive variable name mangling
-        toplevel: true,
-        safari10: true,
-        properties: {
-          regex: /^_/, // Mangle properties starting with underscore
-        },
-      },
-      format: {
-        comments: false, // Remove all comments
-        ecma: 2020,
-      },
-    },
+    // Removed aggressive terser options to prevent potential issues
   },
   preview: {
     port: 4173,
     open: true,
   },
   esbuild: {
-    // Additional esbuild optimizations
-    drop: ['console', 'debugger'], // Remove console and debugger statements
+    // Less aggressive esbuild optimizations to prevent issues
     legalComments: 'none', // Remove legal comments
     minifyIdentifiers: true,
     minifySyntax: true,
