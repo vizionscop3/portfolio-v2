@@ -51,9 +51,9 @@ export default defineConfig({
     terserOptions: {
       // Advanced Terser minification settings
       compress: {
-        drop_console: true, // Remove console.log statements
+        drop_console: false, // Keep console.log statements for debugging
         drop_debugger: true, // Remove debugger statements
-        pure_funcs: ['console.log', 'console.info', 'console.warn'], // Remove specific console methods
+        pure_funcs: [], // Keep console methods for debugging
         reduce_vars: true, // Optimize variable usage
         reduce_funcs: true, // Optimize function calls
         passes: 3, // Multiple optimization passes
