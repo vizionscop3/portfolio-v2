@@ -118,8 +118,8 @@ export interface AnalyticsConfig {
 
 // Default configuration
 const DEFAULT_CONFIG: AnalyticsConfig = {
-  enabled: process.env.NODE_ENV === 'production',
-  debug: process.env.NODE_ENV === 'development',
+  enabled: import.meta.env.PROD,
+  debug: import.meta.env.DEV,
   sessionTimeout: 30,
   batchSize: 10,
   flushInterval: 30,

@@ -1,6 +1,6 @@
 /**
  * Analytics Provider Component
- * 
+ *
  * Provides analytics context and automatic tracking for the entire application.
  * Integrates with React Router for page view tracking and error boundaries for error tracking.
  */
@@ -8,7 +8,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { analytics } from '../../utils/analytics';
-import { useAnalytics, usePerformanceAnalytics, useSessionAnalytics } from '../../hooks/useAnalytics';
+import {
+  useAnalytics,
+  usePerformanceAnalytics,
+  useSessionAnalytics,
+} from '../../hooks/useAnalytics';
 import { AnalyticsDashboard } from './AnalyticsDashboard';
 
 interface AnalyticsContextType {
@@ -24,7 +28,9 @@ const AnalyticsContext = createContext<AnalyticsContextType | null>(null);
 export const useAnalyticsContext = () => {
   const context = useContext(AnalyticsContext);
   if (!context) {
-    throw new Error('useAnalyticsContext must be used within AnalyticsProvider');
+    throw new Error(
+      'useAnalyticsContext must be used within AnalyticsProvider'
+    );
   }
   return context;
 };
@@ -38,20 +44,20 @@ interface AnalyticsProviderProps {
 
 export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
   children,
-  enabled = process.env.NODE_ENV === 'production',
-  showDashboard = process.env.NODE_ENV === 'development',
-  dashboardPosition = 'bottom-right'
+  enabled = import.meta.env.PROD,
+  showDashboard = import.meta.env.DEV,
+  dashboardPosition = 'bottom-right',
 }) => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const location = useLocation();
-  
+
   // Initialize analytics hooks
   useAnalytics({
     autoTrackPageViews: true,
     trackScrollDepth: true,
-    trackClicks: true
+    trackClicks: true,
   });
-  
+
   const { trackError } = usePerformanceAnalytics();
   const { trackSessionData } = useSessionAnalytics();
 
@@ -67,11 +73,17 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
   // Set up global error tracking
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
-      trackError(new Error(event.message), `Error at ${event.filename}:${event.lineno}:${event.colno}`);
+      trackError(
+        new Error(event.message),
+        `Error at ${event.filename}:${event.lineno}:${event.colno}`
+      );
     };
 
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      trackError(new Error(String(event.reason)), 'Unhandled promise rejection');
+      trackError(
+        new Error(String(event.reason)),
+        'Unhandled promise rejection'
+      );
     };
 
     window.addEventListener('error', handleError);
@@ -79,7 +91,10 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
 
     return () => {
       window.removeEventListener('error', handleError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      window.removeEventListener(
+        'unhandledrejection',
+        handleUnhandledRejection
+      );
     };
   }, [trackError]);
 
@@ -87,7 +102,11 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Ctrl/Cmd + Shift + A to toggle analytics dashboard
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'A') {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.shiftKey &&
+        event.key === 'A'
+      ) {
         event.preventDefault();
         setIsDashboardOpen(!isDashboardOpen);
       }
@@ -110,13 +129,13 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
       if (enabled) {
         analytics.trackError(error, context);
       }
-    }
+    },
   };
 
   return (
     <AnalyticsContext.Provider value={contextValue}>
       {children}
-      
+
       {/* Analytics Dashboard */}
       {showDashboard && (
         <AnalyticsDashboard
@@ -125,7 +144,7 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
           position={dashboardPosition}
         />
       )}
-      
+
       {/* Dashboard Toggle Button (only in development) */}
       {showDashboard && process.env.NODE_ENV === 'development' && (
         <button
@@ -156,7 +175,7 @@ export const withAnalytics = <P extends object>(
       const renderTime = Date.now() - renderStartTime.current;
       trackEvent('component_render', {
         componentName,
-        renderTime
+        renderTime,
       });
     }, [trackEvent]);
 
@@ -175,7 +194,9 @@ export const withAnalytics = <P extends object>(
       return (
         <div className="p-4 border border-red-400/50 rounded bg-red-400/10 text-red-400">
           <h3 className="font-semibold mb-2">Component Error</h3>
-          <p className="text-sm">The {componentName} component encountered an error.</p>
+          <p className="text-sm">
+            The {componentName} component encountered an error.
+          </p>
         </div>
       );
     }
@@ -198,13 +219,16 @@ export const withAnalytics = <P extends object>(
 export const useComponentAnalytics = (componentName: string) => {
   const { trackEvent } = useAnalyticsContext();
 
-  const trackInteraction = React.useCallback((interaction: string, data?: Record<string, any>) => {
-    trackEvent('component_interaction', {
-      componentName,
-      interaction,
-      ...data
-    });
-  }, [componentName, trackEvent]);
+  const trackInteraction = React.useCallback(
+    (interaction: string, data?: Record<string, any>) => {
+      trackEvent('component_interaction', {
+        componentName,
+        interaction,
+        ...data,
+      });
+    },
+    [componentName, trackEvent]
+  );
 
   return { trackInteraction };
 };
