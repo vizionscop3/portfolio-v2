@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
 import { usePipWindow } from '../../hooks/usePipWindow';
 import { useTransitionStore } from '../../hooks/useTransitionStore';
+import ContactSection from '../sections/ContactSection';
 
 export const Header: React.FC = () => {
   const location = useLocation();
@@ -108,6 +109,12 @@ export const Header: React.FC = () => {
     </div>
   );
 
+  const getContactContent = () => (
+    <div className="w-full">
+      <ContactSection />
+    </div>
+  );
+
   const navigationItems: Array<{
     id: SectionId;
     label: string;
@@ -138,8 +145,8 @@ export const Header: React.FC = () => {
     } else if (sectionId === 'blog') {
       openPipWindow('blog', 'Blog Posts', getBlogContent());
     } else if (sectionId === 'contact') {
-      // Navigate to full contact page
-      navigate('/contact');
+      // Open contact PIP window instead of navigating
+      openPipWindow('contact', 'Contact VIZIONSCOPE', getContactContent());
     }
 
     // Announce for accessibility
