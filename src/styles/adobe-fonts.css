@@ -7,32 +7,28 @@ body {
   font-weight: 700;
 }
 
-/* Header title styling with Quirkwood */
+/* Header title styling with TT Frantz C */
 .header-title {
-  font-family:
-    'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-style: normal;
   font-weight: 700;
   background-color: #00f7ed;
   color: #8a038c;
 }
 
-/* Quirkwood Chunky for special elements */
-.font-quirkwood {
-  font-family:
-    'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif !important;
+/* TT Frantz C for special elements */
+.font-tt-frantz {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif !important;
   font-style: normal;
   font-weight: 700 !important;
 }
 
-/* Three-layer Quirkwood text effect for LEE AULDER */
-/* Bottom layer - #8A038C Quirkwood Shadow */
-.quirkwood-layered {
+/* Three-layer TT Frantz C text effect for LEE AULDER */
+/* Bottom layer - #8A038C TT Frantz Shadow */
+.tt-frantz-layered {
   position: relative;
   display: inline-block;
-  font-family:
-    'quirkwood-shadow', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
-    sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #8a038c;
   font-weight: 700;
   font-style: normal;
@@ -42,15 +38,13 @@ body {
     4px 4px 6px rgba(138, 3, 140, 0.4);
 }
 
-/* Middle layer - #580259 Quirkwood Highlight */
-.quirkwood-layered::before {
+/* Middle layer - #580259 TT Frantz Highlight */
+.tt-frantz-layered::before {
   content: attr(data-text);
   position: absolute;
   top: 0;
   left: 0;
-  font-family:
-    'quirkwood-highlight', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani',
-    'Inter', sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #580259;
   z-index: 1;
   transform: translate(1px, 1px);
@@ -62,18 +56,17 @@ body {
     2px 2px 0px rgba(88, 2, 89, 0.6);
 }
 
-/* Top layer - #00F7ED Quirkwood Bright */
-.quirkwood-layered::after {
+/* Top layer - #00F7ED TT Frantz Bright */
+.tt-frantz-layered::after {
   content: attr(data-text);
   position: absolute;
   top: 0;
   left: 0;
-  font-family:
-    'quirkwood-bright', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
-    sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #00f7ed;
   z-index: 2;
-  transform: translate(-1px, -1px);
+  transform: translate(-1px, -1px) scale(0.92);
+  transform-origin: center;
   opacity: 0.95;
   font-weight: 700;
   font-style: normal;
@@ -83,39 +76,31 @@ body {
     0px 0px 12px rgba(0, 247, 237, 0.5);
 }
 
-/* Fallback for Quirkwood variants */
-.font-quirkwood-highlight {
-  font-family:
-    'quirkwood-highlight', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani',
-    'Inter', sans-serif;
+/* TT Frantz C variants for consistent styling */
+.font-tt-frantz-highlight {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-weight: 700;
   font-style: normal;
 }
 
-.font-quirkwood-shadow {
-  font-family:
-    'quirkwood-shadow', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
-    sans-serif;
+.font-tt-frantz-shadow {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-weight: 700;
   font-style: normal;
 }
 
-.font-quirkwood-bright {
-  font-family:
-    'quirkwood-bright', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
-    sans-serif;
+.font-tt-frantz-bright {
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-weight: 700;
   font-style: normal;
 }
 
-/* Three-layer Quirkwood text effect for Menu Items */
-/* Bottom layer - #8A038C Quirkwood Shadow */
-.quirkwood-menu-item {
+/* Three-layer TT Frantz C text effect for Menu Items */
+/* Bottom layer - #8A038C TT Frantz Shadow */
+.tt-frantz-menu-item {
   position: relative;
   display: inline-block;
-  font-family:
-    'quirkwood-shadow', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
-    sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #8a038c;
   font-weight: 700;
   font-style: normal;
@@ -125,15 +110,13 @@ body {
     2px 2px 4px rgba(138, 3, 140, 0.4);
 }
 
-/* Middle layer - #580259 Quirkwood Highlight */
-.quirkwood-menu-item::before {
+/* Middle layer - #580259 TT Frantz Highlight */
+.tt-frantz-menu-item::before {
   content: attr(data-text);
   position: absolute;
   top: 0;
   left: 0;
-  font-family:
-    'quirkwood-highlight', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani',
-    'Inter', sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #580259;
   z-index: 1;
   transform: translate(0.5px, 0.5px);
@@ -145,15 +128,13 @@ body {
     1px 1px 0px rgba(88, 2, 89, 0.6);
 }
 
-/* Top layer - #00F7ED Quirkwood Bright */
-.quirkwood-menu-item::after {
+/* Top layer - #00F7ED TT Frantz Bright */
+.tt-frantz-menu-item::after {
   content: attr(data-text);
   position: absolute;
   top: 0;
   left: 0;
-  font-family:
-    'quirkwood-bright', 'quirkwood-chunky', 'tt-frantz-c', 'Rajdhani', 'Inter',
-    sans-serif;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #00f7ed;
   z-index: 2;
   transform: translate(-0.5px, -0.5px);
@@ -514,7 +495,7 @@ body {
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-weight: 700;
   color: #00f7ed;
-  font-size: 24px;
+  font-size: 36px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
@@ -541,37 +522,219 @@ body {
   overflow-y: auto;
   color: #ffffff;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  font-size: 20px !important;
-  line-height: 1.6;
+  font-size: 36px;
+  line-height: 1.7;
 }
 
-/* Override all Tailwind text size classes within PIP content */
+/* PIP Window TT Frantz C styling - matching header/menu style */
 .pip-content * {
-  font-size: inherit !important;
+  font-size: inherit;
+}
+
+/* PIP Window Headers with TT Frantz C */
+.pip-content h3,
+.pip-content h4 {
+  position: relative;
+  display: inline-block;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #8a038c;
+  font-weight: 700;
+  font-style: normal;
+  text-shadow:
+    2px 2px 0px rgba(138, 3, 140, 1),
+    3px 3px 0px rgba(138, 3, 140, 0.9),
+    4px 4px 0px rgba(138, 3, 140, 0.8),
+    5px 5px 0px rgba(138, 3, 140, 0.7),
+    6px 6px 8px rgba(138, 3, 140, 0.6),
+    7px 7px 12px rgba(0, 0, 0, 0.8);
 }
 
 .pip-content h3 {
-  font-size: 28px !important;
-  margin-bottom: 16px !important;
+  font-size: 64px;
+  margin-bottom: 20px;
 }
 
 .pip-content h4 {
-  font-size: 22px !important;
-  margin-bottom: 12px !important;
+  font-size: 72px;
+  margin-bottom: 24px;
 }
 
+/* Middle layer for headers - Enhanced depth */
+.pip-content h3::before,
+.pip-content h4::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #580259;
+  z-index: 1;
+  transform: translate(1px, 1px);
+  opacity: 0.95;
+  font-weight: 700;
+  text-shadow:
+    1px 1px 0px rgba(88, 2, 89, 1),
+    2px 2px 0px rgba(88, 2, 89, 0.9),
+    3px 3px 0px rgba(88, 2, 89, 0.8),
+    4px 4px 6px rgba(88, 2, 89, 0.7),
+    5px 5px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Top layer for headers - #00F7ED */
+.pip-content h3::after,
+.pip-content h4::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #00f7ed;
+  z-index: 2;
+  transform: translate(-1px, -1px);
+  opacity: 1;
+  font-weight: 700;
+  text-shadow:
+    0px 0px 3px rgba(0, 247, 237, 1),
+    0px 0px 6px rgba(0, 247, 237, 0.9),
+    0px 0px 9px rgba(0, 247, 237, 0.8),
+    0px 0px 12px rgba(0, 247, 237, 0.7),
+    0px 0px 18px rgba(0, 247, 237, 0.6),
+    0px 0px 24px rgba(0, 247, 237, 0.4);
+}
+
+/* Fourth layer for headers - Enhanced glow effect */
+.pip-content h3,
+.pip-content h4 {
+  box-shadow:
+    0px 0px 12px rgba(0, 247, 237, 0.5),
+    0px 0px 24px rgba(0, 247, 237, 0.3),
+    0px 0px 36px rgba(0, 247, 237, 0.1);
+}
+
+/* Body text with enhanced styling - Three layer effect */
+/* Bottom layer - #580259 */
 .pip-content p {
-  font-size: 18px !important;
-  margin-bottom: 12px !important;
+  position: relative;
+  display: inline-block;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #580259;
+  font-size: 36px;
+  margin-bottom: 18px;
+  line-height: 1.8;
+  font-weight: 700;
+  text-shadow:
+    2px 2px 0px rgba(88, 2, 89, 0.8),
+    3px 3px 0px rgba(88, 2, 89, 0.6),
+    4px 4px 6px rgba(88, 2, 89, 0.4);
 }
 
+/* Middle layer - #8A038C */
+.pip-content p::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #8a038c;
+  z-index: 1;
+  transform: translate(1px, 1px);
+  opacity: 0.9;
+  font-weight: 700;
+  text-shadow:
+    1px 1px 0px rgba(138, 3, 140, 0.8),
+    2px 2px 0px rgba(138, 3, 140, 0.6);
+}
+
+/* Top layer - #00F7ED with Enhanced Fourth Layer Effect */
+.pip-content p::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #00f7ed;
+  z-index: 2;
+  transform: translate(-1px, -1px) scale(0.92);
+  transform-origin: center;
+  opacity: 0.95;
+  font-weight: 700;
+  text-shadow:
+    0px 0px 2px rgba(0, 247, 237, 1),
+    0px 0px 4px rgba(0, 247, 237, 0.95),
+    0px 0px 8px rgba(0, 247, 237, 0.8),
+    0px 0px 16px rgba(0, 247, 237, 0.6),
+    0px 0px 24px rgba(0, 247, 237, 0.4),
+    0px 0px 32px rgba(0, 247, 237, 0.2);
+}
+
+/* Fourth layer - Additional #00F7ED (Ultra Top Layer) */
+/* Enhanced layering effect with additional glow */
+.pip-content p {
+  box-shadow:
+    0px 0px 8px rgba(0, 247, 237, 0.4),
+    0px 0px 16px rgba(0, 247, 237, 0.2),
+    0px 0px 24px rgba(0, 247, 237, 0.1);
+}
+
+/* List items styling */
 .pip-content ul li {
-  font-size: 16px !important;
-  margin-bottom: 8px !important;
+  position: relative;
+  display: inline-block;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #8a038c;
+  font-size: 32px;
+  margin-bottom: 14px;
+  line-height: 1.7;
+  font-weight: 700;
+  text-shadow:
+    1px 1px 0px rgba(138, 3, 140, 0.8),
+    2px 2px 0px rgba(138, 3, 140, 0.6),
+    2px 2px 4px rgba(138, 3, 140, 0.4);
+}
+
+.pip-content ul li::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #580259;
+  z-index: 1;
+  transform: translate(0.5px, 0.5px);
+  opacity: 0.9;
+  font-weight: 700;
+  text-shadow:
+    0.5px 0.5px 0px rgba(88, 2, 89, 0.8),
+    1px 1px 0px rgba(88, 2, 89, 0.6);
+}
+
+.pip-content ul li::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
+  color: #00f7ed;
+  z-index: 2;
+  transform: translate(-0.5px, -0.5px);
+  opacity: 0.95;
+  font-weight: 700;
+  text-shadow:
+    0px 0px 2px rgba(0, 247, 237, 0.9),
+    0px 0px 4px rgba(0, 247, 237, 0.7),
+    0px 0px 8px rgba(0, 247, 237, 0.5);
+}
+
+/* Fourth layer for list items - Enhanced glow effect */
+.pip-content ul li {
+  box-shadow:
+    0px 0px 6px rgba(0, 247, 237, 0.4),
+    0px 0px 12px rgba(0, 247, 237, 0.2),
+    0px 0px 18px rgba(0, 247, 237, 0.1);
 }
 
 .pip-content div {
-  font-size: inherit !important;
+  font-size: inherit;
 }
 
 .pip-overlay {
@@ -611,27 +774,27 @@ body {
 
   .pip-content {
     padding: 15px 20px;
-    font-size: 18px !important;
+    font-size: 28px;
   }
 
   .pip-content * {
-    font-size: inherit !important;
+    font-size: inherit;
   }
 
   .pip-content h3 {
-    font-size: 24px !important;
+    font-size: 64px;
   }
 
   .pip-content h4 {
-    font-size: 20px !important;
+    font-size: 72px;
   }
 
   .pip-content p {
-    font-size: 16px !important;
+    font-size: 28px;
   }
 
   .pip-content ul li {
-    font-size: 14px !important;
+    font-size: 24px;
   }
 }
 

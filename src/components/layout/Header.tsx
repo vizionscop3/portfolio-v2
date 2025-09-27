@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useNavigationAccessibility } from '../../hooks/useAccessibility';
 import { usePipWindow } from '../../hooks/usePipWindow';
 import { useTransitionStore } from '../../hooks/useTransitionStore';
-import MinimalContactForm from '../ui/MinimalContactForm';
 
 export const Header: React.FC = () => {
   const location = useLocation();
@@ -14,102 +13,22 @@ export const Header: React.FC = () => {
   const { announceNavigation } = useNavigationAccessibility();
   const { openPipWindow } = usePipWindow();
 
-  // Content for PIP windows
+  // Content for PIP windows - Empty for fresh start
   const getAboutContent = () => (
-    <div>
-      <h3 className="text-3xl mb-4 tt-frantz-menu">About VIZIONSCOPE</h3>
-      <div className="grid grid-cols-2 gap-8">
-        <div>
-          <p className="mb-4 text-lg leading-relaxed">
-            Welcome to VIZIONSCOPE - where innovation meets creativity. I'm Lee
-            Aulder, a passionate fullstack developer dedicated to crafting
-            exceptional digital experiences.
-          </p>
-          <p className="text-lg leading-relaxed">
-            Let's build something amazing together.
-          </p>
-        </div>
-        <div>
-          <p className="text-lg leading-relaxed">
-            With expertise in modern web technologies, I bring visions to life
-            through clean code, stunning design, and user-centered solutions.
-          </p>
-        </div>
-      </div>
-    </div>
+    <div>{/* Empty content - ready for new vision */}</div>
   );
 
   const getTechContent = () => (
-    <div>
-      <h3 className="text-3xl mb-4 tt-frantz-menu">Tech Stack</h3>
-      <div className="grid grid-cols-4 gap-6">
-        <div>
-          <h4 className="text-xl mb-3 text-cyan-400">Frontend</h4>
-          <ul className="text-base space-y-2">
-            <li>• React</li>
-            <li>• TypeScript</li>
-            <li>• Next.js</li>
-            <li>• Tailwind CSS</li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-xl mb-3 text-cyan-400">Backend</h4>
-          <ul className="text-base space-y-2">
-            <li>• Node.js</li>
-            <li>• PostgreSQL</li>
-            <li>• AWS</li>
-            <li>• Docker</li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-xl mb-3 text-cyan-400">3D & Graphics</h4>
-          <ul className="text-base space-y-2">
-            <li>• Three.js</li>
-            <li>• WebGL</li>
-            <li>• Blender</li>
-            <li>• GSAP</li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-xl mb-3 text-cyan-400">Tools</h4>
-          <ul className="text-base space-y-2">
-            <li>• Git</li>
-            <li>• Vite</li>
-            <li>• VS Code</li>
-            <li>• Figma</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <div>{/* Empty content - ready for new vision */}</div>
   );
 
   const getBlogContent = () => (
-    <div>
-      <h3 className="text-3xl mb-4 tt-frantz-menu">Latest Posts</h3>
-      <div className="grid grid-cols-3 gap-6">
-        <div className="border-l-4 border-cyan-400 pl-4">
-          <h4 className="text-lg mb-2">Building Modern Web Apps</h4>
-          <p className="text-base text-gray-300 leading-relaxed">
-            Exploring the latest in React and TypeScript development...
-          </p>
-        </div>
-        <div className="border-l-4 border-cyan-400 pl-4">
-          <h4 className="text-lg mb-2">The Future of UI/UX</h4>
-          <p className="text-base text-gray-300 leading-relaxed">
-            How design trends are shaping user experiences...
-          </p>
-        </div>
-        <div className="border-l-4 border-cyan-400 pl-4">
-          <h4 className="text-lg mb-2">Performance Optimization</h4>
-          <p className="text-base text-gray-300 leading-relaxed">
-            Best practices for lightning-fast web applications...
-          </p>
-        </div>
-      </div>
-    </div>
+    <div>{/* Empty content - ready for new vision */}</div>
   );
 
-  const getContactContent = () => <MinimalContactForm />;
+  const getContactContent = () => (
+    <div>{/* Empty content - ready for new vision */}</div>
+  );
 
   const navigationItems: Array<{
     id: SectionId;

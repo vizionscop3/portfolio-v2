@@ -243,7 +243,6 @@ export default {
         matrix: ['Courier New', 'monospace'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
         // Adobe fonts
-        quirkwood: ['quirkwood-chunky', 'sans-serif'],
         'tt-frantz': ['tt-frantz-c', 'sans-serif'],
       },
       animation: {
