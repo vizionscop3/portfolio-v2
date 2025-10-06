@@ -24,57 +24,68 @@ body {
 }
 
 /* Three-layer TT Frantz C text effect for LEE AULDER */
-/* Bottom layer - #8A038C TT Frantz Shadow */
+/* Bottom layer - #580259 TT Frantz Shadow (Purple) - base element */
 .tt-frantz-layered {
   position: relative;
-  display: inline-block;
+  display: block;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  color: #8a038c;
+  color: #580259;
   font-weight: 700;
   font-style: normal;
+  text-align: center;
+  line-height: 1.1;
   text-shadow:
-    2px 2px 0px rgba(138, 3, 140, 0.8),
-    3px 3px 0px rgba(138, 3, 140, 0.6),
-    4px 4px 6px rgba(138, 3, 140, 0.4);
+    1px 1px 0px rgba(88, 2, 89, 0.8),
+    2px 2px 0px rgba(88, 2, 89, 0.6),
+    3px 3px 4px rgba(88, 2, 89, 0.4);
 }
 
-/* Middle layer - #580259 TT Frantz Highlight */
+/* Middle layer (Magenta) - rendered as ::before */
+/* TEMPORARILY COMMENTED OUT TO SHOW SIMPLE VERSION
 .tt-frantz-layered::before {
   content: attr(data-text);
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -1px;
+  left: -1px;
+  width: 100%;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  color: #580259;
+  color: #8a038c;
   z-index: 1;
-  transform: translate(1px, 1px);
   opacity: 0.9;
   font-weight: 700;
   font-style: normal;
+  text-align: center;
+  line-height: 1.1;
+  white-space: pre-line;
   text-shadow:
-    1px 1px 0px rgba(88, 2, 89, 0.8),
-    2px 2px 0px rgba(88, 2, 89, 0.6);
+    1px 1px 0px rgba(138, 3, 140, 0.8),
+    2px 2px 0px rgba(138, 3, 140, 0.6);
 }
+*/
 
-/* Top layer - #00F7ED TT Frantz Bright */
+/* Top layer (Cyan) - rendered as ::after */
+/* TEMPORARILY COMMENTED OUT TO SHOW SIMPLE VERSION
 .tt-frantz-layered::after {
   content: attr(data-text);
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -2px;
+  left: -2px;
+  width: 100%;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #00f7ed;
   z-index: 2;
-  transform: translate(-1px, -1px) scale(0.92);
-  transform-origin: center;
   opacity: 0.95;
   font-weight: 700;
   font-style: normal;
+  text-align: center;
+  line-height: 1.1;
+  white-space: pre-line;
   text-shadow:
     0px 0px 3px rgba(0, 247, 237, 0.9),
     0px 0px 6px rgba(0, 247, 237, 0.7),
     0px 0px 12px rgba(0, 247, 237, 0.5);
 }
+*/
 
 /* TT Frantz C variants for consistent styling */
 .font-tt-frantz-highlight {
@@ -522,7 +533,7 @@ body {
   overflow-y: auto;
   color: #ffffff;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  font-size: 36px;
+  font-size: 64px;
   line-height: 1.7;
 }
 
@@ -537,16 +548,10 @@ body {
   position: relative;
   display: inline-block;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  color: #8a038c;
+  color: #580259;
   font-weight: 700;
   font-style: normal;
-  text-shadow:
-    2px 2px 0px rgba(138, 3, 140, 1),
-    3px 3px 0px rgba(138, 3, 140, 0.9),
-    4px 4px 0px rgba(138, 3, 140, 0.8),
-    5px 5px 0px rgba(138, 3, 140, 0.7),
-    6px 6px 8px rgba(138, 3, 140, 0.6),
-    7px 7px 12px rgba(0, 0, 0, 0.8);
+  /* Clean base layer - no extra shadows */
 }
 
 .pip-content h3 {
@@ -559,7 +564,7 @@ body {
   margin-bottom: 24px;
 }
 
-/* Middle layer for headers - Enhanced depth */
+/* Middle layer for headers - Clean magenta layer */
 .pip-content h3::before,
 .pip-content h4::before {
   content: attr(data-text);
@@ -567,20 +572,16 @@ body {
   top: 0;
   left: 0;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  color: #580259;
+  color: #8a038c;
   z-index: 1;
-  transform: translate(1px, 1px);
+  transform: translate(0.5px, 0.5px);
   opacity: 0.95;
   font-weight: 700;
-  text-shadow:
-    1px 1px 0px rgba(88, 2, 89, 1),
-    2px 2px 0px rgba(88, 2, 89, 0.9),
-    3px 3px 0px rgba(88, 2, 89, 0.8),
-    4px 4px 6px rgba(88, 2, 89, 0.7),
-    5px 5px 10px rgba(0, 0, 0, 0.6);
+  white-space: pre-line;
+  /* Clean middle layer - no extra shadows */
 }
 
-/* Top layer for headers - #00F7ED */
+/* Top layer for headers - #00F7ED with no glow */
 .pip-content h3::after,
 .pip-content h4::after {
   content: attr(data-text);
@@ -590,35 +591,23 @@ body {
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #00f7ed;
   z-index: 2;
-  transform: translate(-1px, -1px);
-  opacity: 1;
+  transform: translate(-0.5px, -0.5px);
+  opacity: 0.8;
   font-weight: 700;
-  text-shadow:
-    0px 0px 3px rgba(0, 247, 237, 1),
-    0px 0px 6px rgba(0, 247, 237, 0.9),
-    0px 0px 9px rgba(0, 247, 237, 0.8),
-    0px 0px 12px rgba(0, 247, 237, 0.7),
-    0px 0px 18px rgba(0, 247, 237, 0.6),
-    0px 0px 24px rgba(0, 247, 237, 0.4);
+  white-space: pre-line;
+  /* No glow effects */
 }
 
-/* Fourth layer for headers - Enhanced glow effect */
-.pip-content h3,
-.pip-content h4 {
-  box-shadow:
-    0px 0px 12px rgba(0, 247, 237, 0.5),
-    0px 0px 24px rgba(0, 247, 237, 0.3),
-    0px 0px 36px rgba(0, 247, 237, 0.1);
-}
+/* Headers without glow effects */
 
 /* Body text with enhanced styling - Three layer effect */
-/* Bottom layer - #580259 */
+/* Bottom layer - #580259 (Purple) */
 .pip-content p {
   position: relative;
   display: inline-block;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #580259;
-  font-size: 36px;
+  font-size: 64px;
   margin-bottom: 18px;
   line-height: 1.8;
   font-weight: 700;
@@ -645,7 +634,7 @@ body {
     2px 2px 0px rgba(138, 3, 140, 0.6);
 }
 
-/* Top layer - #00F7ED with Enhanced Fourth Layer Effect */
+/* Top layer - #00F7ED with no glow */
 .pip-content p::after {
   content: attr(data-text);
   position: absolute;
@@ -654,26 +643,11 @@ body {
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   color: #00f7ed;
   z-index: 2;
-  transform: translate(-1px, -1px) scale(0.92);
+  transform: translate(-1px, -1px) scale(0.98);
   transform-origin: center;
-  opacity: 0.95;
+  opacity: 0.7;
   font-weight: 700;
-  text-shadow:
-    0px 0px 2px rgba(0, 247, 237, 1),
-    0px 0px 4px rgba(0, 247, 237, 0.95),
-    0px 0px 8px rgba(0, 247, 237, 0.8),
-    0px 0px 16px rgba(0, 247, 237, 0.6),
-    0px 0px 24px rgba(0, 247, 237, 0.4),
-    0px 0px 32px rgba(0, 247, 237, 0.2);
-}
-
-/* Fourth layer - Additional #00F7ED (Ultra Top Layer) */
-/* Enhanced layering effect with additional glow */
-.pip-content p {
-  box-shadow:
-    0px 0px 8px rgba(0, 247, 237, 0.4),
-    0px 0px 16px rgba(0, 247, 237, 0.2),
-    0px 0px 24px rgba(0, 247, 237, 0.1);
+  /* No glow effects */
 }
 
 /* List items styling */
@@ -681,15 +655,12 @@ body {
   position: relative;
   display: inline-block;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  color: #8a038c;
-  font-size: 32px;
+  color: #580259;
+  font-size: 64px;
   margin-bottom: 14px;
   line-height: 1.7;
   font-weight: 700;
-  text-shadow:
-    1px 1px 0px rgba(138, 3, 140, 0.8),
-    2px 2px 0px rgba(138, 3, 140, 0.6),
-    2px 2px 4px rgba(138, 3, 140, 0.4);
+  /* No glow effects */
 }
 
 .pip-content ul li::before {
@@ -698,14 +669,14 @@ body {
   top: 0;
   left: 0;
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
-  color: #580259;
+  color: #8a038c;
   z-index: 1;
   transform: translate(0.5px, 0.5px);
   opacity: 0.9;
   font-weight: 700;
   text-shadow:
-    0.5px 0.5px 0px rgba(88, 2, 89, 0.8),
-    1px 1px 0px rgba(88, 2, 89, 0.6);
+    0.5px 0.5px 0px rgba(138, 3, 140, 0.8),
+    1px 1px 0px rgba(138, 3, 140, 0.6);
 }
 
 .pip-content ul li::after {

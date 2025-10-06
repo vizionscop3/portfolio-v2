@@ -1,15 +1,15 @@
-import { MerchProduct } from '@/types';
 import { useCartStore } from '@/store/cartStore';
+import { MerchProduct } from '@/types';
 import { formatPrice } from '@/utils/merchData';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  X,
-  ShoppingCart,
   Heart,
+  RotateCcw,
+  Shield,
+  ShoppingCart,
   Star,
   Truck,
-  Shield,
-  RotateCcw,
+  X,
 } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -100,7 +100,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           onClick={onClose}
         >
           <motion.div
-            className="relative max-w-6xl w-full max-h-[90vh] bg-gradient-to-br from-purple-900 to-black border border-cyan-400 overflow-hidden"
+            className="relative max-w-6xl w-full max-h-[90vh] bg-gradient-to-br from-purple-900 to-black border border-[#00F7ED] overflow-hidden"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -108,9 +108,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex justify-between items-center p-4 border-b border-cyan-400">
+            <div className="flex justify-between items-center p-4 border-b border-[#00F7ED]">
               <div>
-                <h2 className="text-2xl font-mono text-cyan-400">
+                <h2 className="text-2xl font-mono text-[#00F7ED]">
                   {product.name}
                 </h2>
                 <p className="text-sm text-gray-400">
@@ -119,7 +119,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
               <button
                 onClick={onClose}
-                className="text-cyan-400 hover:text-white transition-colors p-2"
+                className="text-[#00F7ED] hover:text-white transition-colors p-2"
                 title="Close"
               >
                 <X size={24} />
@@ -148,7 +148,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     {/* Status Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
                       {product.featured && (
-                        <div className="bg-cyan-400 text-black px-3 py-1 text-sm font-mono">
+                        <div className="bg-[#00F7ED] text-black px-3 py-1 text-sm font-mono">
                           FEATURED
                         </div>
                       )}
@@ -185,7 +185,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           onClick={() => setSelectedImage(index)}
                           className={`flex-shrink-0 w-20 h-20 overflow-hidden border-2 transition-colors ${
                             selectedImage === index
-                              ? 'border-cyan-400'
+                              ? 'border-[#00F7ED]'
                               : 'border-gray-600 hover:border-gray-400'
                           }`}
                         >
@@ -240,8 +240,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             onClick={() => setSelectedSize(size)}
                             className={`px-4 py-2 border font-mono text-sm transition-all ${
                               selectedSize === size
-                                ? 'border-cyan-400 bg-cyan-400 text-black'
-                                : 'border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400'
+                                ? 'border-[#00F7ED] bg-[#00F7ED] text-black'
+                                : 'border-gray-600 text-gray-400 hover:border-[#00F7ED] hover:text-[#00F7ED]'
                             }`}
                           >
                             {size}
@@ -264,8 +264,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             onClick={() => setSelectedColor(color)}
                             className={`px-4 py-2 border font-mono text-sm transition-all ${
                               selectedColor === color
-                                ? 'border-cyan-400 bg-cyan-400 text-black'
-                                : 'border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400'
+                                ? 'border-[#00F7ED] bg-[#00F7ED] text-black'
+                                : 'border-gray-600 text-gray-400 hover:border-[#00F7ED] hover:text-[#00F7ED]'
                             }`}
                           >
                             {color}
@@ -283,7 +283,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-10 h-10 border border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400 transition-colors flex items-center justify-center"
+                        className="w-10 h-10 border border-gray-600 text-gray-400 hover:border-[#00F7ED] hover:text-[#00F7ED] transition-colors flex items-center justify-center"
                         disabled={quantity <= 1}
                       >
                         -
@@ -293,7 +293,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       </span>
                       <button
                         onClick={() => setQuantity(quantity + 1)}
-                        className="w-10 h-10 border border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400 transition-colors flex items-center justify-center"
+                        className="w-10 h-10 border border-gray-600 text-gray-400 hover:border-[#00F7ED] hover:text-[#00F7ED] transition-colors flex items-center justify-center"
                       >
                         +
                       </button>
@@ -319,7 +319,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <motion.button
                     className={`w-full font-mono py-3 flex items-center justify-center gap-2 transition-all duration-300 ${
                       product.inStock
-                        ? 'bg-gradient-to-r from-cyan-400 to-magenta-400 text-black hover:from-cyan-300 hover:to-magenta-300'
+                        ? 'bg-gradient-to-r from-[#00F7ED] to-magenta-400 text-black hover:from-[#00F7ED]/90 hover:to-magenta-300'
                         : 'border border-gray-600 text-gray-600 cursor-not-allowed'
                     }`}
                     disabled={!product.inStock}
@@ -334,7 +334,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {/* Features */}
                   <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-700">
                     <div className="text-center">
-                      <Truck className="text-cyan-400 mx-auto mb-2" size={24} />
+                      <Truck
+                        className="text-[#00F7ED] mx-auto mb-2"
+                        size={24}
+                      />
                       <div className="text-xs font-mono text-gray-400">
                         Free Shipping
                       </div>
@@ -342,7 +345,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </div>
                     <div className="text-center">
                       <RotateCcw
-                        className="text-cyan-400 mx-auto mb-2"
+                        className="text-[#00F7ED] mx-auto mb-2"
                         size={24}
                       />
                       <div className="text-xs font-mono text-gray-400">
@@ -352,7 +355,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </div>
                     <div className="text-center">
                       <Shield
-                        className="text-cyan-400 mx-auto mb-2"
+                        className="text-[#00F7ED] mx-auto mb-2"
                         size={24}
                       />
                       <div className="text-xs font-mono text-gray-400">

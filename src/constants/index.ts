@@ -1,3 +1,6 @@
+// Brand Colors - Import for consistent theming
+export * from './brandColors';
+
 export const HERO_TITLE = 'Denward Aulder - Full Stack Developer';
 export const HERO_DESCRIPTION =
   'I develop 3D visuals, user interfaces and web applications';

@@ -26,7 +26,7 @@ const MinimalContactForm: React.FC = () => {
 
   return (
     <div className="w-full max-w-md mx-auto p-6">
-      <h3 className="text-4xl mb-6 text-center tt-frantz-menu text-cyan-400">
+      <h3 className="text-4xl mb-6 text-center tt-frantz-menu text-[#00F7ED]">
         GET IN TOUCH
       </h3>
 
@@ -42,18 +42,20 @@ const MinimalContactForm: React.FC = () => {
               value={message}
               onChange={e => setMessage(e.target.value)}
               placeholder="Hi Lee, I'm interested in working together..."
-              className="w-full h-24 px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 resize-none focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-full h-24 px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 resize-none focus:outline-none focus:border-[#00F7ED] focus:ring-1 focus:ring-[#00F7ED] transition-colors"
               required
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={!message.trim() || isSubmitting}
-            className="w-full py-3 px-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
-          >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={!message.trim() || isSubmitting}
+              className="py-2 px-6 bg-gradient-to-r from-[#00F7ED] to-[#8A038C] text-black font-semibold rounded-lg hover:from-[#00F7ED]/90 hover:to-[#8A038C]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
+            >
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </button>
+          </div>
         </form>
       )}
     </div>

@@ -23,7 +23,7 @@ export const Phase4Features: React.FC = () => {
   }, []);
 
   return (
-    <div className="phase-4-features bg-gradient-to-r from-purple-900/20 to-blue-900/20 p-6 rounded-lg border border-purple-500/30">
+    <div className="phase-4-features bg-gradient-to-r from-[#8A038C]/20 to-[#580259]/20 p-6 rounded-lg border border-[#8A038C]/30">
       <div className="flex items-center gap-2 mb-4">
         <Zap className="w-6 h-6 text-yellow-400" />
         <h3 className="text-xl font-bold text-white">
@@ -32,10 +32,10 @@ export const Phase4Features: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="metric-card bg-black/40 p-4 rounded-lg border border-cyan-500/30">
+        <div className="metric-card bg-black/40 p-4 rounded-lg border border-[#00F7ED]/30">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-5 h-5 text-green-400" />
-            <span className="text-sm text-cyan-300">Performance</span>
+            <span className="text-sm text-[#00F7ED]">Performance</span>
           </div>
           <div className="text-2xl font-bold text-white">
             {metrics.performance}%
@@ -48,7 +48,7 @@ export const Phase4Features: React.FC = () => {
           </div>
         </div>
 
-        <div className="metric-card bg-black/40 p-4 rounded-lg border border-purple-500/30">
+        <div className="metric-card bg-black/40 p-4 rounded-lg border border-[#8A038C]/30">
           <div className="flex items-center gap-2 mb-2">
             <Star className="w-5 h-5 text-purple-400" />
             <span className="text-sm text-purple-300">Interactivity</span>
