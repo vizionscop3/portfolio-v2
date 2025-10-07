@@ -1,6 +1,6 @@
 /**
  * LOD configurations for cyberpunk portfolio objects
- * 
+ *
  * This file defines the Level of Detail configurations for all interactive objects
  * in the cyberpunk portfolio room, optimized for performance while maintaining
  * visual fidelity at appropriate viewing distances.
@@ -29,7 +29,7 @@ export const LOD_DISTANCES = {
   // Far distance - simplified but recognizable
   FAR: 40,
   // Very far - minimal detail, basic shape
-  VERY_FAR: 80
+  VERY_FAR: 80,
 };
 
 /**
@@ -39,13 +39,15 @@ export const POLYGON_COUNTS = {
   HIGH: 5000,
   MEDIUM: 2000,
   LOW: 800,
-  MINIMAL: 200
+  MINIMAL: 200,
 };
 
 /**
  * Creates LOD configuration for holographic computer setup
  */
-export const createHolographicComputerLOD = (baseModel: THREE.Object3D): LODConfiguration => ({
+export const createHolographicComputerLOD = (
+  baseModel: THREE.Object3D
+): LODConfiguration => ({
   objectId: 'holographic-computer',
   baseModel,
   levels: [
@@ -53,37 +55,39 @@ export const createHolographicComputerLOD = (baseModel: THREE.Object3D): LODConf
       distance: LOD_DISTANCES.CLOSE,
       visible: false,
       polygonCount: POLYGON_COUNTS.HIGH,
-      priority: 'high'
+      priority: 'high',
     },
     {
       distance: LOD_DISTANCES.MEDIUM,
       visible: false,
       polygonCount: POLYGON_COUNTS.MEDIUM,
-      priority: 'medium'
+      priority: 'medium',
     },
     {
       distance: LOD_DISTANCES.FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.LOW,
-      priority: 'low'
+      priority: 'low',
     },
     {
       distance: LOD_DISTANCES.VERY_FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.MINIMAL,
-      priority: 'low'
-    }
+      priority: 'low',
+    },
   ],
   enableFrustumCulling: true,
   enableOcclusionCulling: false,
   minimumScreenSize: 20,
-  hysteresis: 3
+  hysteresis: 3,
 });
 
 /**
  * Creates LOD configuration for digital codex/e-book
  */
-export const createDigitalCodexLOD = (baseModel: THREE.Object3D): LODConfiguration => ({
+export const createDigitalCodexLOD = (
+  baseModel: THREE.Object3D
+): LODConfiguration => ({
   objectId: 'digital-codex',
   baseModel,
   levels: [
@@ -91,31 +95,33 @@ export const createDigitalCodexLOD = (baseModel: THREE.Object3D): LODConfigurati
       distance: LOD_DISTANCES.CLOSE,
       visible: false,
       polygonCount: POLYGON_COUNTS.MEDIUM, // Books are less complex than computers
-      priority: 'high'
+      priority: 'high',
     },
     {
       distance: LOD_DISTANCES.MEDIUM,
       visible: false,
       polygonCount: POLYGON_COUNTS.LOW,
-      priority: 'medium'
+      priority: 'medium',
     },
     {
       distance: LOD_DISTANCES.FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.MINIMAL,
-      priority: 'low'
-    }
+      priority: 'low',
+    },
   ],
   enableFrustumCulling: true,
   enableOcclusionCulling: false,
   minimumScreenSize: 15,
-  hysteresis: 2
+  hysteresis: 2,
 });
 
 /**
  * Creates LOD configuration for neon wardrobe pod
  */
-export const createNeonWardrobePodLOD = (baseModel: THREE.Object3D): LODConfiguration => ({
+export const createNeonWardrobePodLOD = (
+  baseModel: THREE.Object3D
+): LODConfiguration => ({
   objectId: 'neon-wardrobe-pod',
   baseModel,
   levels: [
@@ -123,37 +129,39 @@ export const createNeonWardrobePodLOD = (baseModel: THREE.Object3D): LODConfigur
       distance: LOD_DISTANCES.CLOSE,
       visible: false,
       polygonCount: POLYGON_COUNTS.HIGH, // Complex geometry for clothing displays
-      priority: 'high'
+      priority: 'high',
     },
     {
       distance: LOD_DISTANCES.MEDIUM,
       visible: false,
       polygonCount: POLYGON_COUNTS.MEDIUM,
-      priority: 'medium'
+      priority: 'medium',
     },
     {
       distance: LOD_DISTANCES.FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.LOW,
-      priority: 'low'
+      priority: 'low',
     },
     {
       distance: LOD_DISTANCES.VERY_FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.MINIMAL,
-      priority: 'low'
-    }
+      priority: 'low',
+    },
   ],
   enableFrustumCulling: true,
   enableOcclusionCulling: true, // Can be occluded by other furniture
   minimumScreenSize: 25,
-  hysteresis: 4
+  hysteresis: 4,
 });
 
 /**
  * Creates LOD configuration for holographic merchandise display
  */
-export const createHolographicMerchDisplayLOD = (baseModel: THREE.Object3D): LODConfiguration => ({
+export const createHolographicMerchDisplayLOD = (
+  baseModel: THREE.Object3D
+): LODConfiguration => ({
   objectId: 'holographic-merch-display',
   baseModel,
   levels: [
@@ -161,31 +169,33 @@ export const createHolographicMerchDisplayLOD = (baseModel: THREE.Object3D): LOD
       distance: LOD_DISTANCES.CLOSE,
       visible: false,
       polygonCount: POLYGON_COUNTS.MEDIUM, // Moderate complexity for product displays
-      priority: 'high'
+      priority: 'high',
     },
     {
       distance: LOD_DISTANCES.MEDIUM,
       visible: false,
       polygonCount: POLYGON_COUNTS.LOW,
-      priority: 'medium'
+      priority: 'medium',
     },
     {
       distance: LOD_DISTANCES.FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.MINIMAL,
-      priority: 'low'
-    }
+      priority: 'low',
+    },
   ],
   enableFrustumCulling: true,
   enableOcclusionCulling: false,
   minimumScreenSize: 18,
-  hysteresis: 2
+  hysteresis: 2,
 });
 
 /**
  * Creates LOD configuration for audio engineering station
  */
-export const createAudioEngineeringStationLOD = (baseModel: THREE.Object3D): LODConfiguration => ({
+export const createAudioEngineeringStationLOD = (
+  baseModel: THREE.Object3D
+): LODConfiguration => ({
   objectId: 'audio-engineering-station',
   baseModel,
   levels: [
@@ -193,37 +203,39 @@ export const createAudioEngineeringStationLOD = (baseModel: THREE.Object3D): LOD
       distance: LOD_DISTANCES.CLOSE,
       visible: false,
       polygonCount: POLYGON_COUNTS.HIGH, // Complex mixing console with many details
-      priority: 'high'
+      priority: 'high',
     },
     {
       distance: LOD_DISTANCES.MEDIUM,
       visible: false,
       polygonCount: POLYGON_COUNTS.MEDIUM,
-      priority: 'medium'
+      priority: 'medium',
     },
     {
       distance: LOD_DISTANCES.FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.LOW,
-      priority: 'low'
+      priority: 'low',
     },
     {
       distance: LOD_DISTANCES.VERY_FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.MINIMAL,
-      priority: 'low'
-    }
+      priority: 'low',
+    },
   ],
   enableFrustumCulling: true,
   enableOcclusionCulling: true,
   minimumScreenSize: 22,
-  hysteresis: 3
+  hysteresis: 3,
 });
 
 /**
  * Creates LOD configuration for room environment (walls, floor, ceiling)
  */
-export const createRoomEnvironmentLOD = (baseModel: THREE.Object3D): LODConfiguration => ({
+export const createRoomEnvironmentLOD = (
+  baseModel: THREE.Object3D
+): LODConfiguration => ({
   objectId: 'room-environment',
   baseModel,
   levels: [
@@ -231,38 +243,38 @@ export const createRoomEnvironmentLOD = (baseModel: THREE.Object3D): LODConfigur
       distance: LOD_DISTANCES.CLOSE,
       visible: false,
       polygonCount: POLYGON_COUNTS.MEDIUM, // Room doesn't need ultra-high detail
-      priority: 'high'
+      priority: 'high',
     },
     {
       distance: LOD_DISTANCES.VERY_FAR,
       visible: false,
       polygonCount: POLYGON_COUNTS.LOW,
-      priority: 'low'
-    }
+      priority: 'low',
+    },
   ],
   enableFrustumCulling: false, // Room should always be visible
   enableOcclusionCulling: false,
   minimumScreenSize: 0, // Never cull the room
-  hysteresis: 5
+  hysteresis: 5,
 });
 
 /**
  * Factory function to create all LOD configurations
  */
-export const createAllLODConfigurations = (
-  models: {
-    holographicComputer?: THREE.Object3D;
-    digitalCodex?: THREE.Object3D;
-    neonWardrobePod?: THREE.Object3D;
-    holographicMerchDisplay?: THREE.Object3D;
-    audioEngineeringStation?: THREE.Object3D;
-    roomEnvironment?: THREE.Object3D;
-  }
-): LODConfiguration[] => {
+export const createAllLODConfigurations = (models: {
+  holographicComputer?: THREE.Object3D;
+  digitalCodex?: THREE.Object3D;
+  neonWardrobePod?: THREE.Object3D;
+  holographicMerchDisplay?: THREE.Object3D;
+  audioEngineeringStation?: THREE.Object3D;
+  roomEnvironment?: THREE.Object3D;
+}): LODConfiguration[] => {
   const configurations: LODConfiguration[] = [];
 
   if (models.holographicComputer) {
-    configurations.push(createHolographicComputerLOD(models.holographicComputer));
+    configurations.push(
+      createHolographicComputerLOD(models.holographicComputer)
+    );
   }
 
   if (models.digitalCodex) {
@@ -274,11 +286,15 @@ export const createAllLODConfigurations = (
   }
 
   if (models.holographicMerchDisplay) {
-    configurations.push(createHolographicMerchDisplayLOD(models.holographicMerchDisplay));
+    configurations.push(
+      createHolographicMerchDisplayLOD(models.holographicMerchDisplay)
+    );
   }
 
   if (models.audioEngineeringStation) {
-    configurations.push(createAudioEngineeringStationLOD(models.audioEngineeringStation));
+    configurations.push(
+      createAudioEngineeringStationLOD(models.audioEngineeringStation)
+    );
   }
 
   if (models.roomEnvironment) {
@@ -315,12 +331,12 @@ export const adjustLODForPerformance = (
   performanceMode: 'high' | 'medium' | 'low'
 ): LODConfiguration => {
   const multiplier = getPerformanceDistanceMultiplier(performanceMode);
-  
+
   return {
     ...config,
     levels: config.levels.map(level => ({
       ...level,
-      distance: level.distance * multiplier
-    }))
+      distance: level.distance * multiplier,
+    })),
   };
 };

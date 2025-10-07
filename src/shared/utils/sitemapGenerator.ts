@@ -1,6 +1,6 @@
 /**
  * Sitemap Generator Utility
- * 
+ *
  * Generates XML sitemaps for search engine optimization.
  * Includes dynamic routes and priority settings.
  */
@@ -11,7 +11,14 @@ import { SITE_CONFIG } from './seoManager';
 export interface SitemapUrl {
   loc: string;
   lastmod?: string;
-  changefreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  changefreq?:
+    | 'always'
+    | 'hourly'
+    | 'daily'
+    | 'weekly'
+    | 'monthly'
+    | 'yearly'
+    | 'never';
   priority?: number;
   images?: Array<{
     loc: string;
@@ -30,12 +37,14 @@ export interface SitemapOptions {
 /**
  * Generate sitemap data
  */
-export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] => {
+export const generateSitemapData = (
+  options: SitemapOptions = {}
+): SitemapUrl[] => {
   const {
     baseUrl = SITE_CONFIG.siteUrl,
     includeBlogPosts = true,
     includeProjects = true,
-    includeImages = true
+    includeImages = true,
   } = options;
 
   const urls: SitemapUrl[] = [];
@@ -52,8 +61,13 @@ export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] 
     { path: '/about', changefreq: 'monthly', priority: 0.9, section: 'about' },
     { path: '/tech', changefreq: 'weekly', priority: 0.8, section: 'tech' },
     { path: '/blog', changefreq: 'daily', priority: 0.7, section: 'blog' },
-    { path: '/fashion', changefreq: 'weekly', priority: 0.6, section: 'fashion' },
-    { path: '/merch', changefreq: 'weekly', priority: 0.6, section: 'merch' }
+    {
+      path: '/fashion',
+      changefreq: 'weekly',
+      priority: 0.6,
+      section: 'fashion',
+    },
+    { path: '/merch', changefreq: 'weekly', priority: 0.6, section: 'merch' },
   ];
 
   // Add main pages
@@ -62,7 +76,7 @@ export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] 
       loc: `${baseUrl}${page.path}`,
       lastmod: currentDate,
       changefreq: page.changefreq,
-      priority: page.priority
+      priority: page.priority,
     };
 
     // Add images for sections if enabled
@@ -71,8 +85,8 @@ export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] 
         {
           loc: `${baseUrl}/og-${page.section}.jpg`,
           caption: `${page.section} section preview`,
-          title: `John Developer - ${page.section.charAt(0).toUpperCase() + page.section.slice(1)}`
-        }
+          title: `John Developer - ${page.section.charAt(0).toUpperCase() + page.section.slice(1)}`,
+        },
       ];
     }
 
@@ -89,11 +103,15 @@ export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] 
         lastmod: post.lastmod,
         changefreq: 'monthly',
         priority: 0.5,
-        images: post.image ? [{
-          loc: `${baseUrl}${post.image}`,
-          caption: post.title,
-          title: post.title
-        }] : undefined
+        images: post.image
+          ? [
+              {
+                loc: `${baseUrl}${post.image}`,
+                caption: post.title,
+                title: post.title,
+              },
+            ]
+          : undefined,
       });
     });
   }
@@ -107,11 +125,15 @@ export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] 
         lastmod: project.lastmod,
         changefreq: 'monthly',
         priority: 0.6,
-        images: project.image ? [{
-          loc: `${baseUrl}${project.image}`,
-          caption: project.title,
-          title: project.title
-        }] : undefined
+        images: project.image
+          ? [
+              {
+                loc: `${baseUrl}${project.image}`,
+                caption: project.title,
+                title: project.title,
+              },
+            ]
+          : undefined,
       });
     });
   }
@@ -123,39 +145,41 @@ export const generateSitemapData = (options: SitemapOptions = {}): SitemapUrl[] 
  * Generate XML sitemap string
  */
 export const generateSitemapXML = (urls: SitemapUrl[]): string => {
-  const urlElements = urls.map(url => {
-    let urlXML = `  <url>\n    <loc>${escapeXML(url.loc)}</loc>\n`;
-    
-    if (url.lastmod) {
-      urlXML += `    <lastmod>${url.lastmod}</lastmod>\n`;
-    }
-    
-    if (url.changefreq) {
-      urlXML += `    <changefreq>${url.changefreq}</changefreq>\n`;
-    }
-    
-    if (url.priority !== undefined) {
-      urlXML += `    <priority>${url.priority.toFixed(1)}</priority>\n`;
-    }
+  const urlElements = urls
+    .map(url => {
+      let urlXML = `  <url>\n    <loc>${escapeXML(url.loc)}</loc>\n`;
 
-    // Add images if present
-    if (url.images && url.images.length > 0) {
-      url.images.forEach(image => {
-        urlXML += `    <image:image>\n`;
-        urlXML += `      <image:loc>${escapeXML(image.loc)}</image:loc>\n`;
-        if (image.caption) {
-          urlXML += `      <image:caption>${escapeXML(image.caption)}</image:caption>\n`;
-        }
-        if (image.title) {
-          urlXML += `      <image:title>${escapeXML(image.title)}</image:title>\n`;
-        }
-        urlXML += `    </image:image>\n`;
-      });
-    }
-    
-    urlXML += `  </url>`;
-    return urlXML;
-  }).join('\n');
+      if (url.lastmod) {
+        urlXML += `    <lastmod>${url.lastmod}</lastmod>\n`;
+      }
+
+      if (url.changefreq) {
+        urlXML += `    <changefreq>${url.changefreq}</changefreq>\n`;
+      }
+
+      if (url.priority !== undefined) {
+        urlXML += `    <priority>${url.priority.toFixed(1)}</priority>\n`;
+      }
+
+      // Add images if present
+      if (url.images && url.images.length > 0) {
+        url.images.forEach(image => {
+          urlXML += `    <image:image>\n`;
+          urlXML += `      <image:loc>${escapeXML(image.loc)}</image:loc>\n`;
+          if (image.caption) {
+            urlXML += `      <image:caption>${escapeXML(image.caption)}</image:caption>\n`;
+          }
+          if (image.title) {
+            urlXML += `      <image:title>${escapeXML(image.title)}</image:title>\n`;
+          }
+          urlXML += `    </image:image>\n`;
+        });
+      }
+
+      urlXML += `  </url>`;
+      return urlXML;
+    })
+    .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -167,9 +191,12 @@ ${urlElements}
 /**
  * Generate robots.txt content
  */
-export const generateRobotsTxt = (options: { baseUrl?: string; sitemapPath?: string } = {}): string => {
-  const { baseUrl = SITE_CONFIG.siteUrl, sitemapPath = '/sitemap.xml' } = options;
-  
+export const generateRobotsTxt = (
+  options: { baseUrl?: string; sitemapPath?: string } = {}
+): string => {
+  const { baseUrl = SITE_CONFIG.siteUrl, sitemapPath = '/sitemap.xml' } =
+    options;
+
   return `User-agent: *
 Allow: /
 
@@ -213,20 +240,20 @@ function getBlogPostsForSitemap(): Array<{
       slug: 'react-three-fiber-guide',
       title: 'Getting Started with React Three Fiber',
       lastmod: '2025-01-15',
-      image: '/blog/react-three-fiber.jpg'
+      image: '/blog/react-three-fiber.jpg',
     },
     {
       slug: 'typescript-best-practices',
       title: 'TypeScript Best Practices for Large Applications',
       lastmod: '2025-01-10',
-      image: '/blog/typescript-practices.jpg'
+      image: '/blog/typescript-practices.jpg',
     },
     {
       slug: 'web-performance-optimization',
       title: 'Advanced Web Performance Optimization Techniques',
       lastmod: '2025-01-05',
-      image: '/blog/performance-optimization.jpg'
-    }
+      image: '/blog/performance-optimization.jpg',
+    },
   ];
 }
 
@@ -246,20 +273,20 @@ function getProjectsForSitemap(): Array<{
       slug: '3d-portfolio',
       title: '3D Interactive Portfolio',
       lastmod: '2025-01-20',
-      image: '/projects/3d-portfolio.jpg'
+      image: '/projects/3d-portfolio.jpg',
     },
     {
       slug: 'ecommerce-platform',
       title: 'Full Stack E-Commerce Platform',
       lastmod: '2025-01-15',
-      image: '/projects/ecommerce.jpg'
+      image: '/projects/ecommerce.jpg',
     },
     {
       slug: 'task-management-app',
       title: 'Real-time Task Management App',
       lastmod: '2025-01-10',
-      image: '/projects/task-app.jpg'
-    }
+      image: '/projects/task-app.jpg',
+    },
   ];
 }
 
@@ -275,7 +302,7 @@ export class SitemapGenerator {
       includeBlogPosts: true,
       includeProjects: true,
       includeImages: true,
-      ...options
+      ...options,
     };
   }
 
@@ -313,5 +340,5 @@ export default {
   generateSitemapData,
   generateSitemapXML,
   generateRobotsTxt,
-  SitemapGenerator
+  SitemapGenerator,
 };

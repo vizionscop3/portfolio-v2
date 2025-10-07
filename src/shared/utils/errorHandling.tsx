@@ -52,7 +52,7 @@ export class ErrorBoundary extends Component<
     analytics.trackError(error, {
       componentStack: errorInfo.componentStack,
       errorBoundary: this.constructor.name,
-      type: 'react_error_boundary'
+      type: 'react_error_boundary',
     });
 
     // Call custom error handler if provided
@@ -148,7 +148,7 @@ export const useErrorHandler = () => {
     analytics.trackError(error, {
       type: 'async_error',
       context: context || 'unknown',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     // You can add custom error handling logic here
@@ -166,15 +166,15 @@ export const withErrorHandling = <T extends (...args: any[]) => Promise<any>>(
   return ((...args: Parameters<T>) => {
     return asyncFn(...args).catch((error: Error) => {
       logger.error(`Error in ${context || asyncFn.name}`, error);
-      
+
       // Track wrapped function errors with analytics
       analytics.trackError(error, {
         type: 'wrapped_async_error',
         context: context || asyncFn.name,
         functionName: asyncFn.name,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
-      
+
       throw error; // Re-throw to allow component-level handling
     });
   }) as T;
@@ -190,7 +190,7 @@ export const setupGlobalErrorHandlers = () => {
     analytics.trackError(new Error(String(event.reason)), {
       type: 'unhandled_promise_rejection',
       reason: String(event.reason),
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     // Prevent the default console error
@@ -212,7 +212,7 @@ export const setupGlobalErrorHandlers = () => {
       filename: event.filename,
       lineno: event.lineno,
       colno: event.colno,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   });
 };
