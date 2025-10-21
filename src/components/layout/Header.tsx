@@ -1,9 +1,9 @@
-import { SectionId } from '@/types';
+import { SectionId } from '../../shared/types';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useNavigationAccessibility } from '../../hooks/useAccessibility';
-import { usePipWindow } from '../../hooks/usePipWindow';
-import { useTransitionStore } from '../../hooks/useTransitionStore';
+import { useNavigationAccessibility } from '../../shared/hooks/useAccessibility';
+import { usePipWindow } from '../../shared/hooks/usePipWindow';
+import { useTransitionStore } from '../../shared/hooks/useTransitionStore';
 
 export const Header: React.FC = () => {
   const location = useLocation();
@@ -84,21 +84,41 @@ export const Header: React.FC = () => {
 
       {/* About Vizionscope Content */}
       <div className="text-center space-y-6">
-        <h3 className="text-4xl font-bold text-[#00F7ED] font-tt-frantz tracking-wider">
-          ABOUT VIZIONSCOPE
-        </h3>
-        <div className="text-[#00F7ED] text-lg leading-relaxed max-w-3xl mx-auto font-tt-frantz">
-          <p className="mb-4 text-[#00F7ED]">
+        <div
+          className="text-sm leading-snug max-w-3xl mx-auto font-tt-frantz"
+          style={{ color: '#00F7ED' }}
+        >
+          <p
+            className="mb-4"
+            style={{
+              color: '#00F7ED',
+              textShadow:
+                '2px 2px 0px rgba(138, 3, 140, 0.6), 4px 4px 0px rgba(88, 2, 89, 0.4)',
+            }}
+          >
             Welcome to VIZIONSCOPE - a cutting-edge portfolio showcasing
             innovative web development, creative design, and technical
             excellence.
           </p>
-          <p className="mb-4 text-[#00F7ED]">
+          <p
+            className="mb-4"
+            style={{
+              color: '#00F7ED',
+              textShadow:
+                '2px 2px 0px rgba(138, 3, 140, 0.6), 4px 4px 0px rgba(88, 2, 89, 0.4)',
+            }}
+          >
             I'm Lee Aulder, a passionate developer dedicated to creating
             immersive digital experiences that blend modern technology with
             artistic vision.
           </p>
-          <p className="text-[#00F7ED]">
+          <p
+            style={{
+              color: '#00F7ED',
+              textShadow:
+                '2px 2px 0px rgba(138, 3, 140, 0.6), 4px 4px 0px rgba(88, 2, 89, 0.4)',
+            }}
+          >
             Explore my work, discover my technical stack, and let's collaborate
             on your next project.
           </p>
@@ -117,26 +137,160 @@ export const Header: React.FC = () => {
           TECH STACK
         </h3>
       </div>
-      {/* Content area ready for expansion */}
-      <div className="text-center text-[#00F7ED] text-2xl">
-        Content coming soon...
+
+      {/* GitHub Profile */}
+      <div className="text-center mb-8">
+        <a
+          href="https://github.com/vizionscop3"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 px-6 py-3 bg-[#580259] border-2 border-[#8A038C] text-[#00F7ED] font-bold text-xl rounded-lg hover:bg-[#8A038C] hover:border-[#00F7ED] transition-all duration-300 font-tt-frantz tracking-wider"
+        >
+          <span>🔗</span>
+          <span>GitHub Profile: @vizionscop3</span>
+        </a>
+      </div>
+
+      {/* Top Projects */}
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <h4 className="text-3xl font-bold text-[#00F7ED] font-tt-frantz tracking-wider mb-6">
+          Top Projects
+        </h4>
+
+        <div className="grid gap-4">
+          {/* Project 1: TTRAC v3 */}
+          <a
+            href="https://github.com/vizionscop3/ttrac_v3"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block p-6 bg-black/50 border-2 border-[#8A038C] rounded-lg hover:border-[#00F7ED] hover:shadow-[0_0_20px_rgba(138,3,140,0.5)] transition-all duration-300 group"
+          >
+            <h5 className="text-2xl font-bold text-[#00F7ED] font-tt-frantz mb-2 group-hover:text-white transition-colors">
+              TTRAC v3
+            </h5>
+            <p
+              className="text-sm text-[#00F7ED]/80"
+              style={{
+                color: '#00F7ED',
+                textShadow: '1px 1px 0px rgba(138, 3, 140, 0.4)',
+              }}
+            >
+              Advanced tracking and analytics application
+            </p>
+          </a>
+
+          {/* Project 2: ChingChing Budgeting */}
+          <a
+            href="https://github.com/vizionscop3/ChingChing-Budgeting-Application"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block p-6 bg-black/50 border-2 border-[#8A038C] rounded-lg hover:border-[#00F7ED] hover:shadow-[0_0_20px_rgba(138,3,140,0.5)] transition-all duration-300 group"
+          >
+            <h5 className="text-2xl font-bold text-[#00F7ED] font-tt-frantz mb-2 group-hover:text-white transition-colors">
+              ChingChing Budgeting Application
+            </h5>
+            <p
+              className="text-sm text-[#00F7ED]/80"
+              style={{
+                color: '#00F7ED',
+                textShadow: '1px 1px 0px rgba(138, 3, 140, 0.4)',
+              }}
+            >
+              Personal finance management and budgeting tool
+            </p>
+          </a>
+
+          {/* Project 3: Movie Trivia Challenge */}
+          <a
+            href="https://github.com/vizionscop3/MovieTriviaChallenge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block p-6 bg-black/50 border-2 border-[#8A038C] rounded-lg hover:border-[#00F7ED] hover:shadow-[0_0_20px_rgba(138,3,140,0.5)] transition-all duration-300 group"
+          >
+            <h5 className="text-2xl font-bold text-[#00F7ED] font-tt-frantz mb-2 group-hover:text-white transition-colors">
+              Movie Trivia Challenge
+            </h5>
+            <p
+              className="text-sm text-[#00F7ED]/80"
+              style={{
+                color: '#00F7ED',
+                textShadow: '1px 1px 0px rgba(138, 3, 140, 0.4)',
+              }}
+            >
+              Interactive movie trivia game application
+            </p>
+          </a>
+        </div>
       </div>
     </div>
   );
 
   const getBlogContent = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h3
-          className="tt-frantz-layered text-6xl font-bold mb-8"
-          data-text="BLOG POSTS"
-        >
-          BLOG POSTS
-        </h3>
+    <div className="space-y-6">
+      {/* G.O.T.H Button - Centered and Higher */}
+      <div className="flex justify-center items-center pt-4">
+        <button className="group relative px-6 py-3 bg-[#580259] border-2 border-[#8A038C] text-[#00F7ED] font-bold text-xl rounded-lg hover:bg-[#8A038C] hover:border-[#00F7ED] active:scale-95 transition-all duration-300 transform shadow-lg hover:shadow-[0_0_20px_rgba(138,3,140,0.5)] min-w-[200px] font-tt-frantz tracking-wider">
+          <span className="relative z-10">GEMS OF THE HOOD - G.O.T.H</span>
+        </button>
       </div>
-      {/* Content area ready for expansion */}
-      <div className="text-center text-[#00F7ED] text-2xl">
-        Content coming soon...
+
+      {/* Top 3 Most Recent Blog Posts */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 px-4 mb-6">
+        {/* Blog Post 1 */}
+        <div className="bg-[#1a1a1a] border-2 border-[#00F7ED] rounded-lg p-4 hover:shadow-lg hover:shadow-[#00F7ED]/30 transition-all duration-300 transform hover:scale-105">
+          <div className="aspect-video bg-gradient-to-br from-[#00F7ED]/20 to-transparent rounded-lg mb-3 flex items-center justify-center">
+            <span className="text-[#00F7ED]/50 text-2xl">📝</span>
+          </div>
+          <p className="text-gray-300 text-sm mb-1">Blog Post Title 1</p>
+          <p className="text-gray-400 text-xs mb-2">Posted on: MM/DD/YYYY</p>
+          <p className="text-gray-300 text-xs mb-3 line-clamp-2">
+            Brief description or excerpt of the blog post will appear here...
+          </p>
+          <button className="text-[#00F7ED] hover:text-white font-semibold text-sm transition-colors">
+            Read More →
+          </button>
+        </div>
+
+        {/* Blog Post 2 */}
+        <div className="bg-[#1a1a1a] border-2 border-[#00F7ED] rounded-lg p-4 hover:shadow-lg hover:shadow-[#00F7ED]/30 transition-all duration-300 transform hover:scale-105">
+          <div className="aspect-video bg-gradient-to-br from-[#00F7ED]/20 to-transparent rounded-lg mb-3 flex items-center justify-center">
+            <span className="text-[#00F7ED]/50 text-2xl">📝</span>
+          </div>
+          <p className="text-gray-300 text-sm mb-1">Blog Post Title 2</p>
+          <p className="text-gray-400 text-xs mb-2">Posted on: MM/DD/YYYY</p>
+          <p className="text-gray-300 text-xs mb-3 line-clamp-2">
+            Brief description or excerpt of the blog post will appear here...
+          </p>
+          <button className="text-[#00F7ED] hover:text-white font-semibold text-sm transition-colors">
+            Read More →
+          </button>
+        </div>
+
+        {/* Blog Post 3 */}
+        <div className="bg-[#1a1a1a] border-2 border-[#00F7ED] rounded-lg p-4 hover:shadow-lg hover:shadow-[#00F7ED]/30 transition-all duration-300 transform hover:scale-105">
+          <div className="aspect-video bg-gradient-to-br from-[#00F7ED]/20 to-transparent rounded-lg mb-3 flex items-center justify-center">
+            <span className="text-[#00F7ED]/50 text-2xl">📝</span>
+          </div>
+          <p className="text-gray-300 text-sm mb-1">Blog Post Title 3</p>
+          <p className="text-gray-400 text-xs mb-2">Posted on: MM/DD/YYYY</p>
+          <p className="text-gray-300 text-xs mb-3 line-clamp-2">
+            Brief description or excerpt of the blog post will appear here...
+          </p>
+          <button className="text-[#00F7ED] hover:text-white font-semibold text-sm transition-colors">
+            Read More →
+          </button>
+        </div>
+      </div>
+
+      {/* View All Blog Posts Link */}
+      <div className="text-center">
+        <a
+          href="#"
+          className="inline-flex items-center gap-2 text-[#00F7ED] hover:text-white font-bold text-lg transition-colors duration-300 border-b-2 border-[#8A038C] hover:border-[#00F7ED] pb-1"
+        >
+          View All Blog Posts
+          <span className="text-xl">→</span>
+        </a>
       </div>
     </div>
   );
