@@ -10,12 +10,12 @@ import {
   AlertTriangle,
   CheckCircle,
 } from 'lucide-react';
-import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
+import { usePerformanceMonitor } from '../../shared/hooks/usePerformanceMonitor';
 import {
   formatBytes,
   getPerformanceRecommendations,
-} from '@/utils/performance';
-import { PerformanceMode } from '@/utils/performance';
+  PerformanceMode,
+} from '../../shared/utils/performance';
 
 interface PerformanceMonitorProps {
   className?: string;

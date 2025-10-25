@@ -8,7 +8,7 @@
 import React, { useEffect } from 'react';
 import { KeyboardAccessibilityProvider } from './KeyboardAccessibilityProvider';
 import { ScreenReaderProvider } from './ScreenReaderProvider';
-import { useAccessibilityPreferences } from '../../hooks/useAccessibilityPreferences';
+import { useAccessibilityPreferences } from '../../shared/hooks/useAccessibilityPreferences';
 
 interface AccessibilityProviderProps {
   children: React.ReactNode;

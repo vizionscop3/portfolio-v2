@@ -6,8 +6,8 @@
  */
 
 import React, { useState } from 'react';
-import { useSocialSharing } from '../../hooks/useSEO';
-import { SectionId } from '../../types';
+import { useSocialSharing } from '../../shared/hooks/useSEO';
+import { SectionId } from '../../shared/types';
 
 interface SocialShareButtonProps {
   platform: 'twitter' | 'facebook' | 'linkedin' | 'email' | 'copy';

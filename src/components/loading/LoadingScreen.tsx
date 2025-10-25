@@ -10,8 +10,8 @@ import {
   Cpu,
   HardDrive,
 } from 'lucide-react';
-import { LoadingProgress } from '@/utils/assetLoader';
-// import { formatBytes } from '@/utils/performance';
+import { LoadingProgress } from '../../shared/utils/assetLoader';
+// import { formatBytes } from '../../shared/utils/performance';
 
 export interface LoadingScreenProps {
   progress: LoadingProgress;

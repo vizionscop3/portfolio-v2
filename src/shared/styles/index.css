@@ -23,6 +23,12 @@
 /* Import revolutionary design system */
 @import './revolutionary.css';
 
+/* Import modern scrollbar styles */
+@import './modern-scrollbar.css';
+
+/* Import merch PIP window styles */
+@import './merch-pip.css';
+
 /* Import accessibility styles */
 @import './accessibility.css';
 

@@ -1,6 +1,6 @@
 import { Code, Database, Globe, Palette, Terminal, Zap } from 'lucide-react';
 import React from 'react';
-import { useSectionAccessibility } from '../../hooks/useAccessibility';
+import { useSectionAccessibility } from '../../shared/hooks/useAccessibility';
 
 export const TechSection: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = React.useState<string>('all');

@@ -6,8 +6,8 @@
  */
 
 import React, { useState } from 'react';
-import { useAccessibilityPreferences } from '../../hooks/useAccessibilityPreferences';
-import { AccessibilityPreferences } from '../../utils/accessibilityPreferences';
+import { useAccessibilityPreferences } from '../../shared/hooks/useAccessibilityPreferences';
+import { AccessibilityPreferences } from '../../shared/utils/accessibilityPreferences';
 
 interface AccessibilityPreferencesPanelProps {
   isOpen: boolean;

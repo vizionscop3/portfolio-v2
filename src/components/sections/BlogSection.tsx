@@ -14,7 +14,7 @@ import {
   Zap,
 } from 'lucide-react';
 import React, { useRef, useState } from 'react';
-import { fadeIn, textVariant } from '../../utils/motion';
+import { fadeIn, textVariant } from '../../shared/utils/motion';
 import { CollapsibleSection, ExpandableCard } from '../ui/CollapsibleSection';
 
 interface VizionPost {

@@ -1,8 +1,8 @@
 import { ArrowLeft, Calendar, Clock, Share2, Tag, User } from 'lucide-react';
 import React from 'react';
-import { BlogPost } from '../../types';
-import { formatDate } from '../../utils/blogData';
-import { BlogService } from '../../utils/blogService';
+import { BlogPost } from '../../../../shared/types';
+import { formatDate } from '../../../../shared/utils/blogData';
+import { BlogService } from '../../../../shared/utils/blogService';
 import { BlogPostCard } from './BlogPostCard';
 import { MarkdownRenderer } from './MarkdownRenderer';
 

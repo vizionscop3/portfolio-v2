@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { services } from '../constants';
-import { fadeIn, textVariant } from '../utils/motion';
+import { services } from '../shared/constants';
+import { fadeIn, textVariant } from '../shared/utils/motion';
 
 interface ServiceCardProps {
   index: number;

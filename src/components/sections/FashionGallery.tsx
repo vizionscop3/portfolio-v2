@@ -1,4 +1,4 @@
-import { FashionItem } from '@/types';
+import { FashionItem } from '../../shared/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Maximize2, X, ZoomIn } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';

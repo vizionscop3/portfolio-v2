@@ -4,7 +4,7 @@ import {
   AssetPriority,
   LoadingProgress,
   assetLoader,
-} from '@/utils/assetLoader';
+} from '../utils/assetLoader';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface UseAssetLoaderOptions {

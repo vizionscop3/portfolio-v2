@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { logger } from '../../utils/logger';
-import { fadeIn, textVariant } from '../../utils/motion';
+import { logger } from '../../shared/utils/logger';
+import { fadeIn, textVariant } from '../../shared/utils/motion';
 import { SpaceCard } from '../ui/SpaceCard';
 
 interface ContactFormData {

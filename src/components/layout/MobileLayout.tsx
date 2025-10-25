@@ -9,8 +9,8 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { MobileNavigation } from './MobileNavigation';
 import { ResponsiveContainer } from './ResponsiveContainer';
-import { useDevice, useIOSWebAppBehavior } from '../../hooks/useMobile';
-import { useMobilePerformanceOptimization } from '../../hooks/usePerformanceMonitor';
+import { useDevice, useIOSWebAppBehavior } from '../../shared/hooks/useMobile';
+import { useMobilePerformanceOptimization } from '../../shared/hooks/usePerformanceMonitor';
 
 interface MobileLayoutProps {
   children: React.ReactNode;

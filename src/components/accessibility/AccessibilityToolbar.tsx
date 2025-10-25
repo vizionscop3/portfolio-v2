@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { useAccessibilityPreferences } from '../../hooks/useAccessibilityPreferences';
+import { useAccessibilityPreferences } from '../../shared/hooks/useAccessibilityPreferences';
 import { AccessibilityPreferencesPanel } from './AccessibilityPreferencesPanel';
 
 interface AccessibilityToolbarProps {

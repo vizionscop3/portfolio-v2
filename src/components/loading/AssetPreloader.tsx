@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useAssetLoader } from '@/hooks/useAssetLoader';
-import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
-import { performanceConfigs } from '@/utils/assetRegistry';
+import { useAssetLoader } from '../../shared/hooks/useAssetLoader';
+import { usePerformanceMonitor } from '../../shared/hooks/usePerformanceMonitor';
+import { performanceConfigs } from '../../shared/utils/assetRegistry';
 import LoadingScreen from './LoadingScreen';
 
 export interface AssetPreloaderProps {

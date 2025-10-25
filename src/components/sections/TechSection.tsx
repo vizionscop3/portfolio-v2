@@ -1,6 +1,6 @@
 import { Code, Database, Palette, Terminal, Zap } from 'lucide-react';
 import React from 'react';
-import { useSectionAccessibility } from '../../hooks/useAccessibility';
+import { useSectionAccessibility } from '../../shared/hooks/useAccessibility';
 import { SpacePageLayout } from '../layout/SpacePageLayout';
 import { CollapsibleSection } from '../ui/CollapsibleSection';
 import { MinimalProjectCard, MinimalSkillGrid } from '../ui/MinimalComponents';

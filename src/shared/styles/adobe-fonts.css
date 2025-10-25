@@ -303,56 +303,331 @@ body {
   border-color: rgba(88, 2, 89, 0.9);
 }
 
-/* Door design for merch store */
+/* Gothic Arch Door design for merch store */
 .merch-door {
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 180px;
-  background: linear-gradient(145deg, #404040, #2a2a2a);
-  border: 3px solid #580259;
-  border-bottom: none;
-  border-radius: 60px 60px 0 0;
-  box-shadow:
-    0 -5px 20px rgba(88, 2, 89, 0.6),
-    0 -10px 40px rgba(88, 2, 89, 0.3),
-    inset 0 5px 10px rgba(255, 255, 255, 0.1);
+  width: 140px;
+  height: 200px;
+  background: 
+    /* Gothic arch shape using clip-path will be handled by border-radius and pseudo-elements */ #8a038c;
+  border: none;
+  /* Gothic arch shape */
+  border-radius: 70px 70px 0 0;
   cursor: pointer;
   transition: all 0.4s ease;
   z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
+  padding-top: 20px;
+  /* Gothic stone texture */
+  background-image: 
+    /* Stone block pattern */
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+    /* Ornate carved details */
+      radial-gradient(
+        circle at 50% 25%,
+        rgba(0, 0, 0, 0.4) 2px,
+        transparent 2px
+      ),
+    radial-gradient(circle at 30% 35%, rgba(0, 0, 0, 0.3) 1px, transparent 1px),
+    radial-gradient(circle at 70% 35%, rgba(0, 0, 0, 0.3) 1px, transparent 1px);
+  background-size:
+    20px 15px,
+    25px 20px,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  box-shadow:
+    /* Outer mystical glow */
+    0 -5px 20px rgba(138, 3, 140, 0.6),
+    0 -10px 40px rgba(138, 3, 140, 0.3),
+    /* Inner carved depth */ inset 0 0 20px rgba(0, 0, 0, 0.3),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Gothic arch decorative border */
+.merch-door::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: 0;
+  background: #580259;
+  border-radius: 73px 73px 0 0;
+  z-index: -1;
+  /* Ornate border pattern */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.3) 3px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+}
+
+/* Gothic steps at the bottom */
+.merch-door::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 10px;
+  right: 10px;
+  height: 15px;
+  background: linear-gradient(
+    0deg,
+    #580259 0%,
+    #580259 5px,
+    #6b0360 5px,
+    #6b0360 10px,
+    #7a0470 10px,
+    #7a0470 15px
+  );
+  border-radius: 0 0 5px 5px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(138, 3, 140, 0.3);
+}
+
+/* Door knob */
+.door-knob {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+  border: 2px solid #8b7355;
+  border-radius: 50%;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.door-knob:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.8),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.4),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+/* Door opening animation */
+.merch-door.opening {
+  transform-origin: left center;
+  animation: doorOpen 1.5s ease-in-out forwards;
+}
+
+@keyframes doorOpen {
+  0% {
+    transform: translateX(-50%) perspective(800px) rotateY(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) perspective(800px) rotateY(-45deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-50%) perspective(800px) rotateY(-90deg);
+    opacity: 0.3;
+  }
+}
+
+/* Door closing animation */
+.merch-door.closing {
+  transform-origin: left center;
+  animation: doorClose 1s ease-in-out forwards;
+}
+
+@keyframes doorClose {
+  0% {
+    transform: translateX(-50%) perspective(800px) rotateY(-90deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(-50%) perspective(800px) rotateY(-45deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-50%) perspective(800px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+/* Door return to original state */
+.merch-door.returning {
+  transform-origin: left center;
+  animation: doorReturn 0.8s ease-out forwards;
+}
+
+@keyframes doorReturn {
+  0% {
+    transform: translateX(-50%) perspective(800px) rotateY(-90deg);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(-50%) perspective(800px) rotateY(0deg);
+    opacity: 1;
+  }
 }
 
 .merch-door:hover {
   transform: translateX(-50%) translateY(-10px);
+  background: #9a049c; /* Lighter magenta on hover */
+  /* Enhanced Gothic stone texture on hover */
+  background-image: 
+    /* Enhanced stone block pattern */
+    linear-gradient(0deg, rgba(0, 0, 0, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.3) 1px, transparent 1px),
+    /* Enhanced ornate carved details */
+      radial-gradient(
+        circle at 50% 25%,
+        rgba(0, 0, 0, 0.5) 2px,
+        transparent 2px
+      ),
+    radial-gradient(circle at 30% 35%, rgba(0, 0, 0, 0.4) 1px, transparent 1px),
+    radial-gradient(circle at 70% 35%, rgba(0, 0, 0, 0.4) 1px, transparent 1px);
+  background-size:
+    20px 15px,
+    25px 20px,
+    100% 100%,
+    100% 100%,
+    100% 100%;
   box-shadow:
-    0 -10px 30px rgba(88, 2, 89, 0.8),
-    0 -20px 60px rgba(88, 2, 89, 0.5),
-    inset 0 5px 15px rgba(255, 255, 255, 0.2);
-  border-color: rgba(88, 2, 89, 1);
+    /* Enhanced mystical glow */
+    0 -10px 30px rgba(138, 3, 140, 0.8),
+    0 -20px 60px rgba(138, 3, 140, 0.5),
+    /* Enhanced inner carved depth */ inset 0 0 25px rgba(0, 0, 0, 0.4),
+    inset 0 -15px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Gothic ornamental elements */
+.gothic-ornament {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.crescent-moon {
+  font-size: 24px;
+  color: #00f7ed;
+  text-shadow:
+    0 0 10px rgba(0, 247, 237, 0.8),
+    0 0 20px rgba(0, 247, 237, 0.4),
+    1px 1px 2px rgba(0, 0, 0, 0.8);
+  margin-bottom: 8px;
+  animation: moonGlow 3s ease-in-out infinite alternate;
+}
+
+.stars {
+  position: relative;
+  width: 80px;
+  height: 40px;
+}
+
+.star {
+  position: absolute;
+  color: #00f7ed;
+  text-shadow:
+    0 0 8px rgba(0, 247, 237, 0.6),
+    0 0 16px rgba(0, 247, 237, 0.3);
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.star-1 {
+  top: 5px;
+  left: 15px;
+  font-size: 8px;
+  animation-delay: 0s;
+}
+
+.star-2 {
+  top: 15px;
+  right: 20px;
+  font-size: 6px;
+  animation-delay: 0.5s;
+}
+
+.star-3 {
+  top: 25px;
+  left: 25px;
+  font-size: 10px;
+  animation-delay: 1s;
+}
+
+.star-4 {
+  top: 8px;
+  right: 10px;
+  font-size: 7px;
+  animation-delay: 1.5s;
+}
+
+.star-5 {
+  top: 30px;
+  right: 35px;
+  font-size: 9px;
+  animation-delay: 0.8s;
+}
+
+@keyframes moonGlow {
+  0% {
+    text-shadow:
+      0 0 10px rgba(0, 247, 237, 0.8),
+      0 0 20px rgba(0, 247, 237, 0.4),
+      1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba(0, 247, 237, 1),
+      0 0 30px rgba(0, 247, 237, 0.6),
+      1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+}
+
+@keyframes starTwinkle {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 
 .merch-door-text {
   font-family: 'tt-frantz-c', 'Rajdhani', 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 12px;
   color: #00f7ed;
   text-shadow:
     1px 1px 0px rgba(138, 3, 140, 0.6),
-    2px 2px 4px rgba(0, 0, 0, 0.8);
-  margin-top: 8px;
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 8px rgba(0, 247, 237, 0.3);
+  margin-top: 4px;
+  letter-spacing: 1px;
 }
 
-.merch-door-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
+/* Removed .merch-door-icon as emoji is no longer used */
 
 /* Contact Door Styles */
 .contact-door {
@@ -497,7 +772,7 @@ body {
   background: linear-gradient(90deg, #580259, #8a038c);
   padding: 12px 20px;
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid rgba(88, 2, 89, 0.5);
 }

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { staggerContainer } from '../utils/motion';
+import { staggerContainer } from '../shared/utils/motion';
 
 interface SectionWrapperProps {
   children: React.ReactNode;

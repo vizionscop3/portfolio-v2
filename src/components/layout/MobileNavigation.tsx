@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useMobileUI } from '../../hooks/useMobile';
+import { useMobileUI } from '../../shared/hooks/useMobile';
 
 interface MobileNavigationProps {
   isVisible?: boolean;
@@ -211,6 +211,9 @@ const MobilePerformanceIndicator: React.FC = () => {
 };
 
 // Import required hooks at the top level
-import { useFPS, usePerformanceMode } from '../../hooks/usePerformanceMonitor';
+import {
+  useFPS,
+  usePerformanceMode,
+} from '../../shared/hooks/usePerformanceMonitor';
 
 export default MobileNavigation;

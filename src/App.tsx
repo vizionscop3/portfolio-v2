@@ -6,13 +6,13 @@ import { DeploymentInfo } from './components/DeploymentInfo';
 import { Layout } from './components/layout';
 import { PerformanceMonitor } from './components/performance';
 import { PortfolioRouter } from './components/routing';
-import { PipWindowProvider } from './contexts/PipWindowContext';
-import './styles/index.css';
+import { PipWindowProvider } from './app/providers/contexts/PipWindowContext';
+import './shared/styles/index.css';
 import {
   ErrorBoundary,
   setupGlobalErrorHandlers,
-} from './utils/errorHandling.tsx';
-import { initializeLogging } from './utils/loggingService';
+} from './shared/utils/errorHandling';
+import { initializeLogging } from './shared/utils/loggingService';
 // Portfolio assets are automatically initialized in assetRegistry
 
 // Initialize professional logging system

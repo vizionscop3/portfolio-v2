@@ -3,7 +3,7 @@ import {
   PerformanceMetrics,
   PerformanceMode,
   performanceMonitor,
-} from '@/utils/performance';
+} from '../utils/performance';
 import { useDevice } from './useMobile';
 
 export interface UsePerformanceMonitorOptions {

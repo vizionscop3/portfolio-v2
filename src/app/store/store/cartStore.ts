@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartItem, MerchProduct } from '@/types';
+import { CartItem, MerchProduct } from '../../../shared/types';
 import {
   calculateSubtotal,
   calculateShipping,
   calculateTax,
   calculateTotal,
-} from '@/utils/merchData';
+} from '../../../shared/utils/merchData';
 
 interface CartStore {
   items: CartItem[];

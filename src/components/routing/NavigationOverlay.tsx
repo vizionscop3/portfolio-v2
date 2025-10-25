@@ -1,8 +1,8 @@
-import { SectionId } from '@/types';
+import { SectionId } from '../../shared/types';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useNavigationAccessibility } from '../../hooks/useAccessibility';
-import { useTransitionStore } from '../../hooks/useTransitionStore';
+import { useNavigationAccessibility } from '../../shared/hooks/useAccessibility';
+import { useTransitionStore } from '../../shared/hooks/useTransitionStore';
 
 interface NavigationOverlayProps {
   className?: string;

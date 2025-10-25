@@ -11,8 +11,8 @@ import {
   useAnalytics,
   usePerformanceAnalytics,
   useSessionAnalytics,
-} from '../../hooks/useAnalytics';
-import { analytics } from '../../utils/analytics';
+} from '../../shared/hooks/useAnalytics';
+import { analytics } from '../../shared/utils/analytics';
 import { AnalyticsDashboard } from './AnalyticsDashboard';
 
 interface AnalyticsContextType {

@@ -1,6 +1,6 @@
-import { MerchProduct } from '@/types';
-import { useCartStore } from '@/store/cartStore';
-import { formatPrice } from '@/utils/merchData';
+import { MerchProduct } from '../../../../shared/types';
+import { useCartStore } from '../../../../app/store/store/cartStore';
+import { formatPrice } from '../../../../shared/utils/merchData';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Eye, Heart } from 'lucide-react';
 import React, { useState } from 'react';

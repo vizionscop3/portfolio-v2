@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { logger } from './utils/logger';
+import { logger } from './shared/utils/logger';
 
 // Log app initialization (forced deployment)
 logger.info('Portfolio application starting...');

@@ -14,9 +14,9 @@ import React, {
 import {
   useKeyboardNavigation,
   useScreenReader,
-} from '../../hooks/useKeyboardNavigation';
+} from '../../shared/hooks/useKeyboardNavigation';
 import { FocusIndicator } from './FocusIndicator';
-import { NavigableObject } from '../../utils/keyboardNavigation';
+import { NavigableObject } from '../../shared/utils/keyboardNavigation';
 
 interface KeyboardAccessibilityContextType {
   registerObject: (object: NavigableObject) => void;

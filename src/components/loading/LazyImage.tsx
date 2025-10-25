@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useProgressiveImage, useLazyLoading } from '@/hooks/useAssetLoader';
+import {
+  useProgressiveImage,
+  useLazyLoading,
+} from '../../shared/hooks/useAssetLoader';
 import { Loader, AlertCircle } from 'lucide-react';
 
 export interface LazyImageProps {

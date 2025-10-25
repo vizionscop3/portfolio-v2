@@ -1,5 +1,9 @@
-import { useCartStore, useCartItems, useCartTotals } from '@/store/cartStore';
-import { formatPrice } from '@/utils/merchData';
+import {
+  useCartStore,
+  useCartItems,
+  useCartTotals,
+} from '../../../../app/store/store/cartStore';
+import { formatPrice } from '../../../../shared/utils/merchData';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, Plus, Minus, ShoppingBag, CreditCard } from 'lucide-react';
 import React from 'react';

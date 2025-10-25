@@ -6,7 +6,11 @@
  */
 
 import React from 'react';
-import { useBreakpoint, useMobileUI, useSafeArea } from '../../hooks/useMobile';
+import {
+  useBreakpoint,
+  useMobileUI,
+  useSafeArea,
+} from '../../shared/hooks/useMobile';
 
 interface ResponsiveContainerProps {
   children: React.ReactNode;

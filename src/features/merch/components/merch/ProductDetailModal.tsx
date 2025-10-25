@@ -1,6 +1,6 @@
-import { useCartStore } from '@/store/cartStore';
-import { MerchProduct } from '@/types';
-import { formatPrice } from '@/utils/merchData';
+import { useCartStore } from '../../../../app/store/store/cartStore';
+import { MerchProduct } from '../../../../shared/types';
+import { formatPrice } from '../../../../shared/utils/merchData';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Heart,

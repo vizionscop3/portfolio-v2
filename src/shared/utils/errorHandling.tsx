@@ -1,6 +1,6 @@
 // Error boundary and error handling utilities
-import { ErrorInfo as ErrorInfoType } from '@/types';
-import { logger } from '@/utils/logger';
+import { ErrorInfo as ErrorInfoType } from '../types';
+import { logger } from './logger';
 import { analytics } from './analytics';
 import { Component, ErrorInfo, ReactNode } from 'react';
 

@@ -6,8 +6,8 @@
  */
 
 import { useCallback, useEffect, useRef } from 'react';
-import { useScreenReader } from '../components/accessibility/ScreenReaderProvider';
-import { useKeyboardAccessibility } from '../components/accessibility/KeyboardAccessibilityProvider';
+import { useScreenReader } from '../../components/accessibility/ScreenReaderProvider';
+import { useKeyboardAccessibility } from '../../components/accessibility/KeyboardAccessibilityProvider';
 
 /**
  * Hook for section accessibility integration

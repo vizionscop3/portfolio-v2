@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { useFocusIndicator } from '../../hooks/useKeyboardNavigation';
+import { useFocusIndicator } from '../../shared/hooks/useKeyboardNavigation';
 
 interface FocusIndicatorProps {
   isVisible: boolean;

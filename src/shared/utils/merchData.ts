@@ -1,4 +1,4 @@
-import { MerchProduct, CartItem } from '@/types';
+import { MerchProduct, CartItem } from '../types';
 
 export const merchProducts: MerchProduct[] = [
   {

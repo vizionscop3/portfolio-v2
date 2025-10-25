@@ -6,9 +6,9 @@
  */
 
 import { useEffect } from 'react';
-import { useSEO } from '../../hooks/useSEO';
-import { SectionId } from '../../types';
-import { SEOData } from '../../utils/seoManager';
+import { useSEO } from '../../shared/hooks/useSEO';
+import { SectionId } from '../../shared/types';
+import { SEOData } from '../../shared/utils/seoManager';
 
 interface SEOHeadProps {
   title?: string;

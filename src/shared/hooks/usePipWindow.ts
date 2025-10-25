@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import {
   PipWindowContext,
   PipWindowContextType,
-} from '../contexts/PipWindowContext';
+} from '../../app/providers/contexts/PipWindowContext';
 
 export const usePipWindow = (): PipWindowContextType => {
   const context = useContext(PipWindowContext);
